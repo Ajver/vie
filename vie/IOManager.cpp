@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+#include "IOManager.h"
 
 #include <vector>
 #include <fstream>
@@ -8,9 +8,9 @@
 
 namespace vie
 {
-	std::map<std::string, Texture> ResourceManager::texturesMap;
+	std::map<std::string, Texture> IOManager::texturesMap;
 
-	Texture ResourceManager::getTexture(std::string texturePath)
+	Texture IOManager::getTexture(std::string texturePath)
 	{
 		// Lookup the texture and see if its in the map
 		auto mit = texturesMap.find(texturePath);
@@ -30,7 +30,7 @@ namespace vie
 		return mit->second;
 	}
 
-	Texture ResourceManager::loadPNG(std::string filePath)
+	Texture IOManager::loadPNG(std::string filePath)
 	{
 		Texture texture = {};
 
@@ -72,7 +72,7 @@ namespace vie
 		return texture;
 	}
 
-	bool ResourceManager::readFileToBuffer(std::string filePath, std::vector<unsigned char> &buffer)
+	bool IOManager::readFileToBuffer(std::string filePath, std::vector<unsigned char> &buffer)
 	{
 		std::ifstream file(filePath, std::ios::binary);
 		if (file.fail())
@@ -105,7 +105,7 @@ namespace vie
 		return true;
 	}
 
-	int ResourceManager::decodePNG(std::vector<unsigned char>& out_image, unsigned long& image_width, unsigned long& image_height, const unsigned char* in_png, size_t in_size, bool convert_to_rgba32)
+	int IOManager::decodePNG(std::vector<unsigned char>& out_image, unsigned long& image_width, unsigned long& image_height, const unsigned char* in_png, size_t in_size, bool convert_to_rgba32)
 	{
 		// picoPNG version 20101224
 		// Copyright (c) 2005-2010 Lode Vandevenne

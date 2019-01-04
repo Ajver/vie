@@ -8,7 +8,7 @@
 namespace vie
 {
 
-	class ResourceManager
+	class IOManager
 	{
 	public:
 		static Texture getTexture(std::string filePath);

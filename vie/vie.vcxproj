@@ -24,7 +24,7 @@
     <ClInclude Include="Errors.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="IOManager.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
@@ -32,7 +32,7 @@
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="IOManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

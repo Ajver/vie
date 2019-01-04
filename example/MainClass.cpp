@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include <vie/ResourceManager.h>
+#include <vie/IOManager.h>
 #include <vie/Texture.h>
 #include <vie/Graphics.h>
 
@@ -17,7 +17,7 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	playerTexture = vie::ResourceManager::getTexture("Graphics/Player.png");
+	playerTexture = vie::IOManager::getTexture("Graphics/Player.png");
 	std::cout << "Texture ID: " << playerTexture.id << std::endl;
 }
 
