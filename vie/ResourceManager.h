@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include <map>
+
+#include "Texture.h"
 
 namespace vie
 {
-	class Texture;
-	class TextureCache;
 
 	class ResourceManager
 	{
@@ -13,7 +14,8 @@ namespace vie
 		static Texture getTexture(std::string);
 
 	private:
-		static TextureCache textureCache;
+		static std::map<std::string, Texture> texturesMap;
 	};
+
 }
 
