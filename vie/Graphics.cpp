@@ -94,6 +94,16 @@ namespace vie
 		glyphs.push_back(newGlyph);
 	}
 
+	void Graphics::drawTexture(const Texture& texture, float x, float y, const Color& color)
+	{
+		drawTexture(texture, x, y, texture.width, texture.height, color);
+	}
+
+	void Graphics::drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color)
+	{
+		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color);
+	}
+
 	void Graphics::renderBatch()
 	{
 		glBindVertexArray(vao);

@@ -28,10 +28,7 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
-	glm::vec4 position(0.0f, 0.0f, 32.0f, 32.0f);
-	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-
-	g->draw(position, uv, playerTexture.id, 1.0f, vie::ORANGE);
+	g->drawTexture(playerTexture, 0.0f, 0.0f, 128.0f, 128.0f, vie::RED);
 }
 
 /*
