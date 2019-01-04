@@ -1,9 +1,12 @@
 #pragma once
 
+#include "glm/glm.hpp"
+
 class SDL_Window;
 
 namespace vie
 {
+	class Graphics;
 
 	class Engine
 	{
@@ -20,7 +23,7 @@ namespace vie
 
 		// Runs every frame after update()
 		// Render all stuff (graphics object for displaying everything)
-		virtual void render() abstract;
+		virtual void render(Graphics* g) abstract;
 
 	protected:
 		enum WindowFlags : unsigned int
@@ -53,6 +56,13 @@ namespace vie
 		// Get FPS count from previous frame (updated after each second)
 		unsigned int getFpsCount();
 
+		virtual void onKeyPress(unsigned int keyID);
+		virtual void onKeyRelease(unsigned int keyID);
+		virtual void onMousePress(unsigned int keyID, glm::vec2 mousePos);
+		virtual void onMouseRelease(unsigned int keyID, glm::vec2 mousePos);
+		virtual void onMouseMove(glm::vec2 mousePos);
+		virtual void onMouseDrag(glm::vec2 mousePos);
+
 	private:
 		bool isRunning;
 
@@ -62,8 +72,17 @@ namespace vie
 		// Frames per second
 		unsigned int FPS;
 
+		// Maximum Frames per second
+		unsigned int maxFPS;
+
 		// Current window
-		SDL_Window *window;
+		SDL_Window* window;
+
+		// Draw all stuff with this
+		Graphics* g;
+
+		// Grab mouse and key events
+		void processInput();
 
 		// Init all systems (title, screen width, screen height, window type)
 		void init(const char* title, unsigned int sw, unsigned int sh, WindowFlags wType);

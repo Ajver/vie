@@ -4,6 +4,7 @@
 
 #include <vie/ResourceManager.h>
 #include <vie/Texture.h>
+#include <vie/Graphics.h>
 
 MainClass::MainClass()
 {
@@ -16,7 +17,7 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	vie::Texture playerTexture = vie::ResourceManager::getTexture("Graphics/Player.png");
+	playerTexture = vie::ResourceManager::getTexture("Graphics/Player.png");
 	std::cout << "Texture ID: " << playerTexture.id << std::endl;
 }
 
@@ -25,7 +26,51 @@ void MainClass::update(float et)
 	//std::cout << ".";
 }
 
-void MainClass::render()
+void MainClass::render(vie::Graphics* g)
 {
+	glm::vec4 position(0.0f, 0.0f, 32.0f, 32.0f);
+	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
+	GLuint textureID = vie::ResourceManager::getTexture("Graphics/Player.png").id;
+	vie::Color col;
+	col.r = 255;
+	col.g = 255;
+	col.b = 255;
+	col.a = 255;
 
+	g->draw(position, uv, textureID, 1.0f, col);
+
+	std::cout << textureID << std::endl;
 }
+
+/*
+void MainClass::onKeyPress(unsigned int keyID)
+{
+	std::cout << "Key press: " << keyID << std::endl;
+}
+
+void MainClass::onKeyRelease(unsigned int keyID)
+{
+	std::cout << "Key release: " << keyID << std::endl;
+}
+
+void MainClass::onMousePress(unsigned int keyID, glm::vec2 mousePos)
+{
+	std::cout << "Mouse press: " << keyID << " xy: " << mousePos.x << " | " << mousePos.y << std::endl;
+}
+
+void MainClass::onMouseRelease(unsigned int keyID, glm::vec2 mousePos)
+{
+	std::cout << "Mouse release: " << keyID << " xy: " << mousePos.x << " | " << mousePos.y << std::endl;
+}
+
+void MainClass::onMouseMove(glm::vec2 mousePos)
+{
+	std::cout << "Mouse move xy: " << mousePos.x << " | " << mousePos.y << std::endl;
+}
+
+void MainClass::onMouseDrag(glm::vec2 mousePos)
+{
+	std::cout << "Mouse drag xy: " << mousePos.x << " | " << mousePos.y << std::endl;
+}
+*/
+
