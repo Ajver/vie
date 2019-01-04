@@ -4,8 +4,6 @@
 #include <glm/glm.hpp>
 
 #include "Vertex.h"
-#include "GLSLProgram.h"
-#include "Camera2D.h"
 
 #include "Texture.h"
 
@@ -25,31 +23,6 @@ namespace vie
 
 		// By texture (most efficient)
 		TEXTURE
-	};
-
-	struct Glyph
-	{
-		GLuint textureID;
-		float depth;
-
-		Vertex topLeft;
-		Vertex topRight;
-		Vertex bottomLeft;
-		Vertex bottomRight;
-	};
-
-	class RenderBatch
-	{
-	public:
-		RenderBatch(GLuint of, GLuint nv, GLuint tID) : 
-			offset(of), 
-			numVertices(nv), 
-			textureID(tID)
-		{}
-
-		GLuint offset;
-		GLuint numVertices;
-		GLuint textureID;
 	};
 
 	class Graphics
@@ -75,6 +48,143 @@ namespace vie
 		void renderBatch();
 
 	private:
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+
+		class Camera2D
+		{
+		public:
+			Camera2D();
+			~Camera2D();
+
+			void init(int sw, int sh);
+			void update();
+
+			void setPosition(glm::vec2 npos);
+			void setScale(float nscale);
+
+			glm::vec2 screenToWorldPos(glm::vec2 screenPosition);
+
+			glm::vec2 getPosition();
+			float getScale();
+			glm::mat4 getCameraMatrix();
+
+		private:
+			int screenWidth;
+			int screenHeight;
+
+			bool needsMatrixUpdate;
+
+			glm::vec2 position;
+			glm::mat4 cameraMatrix;
+			glm::mat4 orthoMatrix;
+
+			float scale;
+		};
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+
+		class GLSLProgram
+		{
+		public:
+			GLSLProgram();
+			~GLSLProgram();
+
+			void compileShaders(const std::string&, const std::string&);
+
+			void linkShaders();
+
+			void addAtribute(const std::string&);
+
+			GLuint getUnitformLocation(const std::string &);
+
+			void use();
+			void unuse();
+
+		private:
+			int numAttributes;
+
+			GLuint programID;
+
+			GLuint vertexShaderID;
+			GLuint fragmentShaderID;
+
+			void compileShader(const std::string&, GLuint);
+		};
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+
+		struct Vertex
+		{
+			struct Position
+			{
+				float x, y;
+			};
+
+			//-----------------------------------------------
+
+			struct UV
+			{
+				float u;
+				float v;
+			};
+
+			//-----------------------------------------------
+
+			Position position;
+			Color color;
+			UV uv;
+
+			void setPosition(float x, float y)
+			{
+				position.x = x;
+				position.y = y;
+			}
+
+			void setColor(GLubyte r, GLubyte g, GLubyte b, GLubyte a = 255)
+			{
+				color.setColor(r, g, b, a);
+			}
+
+			void setUV(float u, float v)
+			{
+				uv.u = u;
+				uv.v = v;
+			}
+		};
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+
+		struct Glyph
+		{
+			GLuint textureID;
+			float depth;
+
+			Vertex topLeft;
+			Vertex topRight;
+			Vertex bottomLeft;
+			Vertex bottomRight;
+		};
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+
+		class RenderBatch
+		{
+		public:
+			RenderBatch(GLuint of, GLuint nv, GLuint tID) :
+				offset(of),
+				numVertices(nv),
+				textureID(tID)
+			{}
+
+			GLuint offset;
+			GLuint numVertices;
+			GLuint textureID;
+		};
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////
+
 		GLuint vbo;
 		GLuint vao;
 		GlyphSortType sortType;
@@ -96,6 +206,7 @@ namespace vie
 		static bool compareFrontToBack(Glyph* a, Glyph* b);
 		static bool compareBackToFront(Glyph* a, Glyph* b);
 		static bool compareTexture(Glyph* a, Glyph* b);
+
 	};
 
 }
