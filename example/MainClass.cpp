@@ -30,16 +30,8 @@ void MainClass::render(vie::Graphics* g)
 {
 	glm::vec4 position(0.0f, 0.0f, 32.0f, 32.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	GLuint textureID = vie::ResourceManager::getTexture("Graphics/Player.png").id;
-	vie::Color col;
-	col.r = 255;
-	col.g = 255;
-	col.b = 255;
-	col.a = 255;
 
-	g->draw(position, uv, textureID, 1.0f, col);
-
-	std::cout << textureID << std::endl;
+	g->draw(position, uv, playerTexture.id, 1.0f, vie::ORANGE);
 }
 
 /*
