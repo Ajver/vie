@@ -9,6 +9,11 @@ public:
 	MainClass();
 	~MainClass();
 
+	void onCreate();
+
+	void update(float et) override;
+	void render() override;
+
 private:
 
 };
