@@ -23,7 +23,6 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Errors.h" />
     <ClInclude Include="Graphics.h" />
-    <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="picoPNG.h" />
@@ -34,7 +33,6 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="picoPNG.cpp" />
