@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "Errors.h"
+
 namespace vie
 {
 
@@ -25,7 +27,7 @@ namespace vie
 	{
 		if (isRunning)
 		{
-			message("Error: The Engine is running");
+			printf("Error: The Engine is running");
 			return;
 		}
 
@@ -125,19 +127,7 @@ namespace vie
 
 		//g = new Graphics(window);
 	}
-
-	void Engine::fatalError(const char *err) 
-	{
-		printf(err);
-		SDL_Quit();
-		exit(-1);
-	}
-
-	void Engine::message(const char* err)
-	{
-		printf(err);
-	}
-
+	   
 	unsigned int Engine::getScreenWidth() 
 	{
 		return screenWidth;

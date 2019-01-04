@@ -22,12 +22,6 @@ namespace vie
 		// Render all stuff (graphics object for displaying everything)
 		virtual void render() abstract;
 
-		// Fatal Error! Display error text and exit the program (error message)
-		void fatalError(const char* err);
-
-		// Display message in console (message text)
-		void message(const char* err);
-
 	protected:
 		enum WindowFlags : unsigned int
 		{
