@@ -30,7 +30,6 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureCache.h" />
-    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />

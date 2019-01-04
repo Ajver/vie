@@ -3,7 +3,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-#include "Vertex.h"
+#include "Color.h"
 
 #include "Texture.h"
 
