@@ -27,9 +27,6 @@
     <ClInclude Include="Texture.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="IOManager.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
@@ -45,9 +42,6 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="IOManager.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">

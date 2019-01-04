@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <vector>
 #include <map>
 
 #include "Texture.h"
@@ -16,7 +16,9 @@ namespace vie
 	private:
 		static std::map<std::string, Texture> texturesMap;
 
-		static Texture loadPNG(std::string filePath);
+		static Texture loadPNG(std::string filePath); 
+		static bool readFileToBuffer(std::string, std::vector<unsigned char> &);
+		static int decodePNG(std::vector<unsigned char>&, unsigned long&, unsigned long&, const unsigned char*, size_t, bool = true);
 	};
 
 }
