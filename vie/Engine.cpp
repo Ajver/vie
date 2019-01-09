@@ -6,147 +6,14 @@
 #include <string>
 #include <iostream>
 
+#include "Window.h"
 #include "Errors.h"
 #include "Graphics.h"
 #include "InputManager.h"
 
 namespace vie
 {
-	class Window
-	{
-	public:
-		Window() : sdlWindow(nullptr), 
-			screenWidth(0), 
-			screenHeight(0) 
-		{
-		}
-
-		void create(const char* title, unsigned int sw, unsigned int sh, Engine::WindowFlags wFlags)
-		{
-			saveWindowProperties(title, sw, sh, wFlags);
-
-			createSDLWindow();
-			
-			if (sdlWindow == nullptr)
-			{
-				fatalError(SDL_GetError());
-			}
-		}
-
-		void setWindowSize(unsigned int sw, unsigned int sh)
-		{
-			screenWidth = sw;
-			screenHeight = sh;
-			updateScreenSize();
-		}
-
-		void setWindowTitle(const char* title)
-		{
-			windowTitle = title;
-		}
-
-		SDL_GLContext getSDLGLContext()
-		{
-			return SDL_GL_CreateContext(sdlWindow);
-		}
-
-		void swapSDLWindowBuffer()
-		{
-			SDL_GL_SwapWindow(sdlWindow);
-		}
-
-		void destroySDLWindow()
-		{
-			SDL_DestroyWindow(sdlWindow);
-		}
-
-		unsigned int getScreenWidth()
-		{
-			return screenWidth;
-		}
-
-		unsigned int getScreenHeight()
-		{
-			return screenHeight;
-		}
-
-		bool isWindowInvisible()
-		{
-			return windowFlags & Engine::WindowFlags::INVISIBLE;
-		}
-
-		bool isWindowFullscreen()
-		{
-			return windowFlags & Engine::WindowFlags::FULLSCREEN;
-		}
-
-		bool isWindowBorderless()
-		{
-			return windowFlags & Engine::WindowFlags::BORDERLESS;
-		}
-
-		bool isWindowResizable()
-		{
-			return windowFlags & Engine::WindowFlags::RESIZABLE;
-		}
-
-	private:
-		SDL_Window* sdlWindow;
-		const char* windowTitle;
-		unsigned int screenWidth;
-		unsigned int screenHeight;
-		Engine::WindowFlags windowFlags;
-
-		void saveWindowProperties(const char* title, unsigned int sw, unsigned int sh, Engine::WindowFlags wFlags)
-		{
-			windowTitle = title;
-			screenWidth = sw;
-			screenHeight = sh;
-			windowFlags = wFlags;
-		}
-
-		void createSDLWindow()
-		{
-			Uint32 sdlFlags = getSDLWindowFlags();
-			sdlWindow = SDL_CreateWindow(
-				windowTitle, 
-				SDL_WINDOWPOS_CENTERED, 
-				SDL_WINDOWPOS_CENTERED, 
-				screenWidth, 
-				screenHeight, 
-				sdlFlags);
-		}
-
-		Uint32 getSDLWindowFlags()
-		{
-			Uint32 sdlFlags = SDL_WINDOW_OPENGL;
-
-			if (isWindowInvisible())
-				sdlFlags |= SDL_WINDOW_HIDDEN;
-
-			if (isWindowFullscreen())
-				sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-
-			if (isWindowBorderless())
-				sdlFlags |= SDL_WINDOW_BORDERLESS;
-
-			if (isWindowResizable())
-				sdlFlags |= SDL_WINDOW_RESIZABLE;
-
-			return sdlFlags;
-		}
-
-		void updateScreenSize()
-		{
-			SDL_SetWindowSize(sdlWindow, screenWidth, screenHeight);
-		}
-
-		void updateWindowTitle()
-		{
-			SDL_SetWindowTitle(sdlWindow, windowTitle);
-		}
-	};
-
+	
 	Engine::Engine() :
 		isRunning(false),
 		window(nullptr),

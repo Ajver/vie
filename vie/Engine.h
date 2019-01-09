@@ -2,6 +2,8 @@
 
 #include "glm/glm.hpp"
 
+#include "WindowFlags.h"
+
 namespace vie
 {
 	class Graphics;
@@ -23,24 +25,6 @@ namespace vie
 		// Runs every frame after update()
 		// Render all stuff (graphics object for displaying everything)
 		virtual void render(Graphics* g) abstract;
-
-		enum WindowFlags : unsigned int
-		{
-			// Noresizable, visible window
-			DEFAULT = 0x0,
-
-			// Window invisible
-			INVISIBLE = 0x1,
-
-			// Borderless and fillign the screen
-			FULLSCREEN = 0x2,
-
-			// Noresizable
-			BORDERLESS = 0x4,
-
-			// Resizable, with border
-			RESIZABLE = 0x8
-		};
 
 	protected:
 		
