@@ -52,9 +52,8 @@ namespace vie
 
 		printOpenGLVersion();
 		
-		// TODO - remove screen size private vars from Graphics and Camera
 		g = new Graphics();
-		g->init(Window::getScreenWidth(), Window::getScreenHeight());
+		g->init();
 	}
 
 	void Engine::printOpenGLVersion()

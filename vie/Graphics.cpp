@@ -5,13 +5,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Errors.h"
+#include "Window.h"
 
 namespace vie
 {
 
 	Graphics::Graphics() :
-		screenWidth(0),
-		screenHeight(0),
 		vbo(0),
 		vao(0),
 		sortType(GlyphSortType::TEXTURE)
@@ -22,7 +21,7 @@ namespace vie
 	{
 	}
 
-	void Graphics::init(unsigned int sw, unsigned int sh)
+	void Graphics::init()
 	{
 		// Enable alpha blending
 		glEnable(GL_BLEND);
@@ -34,7 +33,7 @@ namespace vie
 		colorProgram.addAtribute("vertexUV");
 		colorProgram.linkShaders();
 
-		camera.init(sw, sh);
+		camera.init();
 
 		createVertexArray();
 	}
@@ -93,10 +92,10 @@ namespace vie
 		newGlyph->bottomLeft.setColor(color.r, color.g, color.b, color.a);
 		newGlyph->bottomRight.setColor(color.r, color.g, color.b, color.a);
 
-		newGlyph->topLeft.setPosition(destRect.x, destRect.y + destRect.w);
-		newGlyph->topRight.setPosition(destRect.x + destRect.z, destRect.y + destRect.w);
-		newGlyph->bottomLeft.setPosition(destRect.x, destRect.y);
-		newGlyph->bottomRight.setPosition(destRect.x + destRect.z, destRect.y);
+		newGlyph->topLeft.setPosition(destRect.x, Window::getScreenHeight() - destRect.y);
+		newGlyph->topRight.setPosition(destRect.x + destRect.z, Window::getScreenHeight() - destRect.y);
+		newGlyph->bottomLeft.setPosition(destRect.x, Window::getScreenHeight() - (destRect.y + destRect.w));
+		newGlyph->bottomRight.setPosition(destRect.x + destRect.z, Window::getScreenHeight() - (destRect.y + destRect.w));
 
 		newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
 		newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
@@ -262,8 +261,6 @@ namespace vie
 		cameraMatrix(1.0f),
 		scale(1.0f),
 		needsMatrixUpdate(true),
-		screenWidth(500),
-		screenHeight(500),
 		orthoMatrix(1.0f)
 	{
 	}
@@ -272,12 +269,9 @@ namespace vie
 	{
 	}
 
-	void Graphics::Camera2D::init(int sw, int sh)
+	void Graphics::Camera2D::init()
 	{
-		screenWidth = sw;
-		screenHeight = sh;
-
-		orthoMatrix = glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight);
+		orthoMatrix = glm::ortho(0.0f, (float)Window::getScreenWidth(), 0.0f, (float)Window::getScreenHeight());
 	}
 
 	void Graphics::Camera2D::update()
@@ -285,7 +279,7 @@ namespace vie
 		if (needsMatrixUpdate)
 		{
 			// Camera translation
-			glm::vec3 translateVec(-position.x + screenWidth * 0.5f, -position.y + screenHeight * 0.5f, 0.0f);
+			glm::vec3 translateVec(-position.x, -position.y, 0.0f);
 			cameraMatrix = glm::translate(orthoMatrix, translateVec);
 
 			// Camera scale
@@ -298,7 +292,7 @@ namespace vie
 
 	glm::vec2 Graphics::Camera2D::screenToWorldPos(glm::vec2 screenPosition)
 	{
-		screenPosition -= glm::vec2(screenWidth * 0.5f, screenHeight * 0.5f);
+		screenPosition -= glm::vec2(Window::getScreenWidth() * 0.5f, Window::getScreenHeight() * 0.5f);
 		screenPosition /= scale;
 		screenPosition += position;
 

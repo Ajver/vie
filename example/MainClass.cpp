@@ -18,7 +18,7 @@ MainClass::~MainClass()
 void MainClass::onCreate()
 {
 	playerPosition.x = 0;
-	playerPosition.y = 0;
+	playerPosition.y = 100;
 
 	playerSize.x = 128;
 	playerSize.y = 128;
@@ -29,7 +29,7 @@ void MainClass::onCreate()
 
 void MainClass::update(float et)
 {
-	playerPosition.x += -100 * et;
+	//playerPosition.x += -100 * et;
 
 	//std::cout << ".";
 }

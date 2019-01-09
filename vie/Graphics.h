@@ -30,7 +30,7 @@ namespace vie
 	public:
 		Graphics();
 		~Graphics();
-		void init(unsigned int sw, unsigned int sh);
+		void init();
 
 		// Controll the rendering
 		void begin(GlyphSortType st = GlyphSortType::TEXTURE);
@@ -61,7 +61,7 @@ namespace vie
 			Camera2D();
 			~Camera2D();
 
-			void init(int sw, int sh);
+			void init();
 			void update();
 
 			void setPosition(glm::vec2 npos);
@@ -74,9 +74,6 @@ namespace vie
 			glm::mat4 getCameraMatrix();
 
 		private:
-			int screenWidth;
-			int screenHeight;
-
 			bool needsMatrixUpdate;
 
 			glm::vec2 position;
@@ -192,10 +189,6 @@ namespace vie
 		GLuint vbo;
 		GLuint vao;
 		GlyphSortType sortType;
-
-		// Screen size
-		unsigned int screenWidth;
-		unsigned int screenHeight;
 
 		Camera2D camera;
 		GLSLProgram colorProgram;
