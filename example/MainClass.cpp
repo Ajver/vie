@@ -17,18 +17,26 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
+	playerPosition.x = 0;
+	playerPosition.y = 0;
+
+	playerSize.x = 128;
+	playerSize.y = 128;
+
 	playerTexture = vie::IOManager::getTexture("Graphics/Player.png");
 	std::cout << "Texture ID: " << playerTexture.id << std::endl;
 }
 
 void MainClass::update(float et)
 {
+	playerPosition.x += -100 * et;
+
 	//std::cout << ".";
 }
 
 void MainClass::render(vie::Graphics* g)
 {
-	g->drawTexture(playerTexture, 0.0f, 0.0f, 128.0f, 128.0f, vie::RED);
+	g->drawTexture(playerTexture, playerPosition, playerSize, vie::RED);
 }
 
 /*

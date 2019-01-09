@@ -24,6 +24,8 @@ public:
 	*/
 
 private:
+	glm::vec2 playerPosition;
+	glm::vec2 playerSize;
 	vie::Texture playerTexture;
 };
 

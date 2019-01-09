@@ -36,15 +36,19 @@ namespace vie
 		void begin(GlyphSortType st = GlyphSortType::TEXTURE);
 		void end();
 
+		void setBackgroundColor(const Color& color);
+
 		// Add new sprite to the batch
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color = WHITE);
 		
 		// Sipmly draw texture on position x, y
 		void drawTexture(const Texture& texture, float x, float y, const Color& color = WHITE);
+		void drawTexture(const Texture& texture, glm::vec2& position, const Color& color = WHITE);
 
 		// Drawp texture on position x, y by scaling it into w, h size
 		void drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color = WHITE);
-		
+		void drawTexture(const Texture& texture, glm::vec2& position, glm::vec2& size, const Color& color = WHITE);
+
 		void renderBatch();
 
 	private:

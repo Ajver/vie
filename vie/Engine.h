@@ -14,6 +14,8 @@ namespace vie
 		Engine();
 		~Engine();
 
+		void printOpenGLVersion();
+
 	protected:
 		// Runs once after all systems init
 		virtual void onCreate();
@@ -62,11 +64,10 @@ namespace vie
 		void processInput();
 
 		// Init all systems (title, screen width, screen height, window type)
-		void initSDLAndWindow(const char* title,
+		void initSDLAndWindowAndGraphics(const char* title,
 			unsigned int sw,
 			unsigned int sh,
 			WindowFlags windowFlags);
-
 		void createGlewContextAndCatchErrors();
 
 		void mainLoop();

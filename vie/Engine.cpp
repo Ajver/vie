@@ -33,7 +33,7 @@ namespace vie
 			return;
 		}
 
-		initSDLAndWindow(title, sw, sh, windowFlags);
+		initSDLAndWindowAndGraphics(title, sw, sh, windowFlags);
 
 		onCreate();
 
@@ -43,20 +43,22 @@ namespace vie
 		destroyEngine();
 	}
 
-	void Engine::initSDLAndWindow(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) {
+	void Engine::initSDLAndWindowAndGraphics(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) {
 		SDL_Init(SDL_INIT_EVERYTHING);
 
 		Window::create(title, sw, sh, windowFlags);
 
 		createGlewContextAndCatchErrors();
 
-		printf("*** OpenGL Version: %s ***\n", glGetString(GL_VERSION));
-
-		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
-
+		printOpenGLVersion();
+		
+		// TODO - remove screen size private vars from Graphics and Camera
 		g = new Graphics();
 		g->init(Window::getScreenWidth(), Window::getScreenHeight());
 	}
+
+	void Engine::printOpenGLVersion()
+	{ printf("*** OpenGL Version: %s ***\n", glGetString(GL_VERSION)); }
 
 	void Engine::createGlewContextAndCatchErrors()
 	{
@@ -110,15 +112,6 @@ namespace vie
 		Window::updateScreenSizeFromSDL();
 	}
 
-	void Engine::manageRendering()
-	{
-		g->begin();
-		render(g);
-		g->end();
-		g->renderBatch();
-		Window::swapSDLWindowBuffer();
-	}
-
 	void Engine::processInput()
 	{
 		SDL_Event evnt;
@@ -158,6 +151,15 @@ namespace vie
 				break;
 			}
 		}
+	}
+
+	void Engine::manageRendering()
+	{
+		g->begin();
+		render(g);
+		g->end();
+		g->renderBatch();
+		Window::swapSDLWindowBuffer();
 	}
 
 	void Engine::limitFPS(unsigned int elapsedMillis)

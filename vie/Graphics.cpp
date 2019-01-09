@@ -77,6 +77,11 @@ namespace vie
 		createRenderBatches();
 	}
 
+	void Graphics::setBackgroundColor(const Color& color)
+	{
+		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+	}
+
 	void Graphics::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
 	{
 		Glyph *newGlyph = new Glyph();
@@ -110,6 +115,16 @@ namespace vie
 	{
 		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color);
 	}
+	
+	void Graphics::drawTexture(const Texture& texture, glm::vec2& position, const Color& color)
+	{
+		draw(glm::vec4(position.x, position.y, texture.width, texture.height), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color);
+	}
+
+	void Graphics::drawTexture(const Texture& texture, glm::vec2& position, glm::vec2& size, const Color& color)
+	{
+		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color);
+	}	
 
 	void Graphics::renderBatch()
 	{
