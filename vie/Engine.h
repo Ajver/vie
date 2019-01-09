@@ -70,6 +70,8 @@ namespace vie
 		void createGlewContextAndCatchErrors();
 
 		void mainLoop();
+		void manageInputsAndUpdates(float elapsedTimeFromPreviousFrame);
+		void manageRendering();
 		void limitFPS(unsigned int elapsedMillis);
 	};
 

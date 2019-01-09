@@ -74,7 +74,7 @@ namespace vie
 		unsigned int startTicks, stopTicks;
 		float elapsedTimeFromPreviousFrame = 0.0f;
 
-		int fpsCount = 0;
+		unsigned int fpsCount = 0;
 		unsigned int timer = SDL_GetTicks();
 
 		while (isRunning)
@@ -82,15 +82,8 @@ namespace vie
 			startTicks = SDL_GetTicks();
 			fpsCount++;
 
-			processInput();
-			update(elapsedTimeFromPreviousFrame);
-			Window::updateScreenSizeFromSDL();
-
-			g->begin();
-			render(g);
-			g->end();
-			g->renderBatch();
-			Window::swapSDLWindowBuffer();
+			manageInputsAndUpdates(elapsedTimeFromPreviousFrame);
+			manageRendering();
 
 			stopTicks = SDL_GetTicks();
 			limitFPS(stopTicks - startTicks);
@@ -108,6 +101,22 @@ namespace vie
 				printf("ET: %f\n\n", elapsedTimeFromPreviousFrame);
 			}
 		}
+	}
+
+	void Engine::manageInputsAndUpdates(float elapsedTimeFromPreviousFrame)
+	{
+		processInput();
+		update(elapsedTimeFromPreviousFrame);
+		Window::updateScreenSizeFromSDL();
+	}
+
+	void Engine::manageRendering()
+	{
+		g->begin();
+		render(g);
+		g->end();
+		g->renderBatch();
+		Window::swapSDLWindowBuffer();
 	}
 
 	void Engine::processInput()
