@@ -28,7 +28,7 @@ namespace vie
 	protected:
 		
 		// Init all systems and run the vEngine (title, screen width, screen height, window type)
-		void run(const char* title = "vie Engine", 
+		void runEngine(const char* title = "vie Engine", 
 			unsigned int sw = 640, 
 			unsigned int sh = 480, 
 			WindowFlags windowFlags = WindowFlags::DEFAULT);

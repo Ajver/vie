@@ -6,18 +6,18 @@ namespace vie
 {
 	SDL_Window* Window::sdlWindow;
 	const char* Window::windowTitle;
-	unsigned int Window::screenWidth;
-	unsigned int Window::screenHeight;
+	int Window::screenWidth;
+	int Window::screenHeight;
 	WindowFlags Window::windowFlags;
 
-	void Window::create(const char* title, unsigned int sw, unsigned int sh, WindowFlags wFlags)
+	void Window::create(const char* title, int sw, int sh, WindowFlags wFlags)
 	{
 		saveWindowProperties(title, sw, sh, wFlags);
 		createSDLWindow();
 		catchErrors();
 	}
 
-	void Window::saveWindowProperties(const char* title, unsigned int sw, unsigned int sh, WindowFlags wFlags)
+	void Window::saveWindowProperties(const char* title, int sw, int sh, WindowFlags wFlags)
 	{
 		windowTitle = title;
 		screenWidth = sw;
@@ -74,15 +74,27 @@ namespace vie
 			fatalError(SDL_GetError());
 	}
 
-	void Window::setWindowSize(unsigned int sw, unsigned int sh)
+	void Window::setWindowSize(int sw, int sh)
 	{
 		screenWidth = sw;
 		screenHeight = sh;
-		updateScreenSize();
+		SDL_SetWindowSize(sdlWindow, screenWidth, screenHeight);
 	}
 
 	void Window::setWindowTitle(const char* title)
-	{ windowTitle = title; }
+	{ 
+		windowTitle = title; 
+		SDL_SetWindowTitle(sdlWindow, windowTitle);
+	}
+	
+	const char* Window::getWindowTitle()
+	{
+		updateWindowTitleFromSDL();
+		return windowTitle;
+	}
+
+	void Window::updateWindowTitleFromSDL()
+	{ windowTitle = SDL_GetWindowTitle(sdlWindow); }
 
 	SDL_GLContext Window::getSDLGLContext()
 	{ return SDL_GL_CreateContext(sdlWindow); }
@@ -93,16 +105,17 @@ namespace vie
 	void Window::destroySDLWindow()
 	{ SDL_DestroyWindow(sdlWindow); }
 
-	unsigned int Window::getScreenWidth()
-	{ return screenWidth; }
+	int Window::getScreenWidth()
+	{
+		return screenWidth; 
+	}
 
-	unsigned int Window::getScreenHeight()
-	{ return screenHeight; }
+	int Window::getScreenHeight()
+	{
+		return screenHeight; 
+	}
 
-	void Window::updateScreenSize()
-	{ SDL_SetWindowSize(sdlWindow, screenWidth, screenHeight); }
-
-	void Window::updateWindowTitle()
-	{ SDL_SetWindowTitle(sdlWindow, windowTitle); }
+	void Window::updateScreenSizeFromSDL()
+	{ SDL_GetWindowSize(sdlWindow, (int*)&screenWidth, (int*)&screenHeight); }
 
 }

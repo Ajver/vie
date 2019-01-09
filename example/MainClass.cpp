@@ -8,7 +8,7 @@
 
 MainClass::MainClass()
 {
-	run();
+	runEngine();
 }
 
 MainClass::~MainClass()

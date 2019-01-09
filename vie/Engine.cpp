@@ -25,7 +25,7 @@ namespace vie
 	{
 	}
 
-	void Engine::run(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags)
+	void Engine::runEngine(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags)
 	{
 		if (isRunning)
 		{
@@ -53,6 +53,8 @@ namespace vie
 			processInput();
 			update(elapsedTimeFromPreviousFrame);
 
+			Window::updateScreenSizeFromSDL();
+
 			g->begin();
 			
 			render(g);
@@ -65,7 +67,7 @@ namespace vie
 			unsigned int stopTicks = SDL_GetTicks();
 
 			// Count elapsed time
-			elapsedTimeFromPreviousFrame = (stopTicks - startTicks);// / 1000.0f;
+			elapsedTimeFromPreviousFrame = (stopTicks - startTicks);
 			
 			// Limit the fps to the max fps
 			float maxET = 1000.0f / maxFPS;
