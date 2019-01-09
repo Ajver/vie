@@ -14,6 +14,7 @@ namespace vie
 		Engine();
 		~Engine();
 
+	protected:
 		// Runs once after all systems init
 		virtual void onCreate();
 
@@ -25,8 +26,8 @@ namespace vie
 		// Render all stuff (graphics object for displaying everything)
 		virtual void render(Graphics* g) abstract;
 
-	protected:
-		
+		virtual void onDestroy();
+
 		// Init all systems and run the vEngine (title, screen width, screen height, window type)
 		void runEngine(const char* title = "vie Engine", 
 			unsigned int sw = 640, 
@@ -42,6 +43,8 @@ namespace vie
 		virtual void onMouseRelease(unsigned int keyID, glm::vec2 mousePos);
 		virtual void onMouseMove(glm::vec2 mousePos);
 		virtual void onMouseDrag(glm::vec2 mousePos);
+
+		void destroyEngine();
 
 	private:
 		bool isRunning;
@@ -59,12 +62,15 @@ namespace vie
 		void processInput();
 
 		// Init all systems (title, screen width, screen height, window type)
-		void init(const char* title,
+		void initSDLAndWindow(const char* title,
 			unsigned int sw,
 			unsigned int sh,
 			WindowFlags windowFlags);
 
 		void createGlewContextAndCatchErrors();
+
+		void mainLoop();
+		void limitFPS(unsigned int elapsedMillis);
 	};
 
 }
