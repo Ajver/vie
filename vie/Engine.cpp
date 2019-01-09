@@ -12,12 +12,144 @@
 
 namespace vie
 {
+	class Window
+	{
+	public:
+		Window() : sdlWindow(nullptr), 
+			screenWidth(0), 
+			screenHeight(0) 
+		{
+		}
+
+		void create(const char* title, unsigned int sw, unsigned int sh, Engine::WindowFlags wFlags)
+		{
+			saveWindowProperties(title, sw, sh, wFlags);
+
+			createSDLWindow();
+			
+			if (sdlWindow == nullptr)
+			{
+				fatalError(SDL_GetError());
+			}
+		}
+
+		void setWindowSize(unsigned int sw, unsigned int sh)
+		{
+			screenWidth = sw;
+			screenHeight = sh;
+			updateScreenSize();
+		}
+
+		void setWindowTitle(const char* title)
+		{
+			windowTitle = title;
+		}
+
+		SDL_GLContext getSDLGLContext()
+		{
+			return SDL_GL_CreateContext(sdlWindow);
+		}
+
+		void swapSDLWindowBuffer()
+		{
+			SDL_GL_SwapWindow(sdlWindow);
+		}
+
+		void destroySDLWindow()
+		{
+			SDL_DestroyWindow(sdlWindow);
+		}
+
+		unsigned int getScreenWidth()
+		{
+			return screenWidth;
+		}
+
+		unsigned int getScreenHeight()
+		{
+			return screenHeight;
+		}
+
+		bool isWindowInvisible()
+		{
+			return windowFlags & Engine::WindowFlags::INVISIBLE;
+		}
+
+		bool isWindowFullscreen()
+		{
+			return windowFlags & Engine::WindowFlags::FULLSCREEN;
+		}
+
+		bool isWindowBorderless()
+		{
+			return windowFlags & Engine::WindowFlags::BORDERLESS;
+		}
+
+		bool isWindowResizable()
+		{
+			return windowFlags & Engine::WindowFlags::RESIZABLE;
+		}
+
+	private:
+		SDL_Window* sdlWindow;
+		const char* windowTitle;
+		unsigned int screenWidth;
+		unsigned int screenHeight;
+		Engine::WindowFlags windowFlags;
+
+		void saveWindowProperties(const char* title, unsigned int sw, unsigned int sh, Engine::WindowFlags wFlags)
+		{
+			windowTitle = title;
+			screenWidth = sw;
+			screenHeight = sh;
+			windowFlags = wFlags;
+		}
+
+		void createSDLWindow()
+		{
+			Uint32 sdlFlags = getSDLWindowFlags();
+			sdlWindow = SDL_CreateWindow(
+				windowTitle, 
+				SDL_WINDOWPOS_CENTERED, 
+				SDL_WINDOWPOS_CENTERED, 
+				screenWidth, 
+				screenHeight, 
+				sdlFlags);
+		}
+
+		Uint32 getSDLWindowFlags()
+		{
+			Uint32 sdlFlags = SDL_WINDOW_OPENGL;
+
+			if (isWindowInvisible())
+				sdlFlags |= SDL_WINDOW_HIDDEN;
+
+			if (isWindowFullscreen())
+				sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+
+			if (isWindowBorderless())
+				sdlFlags |= SDL_WINDOW_BORDERLESS;
+
+			if (isWindowResizable())
+				sdlFlags |= SDL_WINDOW_RESIZABLE;
+
+			return sdlFlags;
+		}
+
+		void updateScreenSize()
+		{
+			SDL_SetWindowSize(sdlWindow, screenWidth, screenHeight);
+		}
+
+		void updateWindowTitle()
+		{
+			SDL_SetWindowTitle(sdlWindow, windowTitle);
+		}
+	};
 
 	Engine::Engine() :
 		isRunning(false),
 		window(nullptr),
-		screenWidth(0),
-		screenHeight(0),
 		FPS(0),
 		maxFPS(60)
 	{
@@ -27,7 +159,7 @@ namespace vie
 	{
 	}
 
-	void Engine::run(const char *title, unsigned int sw, unsigned int sh, WindowFlags wType)
+	void Engine::run(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags)
 	{
 		if (isRunning)
 		{
@@ -35,11 +167,11 @@ namespace vie
 			return;
 		}
 
-		init(title, sw, sh, wType);
+		init(title, sw, sh, windowFlags);
 
 		onCreate();
 
-		float elapsedTime = 0.0f;
+		float elapsedTimeFromPreviousFrame = 0.0f;
 
 		int fpsCount = 0;
 		unsigned int timer = SDL_GetTicks();
@@ -53,7 +185,7 @@ namespace vie
 			fpsCount++;
 
 			processInput();
-			update(elapsedTime);
+			update(elapsedTimeFromPreviousFrame);
 
 			g->begin();
 			
@@ -62,21 +194,21 @@ namespace vie
 			g->end();
 			g->renderBatch();
 
-			SDL_GL_SwapWindow(window);
+			window->swapSDLWindowBuffer();
 
 			unsigned int stopTicks = SDL_GetTicks();
 
 			// Count elapsed time
-			elapsedTime = (stopTicks - startTicks);// / 1000.0f;
+			elapsedTimeFromPreviousFrame = (stopTicks - startTicks);// / 1000.0f;
 			
 			// Limit the fps to the max fps
 			float maxET = 1000.0f / maxFPS;
-			if (maxET > elapsedTime) {
-				SDL_Delay(maxET - elapsedTime);
+			if (maxET > elapsedTimeFromPreviousFrame) {
+				SDL_Delay(maxET - elapsedTimeFromPreviousFrame);
 			}
 
 			// Count elapsed time AFTER FPS limited
-			elapsedTime = (SDL_GetTicks() - startTicks) / 1000.0f;
+			elapsedTimeFromPreviousFrame = (SDL_GetTicks() - startTicks) / 1000.0f;
 
 			if (stopTicks - timer >= 1000)
 			{
@@ -85,44 +217,26 @@ namespace vie
 				fpsCount = 0;
 
 				printf("FPS: %d\n", FPS);
-				printf("ET: %f\n\n", elapsedTime);
+				printf("ET: %f\n\n", elapsedTimeFromPreviousFrame);
 			}
 		}
 		
-		// Free the memory
-		SDL_DestroyWindow(window);
+		window->destroySDLWindow();
+		delete window;
 
 		// Exit program
 		SDL_Quit();
 		exit(0);
 	}
 
-	void Engine::init(const char *title, unsigned int sw, unsigned int sh, WindowFlags wType) {
+	void Engine::init(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) {
 		SDL_Init(SDL_INIT_EVERYTHING);
 
-		Uint32 sdlFlags = SDL_WINDOW_OPENGL;
-
-		if (wType & WindowFlags::INVISIBLE)
-			sdlFlags |= SDL_WINDOW_HIDDEN;
-
-		if (wType & WindowFlags::FULLSCREEN)
-			sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-
-		if (wType & WindowFlags::BORDERLESS)
-			sdlFlags |= SDL_WINDOW_BORDERLESS;
-
-		if (wType & WindowFlags::RESIZABLE)
-			sdlFlags |= SDL_WINDOW_RESIZABLE;
-
-		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, sw, sh, sdlFlags);
-
-		if (window == nullptr)
-		{
-			fatalError(SDL_GetError());
-		}
+		window = new Window();
+		window->create(title, sw, sh, windowFlags);
 
 		// Setup Glew
-		SDL_GLContext glContext = SDL_GL_CreateContext(window);
+		SDL_GLContext glContext = window->getSDLGLContext();
 
 		if (glContext == nullptr)
 		{
@@ -137,8 +251,6 @@ namespace vie
 		// Chech the OpenGL version
 		printf("*** Open GL Version: %s ***\n", glGetString(GL_VERSION));
 
-		updateScreenSize();
-
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 
 		// Enable alpha blend
@@ -146,7 +258,7 @@ namespace vie
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		g = new Graphics();
-		g->init(screenWidth, screenHeight);
+		g->init(getScreenWidth(), getScreenHeight());
 	}
 	   
 	void Engine::processInput()
@@ -197,22 +309,17 @@ namespace vie
 
 	unsigned int Engine::getScreenWidth() 
 	{
-		return screenWidth;
+		return window->getScreenWidth();
 	}
 
 	unsigned int Engine::getScreenHeight() 
 	{
-		return screenHeight;
+		return window->getScreenHeight();
 	}
 
 	unsigned int Engine::getFpsCount() 
 	{
 		return FPS;
-	}
-
-	void Engine::updateScreenSize()
-	{
-		SDL_GetWindowSize(window, (int*)&screenWidth, (int*)&screenHeight);
 	}
 
 	// Default bodies (it's not necessary to use them)

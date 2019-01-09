@@ -2,11 +2,10 @@
 
 #include "glm/glm.hpp"
 
-class SDL_Window;
-
 namespace vie
 {
 	class Graphics;
+	class Window;
 
 	class Engine
 	{
@@ -25,7 +24,6 @@ namespace vie
 		// Render all stuff (graphics object for displaying everything)
 		virtual void render(Graphics* g) abstract;
 
-	protected:
 		enum WindowFlags : unsigned int
 		{
 			// Noresizable, visible window
@@ -44,8 +42,13 @@ namespace vie
 			RESIZABLE = 0x8
 		};
 
+	protected:
+		
 		// Init all systems and run the vEngine (title, screen width, screen height, window type)
-		void run(const char* title = "vie Engine", unsigned int sw = 640, unsigned int sh = 480, WindowFlags wType = WindowFlags::DEFAULT);
+		void run(const char* title = "vie Engine", 
+			unsigned int sw = 640, 
+			unsigned int sh = 480, 
+			WindowFlags windowFlags = WindowFlags::DEFAULT);
 
 		// Get Window Width
 		unsigned int getScreenWidth();
@@ -66,17 +69,13 @@ namespace vie
 	private:
 		bool isRunning;
 
-		// Window size
-		unsigned int screenWidth, screenHeight;
-
 		// Frames per second
 		unsigned int FPS;
 
 		// Maximum Frames per second
 		unsigned int maxFPS;
 
-		// Current window
-		SDL_Window* window;
+		Window* window;
 
 		// Draw all stuff with this
 		Graphics* g;
@@ -85,10 +84,10 @@ namespace vie
 		void processInput();
 
 		// Init all systems (title, screen width, screen height, window type)
-		void init(const char* title, unsigned int sw, unsigned int sh, WindowFlags wType);
-
-		// Update screen size by getting it from SDL_Window
-		void updateScreenSize();
+		void init(const char* title,
+			unsigned int sw,
+			unsigned int sh,
+			WindowFlags windowFlags);
 	};
 
 }
