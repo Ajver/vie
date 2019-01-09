@@ -4,13 +4,11 @@
 
 namespace vie
 {
-
-	Window::Window() : 
-		sdlWindow(nullptr),
-		screenWidth(0),
-		screenHeight(0)
-	{
-	}
+	SDL_Window* Window::sdlWindow;
+	const char* Window::windowTitle;
+	unsigned int Window::screenWidth;
+	unsigned int Window::screenHeight;
+	WindowFlags Window::windowFlags;
 
 	void Window::create(const char* title, unsigned int sw, unsigned int sh, WindowFlags wFlags)
 	{
@@ -84,42 +82,27 @@ namespace vie
 	}
 
 	void Window::setWindowTitle(const char* title)
-	{
-		windowTitle = title;
-	}
+	{ windowTitle = title; }
 
 	SDL_GLContext Window::getSDLGLContext()
-	{
-		return SDL_GL_CreateContext(sdlWindow);
-	}
+	{ return SDL_GL_CreateContext(sdlWindow); }
 
 	void Window::swapSDLWindowBuffer()
-	{
-		SDL_GL_SwapWindow(sdlWindow);
-	}
+	{ SDL_GL_SwapWindow(sdlWindow); }
 
 	void Window::destroySDLWindow()
-	{
-		SDL_DestroyWindow(sdlWindow);
-	}
+	{ SDL_DestroyWindow(sdlWindow); }
 
 	unsigned int Window::getScreenWidth()
-	{
-		return screenWidth;
-	}
+	{ return screenWidth; }
 
 	unsigned int Window::getScreenHeight()
-	{
-		return screenHeight;
-	}
+	{ return screenHeight; }
 
 	void Window::updateScreenSize()
-	{
-		SDL_SetWindowSize(sdlWindow, screenWidth, screenHeight);
-	}
+	{ SDL_SetWindowSize(sdlWindow, screenWidth, screenHeight); }
 
 	void Window::updateWindowTitle()
-	{
-		SDL_SetWindowTitle(sdlWindow, windowTitle);
-	}
+	{ SDL_SetWindowTitle(sdlWindow, windowTitle); }
+
 }

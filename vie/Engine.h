@@ -7,7 +7,6 @@
 namespace vie
 {
 	class Graphics;
-	class Window;
 
 	class Engine
 	{
@@ -34,12 +33,6 @@ namespace vie
 			unsigned int sh = 480, 
 			WindowFlags windowFlags = WindowFlags::DEFAULT);
 
-		// Get Window Width
-		unsigned int getScreenWidth();
-
-		// Get Window Height
-		unsigned int getScreenHeight();
-
 		// Get FPS count from previous frame (updated after each second)
 		unsigned int getFpsCount();
 
@@ -58,8 +51,6 @@ namespace vie
 
 		// Maximum Frames per second
 		unsigned int maxFPS;
-
-		Window* window;
 
 		// Draw all stuff with this
 		Graphics* g;

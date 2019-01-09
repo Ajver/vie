@@ -10,38 +10,37 @@ namespace vie
 	class Window
 	{
 	public:
-		Window();
 
-		void create(const char* title, unsigned int sw, unsigned int sh, WindowFlags wFlags);
+		static void create(const char* title, unsigned int sw, unsigned int sh, WindowFlags wFlags);
 
-		void setWindowSize(unsigned int sw, unsigned int sh);
-		void setWindowTitle(const char* title);
+		static void setWindowSize(unsigned int sw, unsigned int sh);
+		static void setWindowTitle(const char* title);
 
-		SDL_GLContext getSDLGLContext();
-		void swapSDLWindowBuffer();
-		void destroySDLWindow();
+		static SDL_GLContext getSDLGLContext();
+		static void swapSDLWindowBuffer();
+		static void destroySDLWindow();
 
-		unsigned int getScreenWidth();
-		unsigned int getScreenHeight();
+		static unsigned int getScreenWidth();
+		static unsigned int getScreenHeight();
 
-		bool isWindowInvisible();
-		bool isWindowFullscreen();
-		bool isWindowBorderless();
-		bool isWindowResizable();
+		static bool isWindowInvisible();
+		static bool isWindowFullscreen();
+		static bool isWindowBorderless();
+		static bool isWindowResizable();
 
 	private:
-		SDL_Window* sdlWindow;
-		const char* windowTitle;
-		unsigned int screenWidth;
-		unsigned int screenHeight;
-		WindowFlags windowFlags;
+		static SDL_Window* sdlWindow;
+		static const char* windowTitle;
+		static unsigned int screenWidth;
+		static unsigned int screenHeight;
+		static WindowFlags windowFlags;
 
-		void saveWindowProperties(const char* title, unsigned int sw, unsigned int sh, WindowFlags wFlags);
-		void createSDLWindow();
-		Uint32 getSDLWindowFlags();
-		void updateScreenSize();
-		void updateWindowTitle();
-		void catchErrors();
+		static void saveWindowProperties(const char* title, unsigned int sw, unsigned int sh, WindowFlags wFlags);
+		static void createSDLWindow();
+		static Uint32 getSDLWindowFlags();
+		static void updateScreenSize();
+		static void updateWindowTitle();
+		static void catchErrors();
 	};
 
 }

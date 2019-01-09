@@ -16,7 +16,6 @@ namespace vie
 	
 	Engine::Engine() :
 		isRunning(false),
-		window(nullptr),
 		FPS(0),
 		maxFPS(60)
 	{
@@ -61,7 +60,7 @@ namespace vie
 			g->end();
 			g->renderBatch();
 
-			window->swapSDLWindowBuffer();
+			Window::swapSDLWindowBuffer();
 
 			unsigned int stopTicks = SDL_GetTicks();
 
@@ -88,8 +87,7 @@ namespace vie
 			}
 		}
 		
-		window->destroySDLWindow();
-		delete window;
+		Window::destroySDLWindow();
 
 		// Exit program
 		SDL_Quit();
@@ -99,8 +97,7 @@ namespace vie
 	void Engine::init(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) {
 		SDL_Init(SDL_INIT_EVERYTHING);
 
-		window = new Window();
-		window->create(title, sw, sh, windowFlags);
+		Window::create(title, sw, sh, windowFlags);
 
 		createGlewContextAndCatchErrors();
 
@@ -109,12 +106,12 @@ namespace vie
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 
 		g = new Graphics();
-		g->init(getScreenWidth(), getScreenHeight());
+		g->init(Window::getScreenWidth(), Window::getScreenHeight());
 	}
 	   
 	void Engine::createGlewContextAndCatchErrors()
 	{
-		SDL_GLContext glContext = window->getSDLGLContext();
+		SDL_GLContext glContext = Window::getSDLGLContext();
 		
 		if (glContext == nullptr)
 			fatalError("SDL_GL context could not be created!");
@@ -167,16 +164,6 @@ namespace vie
 				break;
 			}
 		}
-	}
-
-	unsigned int Engine::getScreenWidth() 
-	{
-		return window->getScreenWidth();
-	}
-
-	unsigned int Engine::getScreenHeight() 
-	{
-		return window->getScreenHeight();
 	}
 
 	unsigned int Engine::getFpsCount() 
