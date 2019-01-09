@@ -41,6 +41,7 @@ namespace vie
 		Uint32 getSDLWindowFlags();
 		void updateScreenSize();
 		void updateWindowTitle();
+		void catchErrors();
 	};
 
 }

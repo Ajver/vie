@@ -72,6 +72,8 @@ namespace vie
 			unsigned int sw,
 			unsigned int sh,
 			WindowFlags windowFlags);
+
+		void createGlewContextAndCatchErrors();
 	};
 
 }

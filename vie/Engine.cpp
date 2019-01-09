@@ -102,32 +102,27 @@ namespace vie
 		window = new Window();
 		window->create(title, sw, sh, windowFlags);
 
-		// Setup Glew
-		SDL_GLContext glContext = window->getSDLGLContext();
+		createGlewContextAndCatchErrors();
 
-		if (glContext == nullptr)
-		{
-			fatalError("SDL_GL context could not be created!");
-		}
-
-		if (glewInit() != GLEW_OK)
-		{
-			fatalError("Glew could not be initialized!");
-		}
-
-		// Chech the OpenGL version
-		printf("*** Open GL Version: %s ***\n", glGetString(GL_VERSION));
+		printf("*** OpenGL Version: %s ***\n", glGetString(GL_VERSION));
 
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
-
-		// Enable alpha blend
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		g = new Graphics();
 		g->init(getScreenWidth(), getScreenHeight());
 	}
 	   
+	void Engine::createGlewContextAndCatchErrors()
+	{
+		SDL_GLContext glContext = window->getSDLGLContext();
+		
+		if (glContext == nullptr)
+			fatalError("SDL_GL context could not be created!");
+
+		if (glewInit() != GLEW_OK)
+			fatalError("Glew could not be initialized!");
+	}
+
 	void Engine::processInput()
 	{
 		SDL_Event evnt;

@@ -24,6 +24,10 @@ namespace vie
 
 	void Graphics::init(unsigned int sw, unsigned int sh)
 	{
+		// Enable alpha blending
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		colorProgram.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
 		colorProgram.addAtribute("vertexPosition");
 		colorProgram.addAtribute("vertexColor");
@@ -129,15 +133,13 @@ namespace vie
 	void Graphics::createVertexArray()
 	{
 		if (vao == 0)
-		{
 			glGenVertexArrays(1, &vao);
-		}
+		
 		glBindVertexArray(vao);
 
 		if (vbo == 0)
-		{
 			glGenBuffers(1, &vbo);
-		}
+		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 		glEnableVertexAttribArray(0);
@@ -159,9 +161,7 @@ namespace vie
 	void Graphics::createRenderBatches()
 	{
 		if (glyphs.empty())
-		{
 			return;
-		}
 
 		std::vector<Vertex> vertices;
 		vertices.resize(glyphs.size() * 6);
@@ -188,13 +188,9 @@ namespace vie
 		for (int cg = 1; cg < glyphs.size(); cg++)
 		{
 			if (glyphs[cg]->textureID != glyphs[cg - 1]->textureID)
-			{
 				renderBatches.emplace_back(offset, 6, glyphs[cg]->textureID);
-			}
 			else
-			{
 				renderBatches.back().numVertices += 6;
-			}
 
 			vertices[cv++] = glyphs[cg]->topLeft;
 			vertices[cv++] = glyphs[cg]->bottomLeft;
