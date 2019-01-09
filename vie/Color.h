@@ -28,7 +28,7 @@ namespace vie
 		GLubyte b;
 		GLubyte a;
 	};
-
+	
 	const Color RED(255, 0, 0);
 	const Color GREEN(0, 255, 0);
 	const Color BLUE(0, 0, 255);

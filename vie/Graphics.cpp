@@ -278,6 +278,8 @@ namespace vie
 	{
 		if (needsMatrixUpdate)
 		{
+			init();
+
 			// Camera translation
 			glm::vec3 translateVec(-position.x, -position.y, 0.0f);
 			cameraMatrix = glm::translate(orthoMatrix, translateVec);

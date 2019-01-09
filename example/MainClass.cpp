@@ -8,7 +8,7 @@
 
 MainClass::MainClass()
 {
-	runEngine();
+	runEngine("Example Engine Application", 1280, 728, vie::WindowFlags::FULLSCREEN);
 }
 
 MainClass::~MainClass()
@@ -39,12 +39,18 @@ void MainClass::render(vie::Graphics* g)
 	g->drawTexture(playerTexture, playerPosition, playerSize, vie::RED);
 }
 
-/*
+
 void MainClass::onKeyPress(unsigned int keyID)
 {
 	std::cout << "Key press: " << keyID << std::endl;
-}
 
+	// Escape
+	if (keyID == 27)
+	{
+		destroyEngine();
+	}
+}
+/*
 void MainClass::onKeyRelease(unsigned int keyID)
 {
 	std::cout << "Key release: " << keyID << std::endl;

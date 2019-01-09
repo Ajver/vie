@@ -14,8 +14,9 @@ public:
 	void update(float et) override;
 	void render(vie::Graphics* g) override;
 
-	/*
+	
 	void onKeyPress(unsigned int keyID);
+	/*
 	void onKeyRelease(unsigned int keyID);
 	void onMousePress(unsigned int keyID, glm::vec2 mousePos);
 	void onMouseRelease(unsigned int keyID, glm::vec2 mousePos);
