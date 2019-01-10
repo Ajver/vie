@@ -21,13 +21,12 @@ public:
 	void onKeyRelease(unsigned int keyID);
 
 	/*
-	void onMousePress(unsigned int keyID, glm::vec2 mousePos);
-	void onMouseRelease(unsigned int keyID, glm::vec2 mousePos);
-	void onMouseMove(glm::vec2 mousePos);
-	void onMouseDrag(glm::vec2 mousePos);
+	void onMousePress(unsigned int keyID);
+	void onMouseRelease(unsigned int keyID);
+	void onMouseMove();
+	void onMouseDrag();
 	*/
 
 private:
-	Player player;
 };
 

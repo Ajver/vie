@@ -10,6 +10,7 @@ public:
 	~Player();
 
 	void create();
+
 	void update(float et) override;
 	void render(vie::Graphics* g) override;
 
@@ -17,11 +18,10 @@ public:
 	void onMouseLeave() override;
 	void onMouseMove() override;
 	void onMouseDrag() override;
-	void onMousePress() override;
-	void onMouseRelease() override;
-
-	void onKeyPress(unsigned int keyID);
-	void onKeyRelease(unsigned int keyID);
+	void onMousePress(unsigned int keyID) override;
+	void onMouseRelease(unsigned int keyID) override;
+	void onKeyPress(unsigned int keyID) override;
+	void onKeyRelease(unsigned int keyID) override;
 
 private:
 	vie::Texture texture;

@@ -44,10 +44,10 @@ namespace vie
 
 		virtual void onKeyPress(unsigned int keyID);
 		virtual void onKeyRelease(unsigned int keyID);
-		virtual void onMousePress(unsigned int keyID, glm::vec2 mousePos);
-		virtual void onMouseRelease(unsigned int keyID, glm::vec2 mousePos);
-		virtual void onMouseMove(glm::vec2 mousePos);
-		virtual void onMouseDrag(glm::vec2 mousePos);
+		virtual void onMousePress(unsigned int keyID);
+		virtual void onMouseRelease(unsigned int keyID);
+		virtual void onMouseMove();
+		virtual void onMouseDrag();
 
 		void destroy();
 

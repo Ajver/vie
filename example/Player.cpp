@@ -4,6 +4,8 @@
 #include <vie/InputManager.h>
 #include <vie/Window.h>
 
+#include <iostream>
+
 Player::Player()
 {
 }
@@ -55,11 +57,11 @@ void Player::onMouseDrag()
 	position = vie::InputManager::getMousePosition() - size * 0.5f;
 }
 
-void Player::onMousePress()
+void Player::onMousePress(unsigned int keyID)
 {
 }
 
-void Player::onMouseRelease()
+void Player::onMouseRelease(unsigned int keyID)
 {
 }
 

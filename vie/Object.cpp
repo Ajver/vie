@@ -3,7 +3,10 @@
 namespace vie
 {
 
-	Object::Object()
+	Object::Object() :
+		position(glm::vec2(0, 0)),
+		size(glm::vec2(0, 0)),
+		velocity(glm::vec2(0, 0))
 	{
 	}
 
@@ -60,11 +63,16 @@ namespace vie
 			point.y <= position.y + size.y;
 	}
 
+	void Object::update(float et) {}
+	void Object::render(Graphics* g) {}
+
 	void Object::onMouseEnter() {}
 	void Object::onMouseLeave() {}
 	void Object::onMouseMove() {}
 	void Object::onMouseDrag() {}
-	void Object::onMousePress() {}
-	void Object::onMouseRelease() {}
+	void Object::onMousePress(unsigned int keyID) {}
+	void Object::onMouseRelease(unsigned int keyID) {}
+	void Object::onKeyPress(unsigned int keyID) {}
+	void Object::onKeyRelease(unsigned int keyID) {}
 
 }
