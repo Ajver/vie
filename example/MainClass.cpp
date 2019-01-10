@@ -7,6 +7,8 @@
 #include <vie/Graphics.h>
 #include <vie/InputManager.h>
 
+
+
 MainClass::MainClass()
 {
 	runEngine("Example Engine Application", 1280, 728, vie::WindowFlags::DEFAULT);
@@ -18,42 +20,42 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	playerPosition.x = 0;
-	playerPosition.y = 100;
-
-	playerSize.x = 128;
-	playerSize.y = 128;
-
-	playerTexture = vie::IOManager::getTexture("Graphics/Player.png");
-	std::cout << "Texture ID: " << playerTexture.id << std::endl;
+	player.create();
+	player.setPosition(glm::vec2(0, 100));
+	player.setSize(glm::vec2(128, 128));
 }
 
 void MainClass::update(float et)
 {
-	//playerPosition.x += -100 * et;
-
 	//std::cout << ".";
+
+	player.update(et);
 }
 
 void MainClass::render(vie::Graphics* g)
 {
-	g->drawTexture(playerTexture, playerPosition, playerSize, vie::RED);
+	player.render(g);
 }
 
 void MainClass::onKeyPress(unsigned int keyID)
 {
-	std::cout << "Key press: " << keyID << std::endl;
+	//std::cout << "Key press: " << keyID << std::endl;
 
 	if (keyID == SDLK_ESCAPE)
 		destroy();
 	
-}
-/*
-void MainClass::onKeyRelease(unsigned int keyID)
-{
-	std::cout << "Key release: " << keyID << std::endl;
+	player.onKeyPress(keyID);
 }
 
+void MainClass::onKeyRelease(unsigned int keyID)
+{
+	//std::cout << "Key release: " << keyID << std::endl;
+
+	player.onKeyRelease(keyID);
+}
+
+
+/*
 void MainClass::onMousePress(unsigned int keyID, glm::vec2 mousePos)
 {
 	std::cout << "Mouse press: " << keyID << " xy: " << mousePos.x << " | " << mousePos.y << std::endl;
