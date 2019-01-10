@@ -9,21 +9,8 @@
 #include <vie/ObjectsManager.h>
 
 
-void runFnc(void* fnc())
-{
-	fnc();
-}
-
-void* foo()
-{
-	std::cout << "FOOO!" << std::endl;
-	return nullptr;
-}
-
 MainClass::MainClass()
 {
-	runFnc(foo);
-
 	runEngine("Example Engine Application", 1280, 728, vie::WindowFlags::DEFAULT);
 }
 

@@ -168,30 +168,19 @@ namespace vie
 		clickedObject->setIsMouseHover(false);
 	}
 
-	void* checkgMouseMoved(vie::Object* ob);
-	void* fooo(vie::Object* ob)
-	{
-		if (ob->isPointInside(InputManager::getMousePosition()))
-			;// mouseIsInsideObject(ob);
-		else
-			;// mouseIsOutsideObject(ob);
-
-		return nullptr;
-	}
-
 	void ObjectsManager::onMouseMove() 
 	{
-		forAllElementsRunFunction(mouseInteractiveObjects, ((void*) ObjectsManager::*)checkMouseMoved);
+		forAllElementsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, vie::Object* ob) {
+			m->checkMouseMoved(ob);
+		});
 	}
 
-	void* ObjectsManager::checkMouseMoved(vie::Object* ob)
+	void ObjectsManager::checkMouseMoved(vie::Object* ob)
 	{
 		if (ob->isPointInside(InputManager::getMousePosition()))
 			mouseIsInsideObject(ob);
 		else
 			mouseIsOutsideObject(ob);
-
-		return nullptr;
 	}
 
 	void ObjectsManager::mouseIsInsideObject(vie::Object* ob)
@@ -226,7 +215,7 @@ namespace vie
 			clickedObject->onMouseDrag();
 	}
 
-	void ObjectsManager::forAllElementsRunFunction(const std::vector<vie::Object*>& vtr, void* ObjectsManager::* fnc(vie::Object* ob)) const
+	void ObjectsManager::forAllElementsRunFunction(const std::vector<vie::Object*>& vtr, void(*fnc)(ObjectsManager*, vie::Object*))
 	{
 		if (vtr.size() == 0)
 			return;
@@ -234,7 +223,7 @@ namespace vie
 		Object* currentObject = vtr[0];
 		for (int i = 0; i < vtr.size(); i++)
 		{
-			fnc(currentObject);
+			fnc(this, currentObject);
 			currentObject++;
 		}
 	}

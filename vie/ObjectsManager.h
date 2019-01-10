@@ -36,7 +36,7 @@ namespace vie
 		void mouseReleasedOutsideClickedObject();
 		
 		void onMouseMove();
-		void* checkMouseMoved(vie::Object* ob);
+		void checkMouseMoved(vie::Object* ob);
 		void mouseIsInsideObject(vie::Object* ob);
 		void mouseEnteredObject(vie::Object* ob);
 		void mouseIsOutsideObject(vie::Object* ob);
@@ -51,7 +51,7 @@ namespace vie
 
 		vie::Object* clickedObject;
 
-		void forAllElementsRunFunction(const std::vector<vie::Object*>& vtr, void* ObjectsManager::* fnc(vie::Object* ob)) const;
+		void forAllElementsRunFunction(const std::vector<vie::Object*>& vtr, void (*)(ObjectsManager*, vie::Object*));
 	};
 
 }
