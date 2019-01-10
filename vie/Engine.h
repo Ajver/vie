@@ -46,7 +46,7 @@ namespace vie
 		virtual void onMouseMove(glm::vec2 mousePos);
 		virtual void onMouseDrag(glm::vec2 mousePos);
 
-		void destroyEngine();
+		void destroy();
 
 	private:
 		bool isRunning;
@@ -72,6 +72,8 @@ namespace vie
 		void manageUpdates(float elapsedTimeFromPreviousFrame);
 		void manageRendering();
 		void limitFPS(unsigned int elapsedMillis);
+
+		void destroyEngine();
 	};
 
 }

@@ -45,7 +45,7 @@ void MainClass::onKeyPress(unsigned int keyID)
 	std::cout << "Key press: " << keyID << std::endl;
 
 	if (keyID == SDLK_ESCAPE)
-		destroyEngine();
+		destroy();
 	
 }
 /*

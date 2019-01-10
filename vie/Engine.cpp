@@ -177,6 +177,11 @@ namespace vie
 		exit(0);
 	}
 
+	void Engine::destroy()
+	{
+		isRunning = false;
+	}
+
 	unsigned int Engine::getFpsCount() 
 	{ return FPS; }
 
