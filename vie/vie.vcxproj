@@ -93,6 +93,7 @@
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(SolutionDir)deps/lib/;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)deps/include/;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)vie/lib/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
