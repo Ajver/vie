@@ -24,7 +24,8 @@ void MainClass::onCreate()
 	player.setPosition(glm::vec2(0, 100));
 	player.setSize(glm::vec2(128, 128));
 
-	objectsManager->appendPointerToObject(&player);
+	objectsManager->appendObject(&player);
+	objectsManager->appendMouseInteractiveObject(&player);
 }
 
 void MainClass::update(float et)

@@ -13,6 +13,10 @@ public:
 	void update(float et) override;
 	void render(vie::Graphics* g) override;
 
+	void onMouseEnter() override;
+	void onMouseLeave() override;
+	void onMouseMove() override;
+
 	void onKeyPress(unsigned int keyID);
 	void onKeyRelease(unsigned int keyID);
 

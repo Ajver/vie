@@ -38,6 +38,18 @@ void Player::render(vie::Graphics* g)
 	g->drawTexture(texture, position, size);
 }
 
+void Player::onMouseEnter()
+{
+}
+
+void Player::onMouseLeave()
+{
+}
+
+void Player::onMouseMove()
+{
+}
+
 void Player::onKeyPress(unsigned int keyID)
 {
 	setVelocityByInput();

@@ -128,18 +128,22 @@ namespace vie
 				break;
 			case SDL_KEYDOWN:
 				InputManager::setKey(evnt.key.keysym.sym, true);
+				objectsManager->onKeyPress(evnt.key.keysym.sym);
 				onKeyPress(evnt.key.keysym.sym);
 				break;
 			case SDL_KEYUP:
 				InputManager::setKey(evnt.key.keysym.sym, false);
+				objectsManager->onKeyRelease(evnt.key.keysym.sym);
 				onKeyRelease(evnt.key.keysym.sym);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				InputManager::setKey(evnt.button.button, true);
+				objectsManager->onMousePress(evnt.button.button, glm::vec2(evnt.motion.x, evnt.motion.y));
 				onMousePress(evnt.button.button, glm::vec2(evnt.motion.x, evnt.motion.y));
 				break;
 			case SDL_MOUSEBUTTONUP:
 				InputManager::setKey(evnt.button.button, false);
+				objectsManager->onMouseRelease(evnt.button.button, glm::vec2(evnt.motion.x, evnt.motion.y));
 				onMouseRelease(evnt.button.button, glm::vec2(evnt.motion.x, evnt.motion.y));
 				break;
 			case SDL_MOUSEMOTION:
@@ -148,9 +152,15 @@ namespace vie
 				if (InputManager::isKeyPressed(SDL_BUTTON_LEFT) ||
 					InputManager::isKeyPressed(SDL_BUTTON_MIDDLE) ||
 					InputManager::isKeyPressed(SDL_BUTTON_RIGHT))
+				{
 					onMouseDrag(glm::vec2(evnt.motion.x, evnt.motion.y));
+					objectsManager->onMouseDrag(glm::vec2(evnt.motion.x, evnt.motion.y));
+				}
 				else
+				{
 					onMouseMove(glm::vec2(evnt.motion.x, evnt.motion.y));
+					objectsManager->onMouseMove(glm::vec2(evnt.motion.x, evnt.motion.y));
+				}
 				break;
 			}
 		}

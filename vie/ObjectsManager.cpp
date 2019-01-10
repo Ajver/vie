@@ -34,19 +34,102 @@ namespace vie
 		}
 	}
 
-	void ObjectsManager::appendPointerToObject(vie::Object* ob)
+	void ObjectsManager::appendObject(vie::Object* ob)
 	{
 		if (ob == nullptr)
 		{
 			fatalError("ObjectsManager could not append nullptr!");
 			return;
 		}
+
 		objects.push_back(ob);
 	}
 
-	vie::Object* ObjectsManager::getPointerToObjectByIndex(size_t id)
+	vie::Object* ObjectsManager::getObjectByIndex(size_t id)
 	{
 		return objects[id];
 	}
 
+	void ObjectsManager::appendMouseInteractiveObject(vie::Object* ob)
+	{
+		if (ob == nullptr)
+		{
+			fatalError("ObjectsManager could not append nullptr!");
+			return;
+		}
+
+		mouseInteractiveObjects.push_back(ob);
+	}
+
+	vie::Object* ObjectsManager::getMouseInteractiveObjectByIndex(size_t id)
+	{
+		return mouseInteractiveObjects[id];
+	}
+
+	//////////////////////////////////////////////////////////
+
+	void ObjectsManager::onKeyPress(unsigned int keyID)
+	{
+
+	}
+
+	void ObjectsManager::onKeyRelease(unsigned int keyID)
+	{
+
+	}
+
+	void ObjectsManager::onMousePress(unsigned int keyID, glm::vec2 mousePos)
+	{
+
+	}
+
+	void ObjectsManager::onMouseRelease(unsigned int keyID, glm::vec2 mousePos)
+	{
+
+	}
+
+	void ObjectsManager::onMouseMove(glm::vec2 mousePos) 
+	{
+		Object* currentObject = mouseInteractiveObjects[0];
+		for (int i = 0; i < mouseInteractiveObjects.size(); i++)
+		{
+			if (currentObject->isPointInside(mousePos))
+				mouseIsInsideObject(currentObject);
+			else
+				mouseIsOutsideObject(currentObject);
+
+			currentObject++;
+		}
+	}
+
+	void ObjectsManager::mouseIsInsideObject(vie::Object* ob)
+	{
+		if (!ob->getIsMouseHover())
+			mouseEnteredObject(ob);
+
+		ob->onMouseMove();
+	}
+
+	void ObjectsManager::mouseEnteredObject(vie::Object* ob)
+	{
+		ob->setIsMouseHover(true);
+		ob->onMouseEnter();
+	}
+
+	void ObjectsManager::mouseIsOutsideObject(vie::Object* ob)
+	{
+		if (ob->getIsMouseHover())
+			mouseLeavedObject(ob);
+	}
+
+	void ObjectsManager::mouseLeavedObject(vie::Object* ob)
+	{
+		ob->setIsMouseHover(false);
+		ob->onMouseLeave();
+	}
+
+	void ObjectsManager::onMouseDrag(glm::vec2 mousePos)
+	{
+
+	}
 }
