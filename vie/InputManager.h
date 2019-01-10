@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <glm/glm.hpp>
+#include <SDL/SDL.h>
 
 namespace vie
 {
@@ -9,9 +10,6 @@ namespace vie
 	class InputManager
 	{
 	public:
-		InputManager();
-		~InputManager();
-
 		static void setKey(unsigned int id, bool flag);
 		static void setMousePosition(float x, float y);
 

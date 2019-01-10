@@ -5,10 +5,11 @@
 #include <vie/IOManager.h>
 #include <vie/Texture.h>
 #include <vie/Graphics.h>
+#include <vie/InputManager.h>
 
 MainClass::MainClass()
 {
-	runEngine("Example Engine Application", 1280, 728, vie::WindowFlags::FULLSCREEN);
+	runEngine("Example Engine Application", 1280, 728, vie::WindowFlags::DEFAULT);
 }
 
 MainClass::~MainClass()
@@ -39,16 +40,13 @@ void MainClass::render(vie::Graphics* g)
 	g->drawTexture(playerTexture, playerPosition, playerSize, vie::RED);
 }
 
-
 void MainClass::onKeyPress(unsigned int keyID)
 {
 	std::cout << "Key press: " << keyID << std::endl;
 
-	// Escape
-	if (keyID == 27)
-	{
+	if (keyID == SDLK_ESCAPE)
 		destroyEngine();
-	}
+	
 }
 /*
 void MainClass::onKeyRelease(unsigned int keyID)

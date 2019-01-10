@@ -1,19 +1,11 @@
 #include "InputManager.h"
 
-#include <SDL/SDL.h>
+//#include <SDL/SDL.h>
 
 namespace vie
 {
 	std::unordered_map<unsigned int, bool> InputManager::keysMap;
 	glm::vec2 InputManager::mousePosition;
-
-	InputManager::InputManager()
-	{
-	}
-
-	InputManager::~InputManager()
-	{
-	}
 
 	void InputManager::setKey(unsigned int id, bool flag)
 	{

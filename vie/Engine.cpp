@@ -83,7 +83,8 @@ namespace vie
 			startTicks = SDL_GetTicks();
 			fpsCount++;
 
-			manageInputsAndUpdates(elapsedTimeFromPreviousFrame);
+			processInput();
+			manageUpdates(elapsedTimeFromPreviousFrame);
 			manageRendering();
 
 			stopTicks = SDL_GetTicks();
@@ -104,9 +105,8 @@ namespace vie
 		}
 	}
 
-	void Engine::manageInputsAndUpdates(float elapsedTimeFromPreviousFrame)
+	void Engine::manageUpdates(float elapsedTimeFromPreviousFrame)
 	{
-		processInput();
 		update(elapsedTimeFromPreviousFrame);
 		Window::updateScreenSizeFromSDL();
 	}

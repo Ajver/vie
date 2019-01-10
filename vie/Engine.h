@@ -60,9 +60,6 @@ namespace vie
 		// Draw all stuff with this
 		Graphics* g;
 
-		// Grab mouse and key events
-		void processInput();
-
 		// Init all systems (title, screen width, screen height, window type)
 		void initSDLAndWindowAndGraphics(const char* title,
 			unsigned int sw,
@@ -71,7 +68,8 @@ namespace vie
 		void createGlewContextAndCatchErrors();
 
 		void mainLoop();
-		void manageInputsAndUpdates(float elapsedTimeFromPreviousFrame);
+		void processInput();
+		void manageUpdates(float elapsedTimeFromPreviousFrame);
 		void manageRendering();
 		void limitFPS(unsigned int elapsedMillis);
 	};
