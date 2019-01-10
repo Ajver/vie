@@ -7,6 +7,7 @@
 namespace vie
 {
 	class Graphics;
+	class ObjectsManager;
 
 	class Engine
 	{
@@ -17,6 +18,8 @@ namespace vie
 		void printOpenGLVersion();
 
 	protected:
+		ObjectsManager* objectsManager;
+
 		// Runs once after all systems init
 		virtual void onCreate();
 

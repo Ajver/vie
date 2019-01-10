@@ -6,7 +6,7 @@
 #include <vie/Texture.h>
 #include <vie/Graphics.h>
 #include <vie/InputManager.h>
-
+#include <vie/ObjectsManager.h>
 
 
 MainClass::MainClass()
@@ -23,18 +23,20 @@ void MainClass::onCreate()
 	player.create();
 	player.setPosition(glm::vec2(0, 100));
 	player.setSize(glm::vec2(128, 128));
+
+	objectsManager->appendPointerToObject(&player);
 }
 
 void MainClass::update(float et)
 {
 	//std::cout << ".";
 
-	player.update(et);
+	//player.update(et);
 }
 
 void MainClass::render(vie::Graphics* g)
 {
-	player.render(g);
+	//player.render(g);
 }
 
 void MainClass::onKeyPress(unsigned int keyID)

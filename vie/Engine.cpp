@@ -9,6 +9,7 @@
 #include "Window.h"
 #include "Errors.h"
 #include "Graphics.h"
+#include "ObjectsManager.h"
 #include "InputManager.h"
 
 namespace vie
@@ -54,6 +55,8 @@ namespace vie
 		
 		g = new Graphics();
 		g->init();
+
+		objectsManager = new ObjectsManager();
 	}
 
 	void Engine::printOpenGLVersion()
@@ -107,6 +110,7 @@ namespace vie
 
 	void Engine::manageUpdates(float elapsedTimeFromPreviousFrame)
 	{
+		objectsManager->update(elapsedTimeFromPreviousFrame);
 		update(elapsedTimeFromPreviousFrame);
 		Window::updateScreenSizeFromSDL();
 	}
@@ -155,6 +159,7 @@ namespace vie
 	void Engine::manageRendering()
 	{
 		g->begin();
+		objectsManager->render(g);
 		render(g);
 		g->end();
 		g->renderBatch();

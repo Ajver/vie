@@ -26,6 +26,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectsManager.h" />
     <ClInclude Include="WindowFlags.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
