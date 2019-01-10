@@ -50,6 +50,19 @@ void Player::onMouseMove()
 {
 }
 
+void Player::onMouseDrag()
+{
+	position = vie::InputManager::getMousePosition() - size * 0.5f;
+}
+
+void Player::onMousePress()
+{
+}
+
+void Player::onMouseRelease()
+{
+}
+
 void Player::onKeyPress(unsigned int keyID)
 {
 	setVelocityByInput();

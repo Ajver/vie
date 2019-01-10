@@ -25,8 +25,13 @@ namespace vie
 		
 		void onKeyPress(unsigned int keyID);
 		void onKeyRelease(unsigned int keyID);
+
 		void onMousePress(unsigned int keyID, glm::vec2 mousePos);
+		void mouseClickedObject(vie::Object* ob);
+
 		void onMouseRelease(unsigned int keyID, glm::vec2 mousePos);
+		void mouseReleasedClickedObject();
+		void mouseReleasedOutsideClickedObject();
 		
 		void onMouseMove(glm::vec2 mousePos);
 		void mouseIsInsideObject(vie::Object* ob);
@@ -39,6 +44,8 @@ namespace vie
 	private:
 		std::vector<vie::Object*> objects;
 		std::vector<vie::Object*> mouseInteractiveObjects;
+
+		vie::Object* clickedObject;
 	};
 
 }

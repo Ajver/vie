@@ -18,6 +18,9 @@ namespace vie
 		virtual void onMouseEnter();
 		virtual void onMouseLeave();
 		virtual void onMouseMove();
+		virtual void onMouseDrag();
+		virtual void onMousePress();
+		virtual void onMouseRelease();
 
 		void setPosition(const glm::vec2& npos);
 		void setSize(const glm::vec2& nsize);

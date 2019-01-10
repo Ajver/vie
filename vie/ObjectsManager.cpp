@@ -5,10 +5,10 @@
 namespace vie
 {
 
-	ObjectsManager::ObjectsManager()
+	ObjectsManager::ObjectsManager() :
+		clickedObject(nullptr)
 	{
 	}
-
 
 	ObjectsManager::~ObjectsManager()
 	{
@@ -80,12 +80,43 @@ namespace vie
 
 	void ObjectsManager::onMousePress(unsigned int keyID, glm::vec2 mousePos)
 	{
+		Object* currentObject = mouseInteractiveObjects[0];
+		for (int i = 0; i < mouseInteractiveObjects.size(); i++)
+		{
+			if (currentObject->isPointInside(mousePos))
+				mouseClickedObject(currentObject);
 
+			currentObject++;
+		}
+	}
+
+	void ObjectsManager::mouseClickedObject(vie::Object* ob)
+	{
+		clickedObject = ob;
+		ob->onMousePress();
 	}
 
 	void ObjectsManager::onMouseRelease(unsigned int keyID, glm::vec2 mousePos)
 	{
+		if (clickedObject == nullptr)
+			return;
 
+		if (clickedObject->isPointInside(mousePos))
+			mouseReleasedClickedObject();
+		else
+			mouseReleasedOutsideClickedObject();
+
+		clickedObject = nullptr;
+	}
+
+	void ObjectsManager::mouseReleasedClickedObject()
+	{
+		clickedObject->onMouseRelease();
+	}
+
+	void ObjectsManager::mouseReleasedOutsideClickedObject()
+	{
+		clickedObject->setIsMouseHover(false);
 	}
 
 	void ObjectsManager::onMouseMove(glm::vec2 mousePos) 
@@ -130,6 +161,7 @@ namespace vie
 
 	void ObjectsManager::onMouseDrag(glm::vec2 mousePos)
 	{
-
+		if (clickedObject != nullptr)
+			clickedObject->onMouseDrag();
 	}
 }

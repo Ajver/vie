@@ -16,6 +16,9 @@ public:
 	void onMouseEnter() override;
 	void onMouseLeave() override;
 	void onMouseMove() override;
+	void onMouseDrag() override;
+	void onMousePress() override;
+	void onMouseRelease() override;
 
 	void onKeyPress(unsigned int keyID);
 	void onKeyRelease(unsigned int keyID);
