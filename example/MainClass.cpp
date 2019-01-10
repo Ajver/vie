@@ -42,27 +42,27 @@ void MainClass::render(vie::Graphics* g)
 	//player.render(g);
 }
 
-void MainClass::onKeyPress(unsigned int keyID)
+void MainClass::onKeyPress()
 {
 	//std::cout << "Key press: " << keyID << std::endl;
 
-	if (keyID == SDLK_ESCAPE)
+	if (vie::InputManager::getLastKey() == SDLK_ESCAPE)
 		destroy();
 }
 
-void MainClass::onKeyRelease(unsigned int keyID)
+void MainClass::onKeyRelease()
 {
 	//std::cout << "Key release: " << keyID << std::endl;
 }
 
 
 /*
-void MainClass::onMousePress(unsigned int keyID)
+void MainClass::onMousePress()
 {
 	std::cout << "Mouse press: " << keyID << " xy: " << mousePos.x << " | " << mousePos.y << std::endl;
 }
 
-void MainClass::onMouseRelease(unsigned int keyID)
+void MainClass::onMouseRelease()
 {
 	std::cout << "Mouse release: " << keyID << " xy: " << mousePos.x << " | " << mousePos.y << std::endl;
 }

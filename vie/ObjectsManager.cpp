@@ -66,101 +66,80 @@ namespace vie
 		}
 	}
 
-	void ObjectsManager::appendObject(vie::Object* ob)
+	void ObjectsManager::appendObject(Object* ob)
 	{
 		objects.push_back(ob);
 	}
 
-	vie::Object* ObjectsManager::getObject(size_t id) const
+	Object* ObjectsManager::getObject(size_t id) const
 	{
 		return objects[id];
 	}
 
-	void ObjectsManager::appendMouseInteractiveObject(vie::Object* ob)
+	void ObjectsManager::appendMouseInteractiveObject(Object* ob)
 	{
 		mouseInteractiveObjects.push_back(ob);
 	}
 
-	vie::Object* ObjectsManager::getMouseInteractiveObject(size_t id) const
+	Object* ObjectsManager::getMouseInteractiveObject(size_t id) const
 	{
 		return mouseInteractiveObjects[id];
 	}
 
-	void ObjectsManager::appendKeyInteractiveObject(vie::Object* ob)
+	void ObjectsManager::appendKeyInteractiveObject(Object* ob)
 	{
 		keyInteractiveObjects.push_back(ob);
 	}
 
-	vie::Object* ObjectsManager::getKeyInteractiveObject(size_t id) const
+	Object* ObjectsManager::getKeyInteractiveObject(size_t id) const
 	{
 		return keyInteractiveObjects[id];
 	}
 
-	//////////////////////////////////////////////////////////
-
-	void ObjectsManager::onKeyPress(unsigned int keyID)
+	void ObjectsManager::onKeyPress()
 	{
-		if (keyInteractiveObjects.size() == 0)
-			return;
-
-		Object* currentObject = keyInteractiveObjects[0];
-		for (int i = 0; i < keyInteractiveObjects.size(); i++)
-		{
-			currentObject->onKeyPress(keyID);
-			currentObject++;
-		}
+		forAllElementsRunFunction(keyInteractiveObjects, [](Object* ob) {
+			ob->onKeyPress();
+		});
 	}
 
-	void ObjectsManager::onKeyRelease(unsigned int keyID)
+	void ObjectsManager::onKeyRelease()
 	{
-		if (keyInteractiveObjects.size() == 0)
-			return;
-
-		Object* currentObject = keyInteractiveObjects[0];
-		for (int i = 0; i < keyInteractiveObjects.size(); i++)
-		{
-			currentObject->onKeyRelease(keyID);
-			currentObject++;
-		}
+		forAllElementsRunFunction(keyInteractiveObjects, [](Object* ob) {
+			ob->onKeyRelease();
+		});
 	}
 
-	void ObjectsManager::onMousePress(unsigned int keyID)
+	void ObjectsManager::onMousePress()
 	{
-		if (mouseInteractiveObjects.size() == 0)
-			return;
-
-		Object* currentObject = mouseInteractiveObjects[0];
-		for (int i = 0; i < mouseInteractiveObjects.size(); i++)
-		{
-			if (currentObject->isPointInside(InputManager::getMousePosition()))
-				mouseClickedObject(currentObject, keyID);
-
-			currentObject++;
-		}
+		forAllElementsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
+			if (ob->isPointInside(InputManager::getMousePosition()))
+				m->mouseClickedObject(ob);
+		});
 	}
 
-	void ObjectsManager::mouseClickedObject(vie::Object* ob, unsigned int keyID)
+	void ObjectsManager::mouseClickedObject(Object* ob)
 	{
 		clickedObject = ob;
-		ob->onMousePress(keyID);
+		ob->onMousePress();
 	}
 
-	void ObjectsManager::onMouseRelease(unsigned int keyID)
+	void ObjectsManager::onMouseRelease()
 	{
 		if (clickedObject == nullptr)
 			return;
 
 		if (clickedObject->isPointInside(InputManager::getMousePosition()))
-			mouseReleasedClickedObject(keyID);
+			mouseReleasedClickedObject();
 		else
 			mouseReleasedOutsideClickedObject();
 
 		clickedObject = nullptr;
 	}
 
-	void ObjectsManager::mouseReleasedClickedObject(unsigned int keyID)
+	void ObjectsManager::mouseReleasedClickedObject()
 	{
-		clickedObject->onMouseRelease(keyID);
+		clickedObject->onMouseRelease();
 	}
 
 	void ObjectsManager::mouseReleasedOutsideClickedObject()
@@ -170,20 +149,15 @@ namespace vie
 
 	void ObjectsManager::onMouseMove() 
 	{
-		forAllElementsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, vie::Object* ob) {
-			m->checkMouseMoved(ob);
+		forAllElementsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
+			if (ob->isPointInside(InputManager::getMousePosition()))
+				m->mouseIsInsideObject(ob);
+			else
+				m->mouseIsOutsideObject(ob);
 		});
 	}
 
-	void ObjectsManager::checkMouseMoved(vie::Object* ob)
-	{
-		if (ob->isPointInside(InputManager::getMousePosition()))
-			mouseIsInsideObject(ob);
-		else
-			mouseIsOutsideObject(ob);
-	}
-
-	void ObjectsManager::mouseIsInsideObject(vie::Object* ob)
+	void ObjectsManager::mouseIsInsideObject(Object* ob)
 	{
 		if (!ob->getIsMouseHover())
 			mouseEnteredObject(ob);
@@ -191,19 +165,19 @@ namespace vie
 		ob->onMouseMove();
 	}
 
-	void ObjectsManager::mouseEnteredObject(vie::Object* ob)
+	void ObjectsManager::mouseEnteredObject(Object* ob)
 	{
 		ob->setIsMouseHover(true);
 		ob->onMouseEnter();
 	}
 
-	void ObjectsManager::mouseIsOutsideObject(vie::Object* ob)
+	void ObjectsManager::mouseIsOutsideObject(Object* ob)
 	{
 		if (ob->getIsMouseHover())
 			mouseLeavedObject(ob);
 	}
 
-	void ObjectsManager::mouseLeavedObject(vie::Object* ob)
+	void ObjectsManager::mouseLeavedObject(Object* ob)
 	{
 		ob->setIsMouseHover(false);
 		ob->onMouseLeave();
@@ -215,7 +189,7 @@ namespace vie
 			clickedObject->onMouseDrag();
 	}
 
-	void ObjectsManager::forAllElementsRunFunction(const std::vector<vie::Object*>& vtr, void(*fnc)(ObjectsManager*, vie::Object*))
+	void ObjectsManager::forAllElementsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*))
 	{
 		if (vtr.size() == 0)
 			return;
@@ -224,6 +198,19 @@ namespace vie
 		for (int i = 0; i < vtr.size(); i++)
 		{
 			fnc(this, currentObject);
+			currentObject++;
+		}
+	}
+
+	void ObjectsManager::forAllElementsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*))
+	{
+		if (vtr.size() == 0)
+			return;
+
+		Object* currentObject = vtr[0];
+		for (int i = 0; i < vtr.size(); i++)
+		{
+			fnc(currentObject);
 			currentObject++;
 		}
 	}

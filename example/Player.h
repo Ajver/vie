@@ -18,10 +18,10 @@ public:
 	void onMouseLeave() override;
 	void onMouseMove() override;
 	void onMouseDrag() override;
-	void onMousePress(unsigned int keyID) override;
-	void onMouseRelease(unsigned int keyID) override;
-	void onKeyPress(unsigned int keyID) override;
-	void onKeyRelease(unsigned int keyID) override;
+	void onMousePress() override;
+	void onMouseRelease() override;
+	void onKeyPress() override;
+	void onKeyRelease() override;
 
 private:
 	vie::Texture texture;

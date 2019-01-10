@@ -70,9 +70,9 @@ namespace vie
 	void Object::onMouseLeave() {}
 	void Object::onMouseMove() {}
 	void Object::onMouseDrag() {}
-	void Object::onMousePress(unsigned int keyID) {}
-	void Object::onMouseRelease(unsigned int keyID) {}
-	void Object::onKeyPress(unsigned int keyID) {}
-	void Object::onKeyRelease(unsigned int keyID) {}
+	void Object::onMousePress() {}
+	void Object::onMouseRelease() {}
+	void Object::onKeyPress() {}
+	void Object::onKeyRelease() {}
 
 }

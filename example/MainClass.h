@@ -17,8 +17,8 @@ public:
 	void render(vie::Graphics* g) override;
 
 	
-	void onKeyPress(unsigned int keyID);
-	void onKeyRelease(unsigned int keyID);
+	void onKeyPress();
+	void onKeyRelease();
 
 	/*
 	void onMousePress(unsigned int keyID);

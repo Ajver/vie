@@ -17,10 +17,13 @@ namespace vie
 		static glm::vec2 getMousePosition();
 		static float getMouseX();
 		static float getMouseY();
-
+		static bool isSomeMouseButtonPressed();
+		static unsigned int getLastKey();
+	
 	private:
 		static std::unordered_map<unsigned int, bool> keysMap;
 		static glm::vec2 mousePosition;
+		static unsigned int lastKey;
 	};
 
 }

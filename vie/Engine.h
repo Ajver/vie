@@ -42,10 +42,10 @@ namespace vie
 		// Get FPS count from previous frame (updated after each second)
 		unsigned int getFpsCount();
 
-		virtual void onKeyPress(unsigned int keyID);
-		virtual void onKeyRelease(unsigned int keyID);
-		virtual void onMousePress(unsigned int keyID);
-		virtual void onMouseRelease(unsigned int keyID);
+		virtual void onKeyPress();
+		virtual void onKeyRelease();
+		virtual void onMousePress();
+		virtual void onMouseRelease();
 		virtual void onMouseMove();
 		virtual void onMouseDrag();
 

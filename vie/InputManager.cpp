@@ -6,9 +6,11 @@ namespace vie
 {
 	std::unordered_map<unsigned int, bool> InputManager::keysMap;
 	glm::vec2 InputManager::mousePosition;
+	unsigned int InputManager::lastKey;
 
 	void InputManager::setKey(unsigned int id, bool flag)
 	{
+		lastKey = id;
 		keysMap[id] = flag;
 	}
 
@@ -40,5 +42,17 @@ namespace vie
 	float InputManager::getMouseY()
 	{
 		return mousePosition.y;
+	}
+
+	bool InputManager::isSomeMouseButtonPressed()
+	{
+		return isKeyPressed(SDL_BUTTON_LEFT) ||
+			isKeyPressed(SDL_BUTTON_MIDDLE) ||
+			isKeyPressed(SDL_BUTTON_RIGHT);
+	}
+
+	unsigned int InputManager::getLastKey()
+	{
+		return lastKey;
 	}
 }

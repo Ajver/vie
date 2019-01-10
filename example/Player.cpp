@@ -57,20 +57,20 @@ void Player::onMouseDrag()
 	position = vie::InputManager::getMousePosition() - size * 0.5f;
 }
 
-void Player::onMousePress(unsigned int keyID)
+void Player::onMousePress()
 {
 }
 
-void Player::onMouseRelease(unsigned int keyID)
+void Player::onMouseRelease()
 {
 }
 
-void Player::onKeyPress(unsigned int keyID)
+void Player::onKeyPress()
 {
 	setVelocityByInput();
 }
 
-void Player::onKeyRelease(unsigned int keyID)
+void Player::onKeyRelease()
 {
 	setVelocityByInput();
 }

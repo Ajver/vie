@@ -128,30 +128,28 @@ namespace vie
 				break;
 			case SDL_KEYDOWN:
 				InputManager::setKey(evnt.key.keysym.sym, true);
-				objectsManager->onKeyPress(evnt.key.keysym.sym);
-				onKeyPress(evnt.key.keysym.sym);
+				objectsManager->onKeyPress();
+				onKeyPress();
 				break;
 			case SDL_KEYUP:
 				InputManager::setKey(evnt.key.keysym.sym, false);
-				objectsManager->onKeyRelease(evnt.key.keysym.sym);
-				onKeyRelease(evnt.key.keysym.sym);
+				objectsManager->onKeyRelease();
+				onKeyRelease();
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				InputManager::setKey(evnt.button.button, true);
-				objectsManager->onMousePress(evnt.button.button);
-				onMousePress(evnt.button.button);
+				objectsManager->onMousePress();
+				onMousePress();
 				break;
 			case SDL_MOUSEBUTTONUP:
 				InputManager::setKey(evnt.button.button, false);
-				objectsManager->onMouseRelease(evnt.button.button);
-				onMouseRelease(evnt.button.button);
+				objectsManager->onMouseRelease();
+				onMouseRelease();
 				break;
 			case SDL_MOUSEMOTION:
 				InputManager::setMousePosition(evnt.motion.x, evnt.motion.y);
 
-				if (InputManager::isKeyPressed(SDL_BUTTON_LEFT) ||
-					InputManager::isKeyPressed(SDL_BUTTON_MIDDLE) ||
-					InputManager::isKeyPressed(SDL_BUTTON_RIGHT))
+				if (InputManager::isSomeMouseButtonPressed())
 				{
 					onMouseDrag();
 					objectsManager->onMouseDrag();
@@ -203,10 +201,10 @@ namespace vie
 	// Default bodies (it's not necessary to use them)
 	void Engine::onCreate() {}
 	void Engine::onDestroy() {}
-	void Engine::onKeyPress(unsigned int keyID) {}
-	void Engine::onKeyRelease(unsigned int keyID) {}
-	void Engine::onMousePress(unsigned int keyID) {}
-	void Engine::onMouseRelease(unsigned int keyID) {}
+	void Engine::onKeyPress() {}
+	void Engine::onKeyRelease() {}
+	void Engine::onMousePress() {}
+	void Engine::onMouseRelease() {}
 	void Engine::onMouseMove() {}
 	void Engine::onMouseDrag() {}
 }
