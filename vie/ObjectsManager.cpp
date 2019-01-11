@@ -98,21 +98,21 @@ namespace vie
 
 	void ObjectsManager::onKeyPress()
 	{
-		forAllElementsRunFunction(keyInteractiveObjects, [](Object* ob) {
+		forAllObjectsRunFunction(keyInteractiveObjects, [](Object* ob) {
 			ob->onKeyPress();
 		});
 	}
 
 	void ObjectsManager::onKeyRelease()
 	{
-		forAllElementsRunFunction(keyInteractiveObjects, [](Object* ob) {
+		forAllObjectsRunFunction(keyInteractiveObjects, [](Object* ob) {
 			ob->onKeyRelease();
 		});
 	}
 
 	void ObjectsManager::onMousePress()
 	{
-		forAllElementsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
+		forAllObjectsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
 			if (ob->isPointInside(InputManager::getMousePosition()))
 				m->mouseClickedObject(ob);
 		});
@@ -149,7 +149,7 @@ namespace vie
 
 	void ObjectsManager::onMouseMove() 
 	{
-		forAllElementsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
+		forAllObjectsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
 			if (ob->isPointInside(InputManager::getMousePosition()))
 				m->mouseIsInsideObject(ob);
 			else
