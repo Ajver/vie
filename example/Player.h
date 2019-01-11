@@ -3,13 +3,18 @@
 #include <vie/Object.h>
 #include <vie/Texture.h>
 
+namespace vie
+{
+	class ObjectsManager;
+}
+
 class Player : public vie::Object
 {
 public:
 	Player();
 	~Player();
 
-	void create();
+	void create(vie::ObjectsManager* om);
 
 	void update(float et) override;
 	void render(vie::Graphics* g) override;
@@ -25,6 +30,7 @@ public:
 
 private:
 	vie::Texture texture;
+	vie::ObjectsManager* objectsManager;
 
 	void setVelocityByInput();
 };

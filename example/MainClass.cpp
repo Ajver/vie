@@ -21,7 +21,7 @@ MainClass::~MainClass()
 void MainClass::onCreate()
 {
 	Player *player = new Player();
-	player->create();
+	player->create(objectsManager);
 	player->setPosition(glm::vec2(0, 100));
 	player->setSize(glm::vec2(128, 128));
 

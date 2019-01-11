@@ -15,55 +15,21 @@ namespace vie
 
 	ObjectsManager::~ObjectsManager()
 	{
-		Object* currentObject = objects[0];
-		for (int i = 0; i < objects.size(); i++)
-		{
-			delete currentObject;
-			currentObject++;
-		}
 		objects.clear();
-
-		currentObject = mouseInteractiveObjects[0];
-		for (int i = 0; i < mouseInteractiveObjects.size(); i++)
-		{
-			delete currentObject;
-			currentObject++;
-		}
 		mouseInteractiveObjects.clear();
-
-		currentObject = keyInteractiveObjects[0];
-		for (int i = 0; i < keyInteractiveObjects.size(); i++)
-		{
-			delete currentObject;
-			currentObject++;
-		}
 		keyInteractiveObjects.clear();
 	}
 
 	void ObjectsManager::update(float et)
 	{
-		if (objects.size() == 0)
-			return;
-
-		Object* currentObject = objects[0];
 		for (int i = 0; i < objects.size(); i++)
-		{
-			currentObject->update(et);
-			currentObject++;
-		}
+			objects[i]->update(et);
 	}
 
 	void ObjectsManager::render(Graphics* g)
 	{
-		if (objects.size() == 0)
-			return;
-
-		Object* currentObject = objects[0];
 		for (int i = 0; i < objects.size(); i++)
-		{
-			currentObject->render(g);
-			currentObject++;
-		}
+			objects[i]->render(g);
 	}
 
 	void ObjectsManager::appendObject(Object* ob)
@@ -191,27 +157,13 @@ namespace vie
 
 	void ObjectsManager::forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*))
 	{
-		if (vtr.size() == 0)
-			return;
-
-		Object* currentObject = vtr[0];
 		for (int i = 0; i < vtr.size(); i++)
-		{
-			fnc(this, currentObject);
-			currentObject++;
-		}
+			fnc(this, vtr[i]);
 	}
 
 	void ObjectsManager::forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*))
 	{
-		if (vtr.size() == 0)
-			return;
-
-		Object* currentObject = vtr[0];
 		for (int i = 0; i < vtr.size(); i++)
-		{
-			fnc(currentObject);
-			currentObject++;
-		}
+			fnc(vtr[i]);
 	}
 }

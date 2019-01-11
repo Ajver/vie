@@ -3,6 +3,7 @@
 #include <vie/IOManager.h>
 #include <vie/InputManager.h>
 #include <vie/Window.h>
+#include <vie/ObjectsManager.h>
 
 #include <iostream>
 
@@ -15,8 +16,9 @@ Player::~Player()
 {
 }
 
-void Player::create()
+void Player::create(vie::ObjectsManager* om)
 {
+	objectsManager = om;
 	texture = vie::IOManager::getTexture("Graphics/Player.png");
 }
 
@@ -63,6 +65,14 @@ void Player::onMousePress()
 
 void Player::onMouseRelease()
 {
+	if (vie::InputManager::getLastKey() == SDL_BUTTON_RIGHT)
+	{
+		Player *player = new Player();
+		player->create(objectsManager);
+		player->setPosition(glm::vec2(0, 100));
+		player->setSize(glm::vec2(128, 128));
+		objectsManager->appendObject(player);
+	}
 }
 
 void Player::onKeyPress()
