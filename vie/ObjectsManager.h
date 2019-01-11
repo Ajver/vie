@@ -50,8 +50,8 @@ namespace vie
 
 		Object* clickedObject;
 
-		void forAllElementsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*));
-		void forAllElementsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*));
+		void forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*));
+		void forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*));
 	};
 
 }

@@ -189,7 +189,7 @@ namespace vie
 			clickedObject->onMouseDrag();
 	}
 
-	void ObjectsManager::forAllElementsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*))
+	void ObjectsManager::forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*))
 	{
 		if (vtr.size() == 0)
 			return;
@@ -202,7 +202,7 @@ namespace vie
 		}
 	}
 
-	void ObjectsManager::forAllElementsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*))
+	void ObjectsManager::forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*))
 	{
 		if (vtr.size() == 0)
 			return;
