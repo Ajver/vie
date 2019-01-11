@@ -27,7 +27,7 @@ namespace vie
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		colorProgram.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
+		colorProgram.compileShaders();
 		colorProgram.addAtribute("vertexPosition");
 		colorProgram.addAtribute("vertexColor");
 		colorProgram.addAtribute("vertexUV");
@@ -343,7 +343,7 @@ namespace vie
 
 	}
 
-	void Graphics::GLSLProgram::compileShaders(const std::string &vertexShaderFilePath, const std::string &fragmentShaderFilePath)
+	void Graphics::GLSLProgram::compileShaders()
 	{
 		// Vertex and fragment shaders are successfully compiled.
 		// Now time to link them together into a program.
@@ -360,24 +360,8 @@ namespace vie
 		if (fragmentShaderID == 0)
 			fatalError("Fragment shader failed to be created!");
 
-		std::ifstream vertexFile(vertexShaderFilePath);
-
-		if (vertexFile.fail()) {
-			perror(vertexShaderFilePath.c_str());
-			fatalError("Failed to open " + vertexShaderFilePath);
-		}
-
-		std::string fileContents = "";
-		std::string line;
-
-		while (std::getline(vertexFile, line))
-		{
-			fileContents += line + "\n";
-		}
-
-		vertexFile.close();
-
-		const char *contentsPtr = fileContents.c_str();
+		std::string vertexShader = getVertexShader();
+		const char *contentsPtr = vertexShader.c_str();
 
 		glShaderSource(vertexShaderID, 1, &contentsPtr, nullptr);
 
@@ -401,31 +385,54 @@ namespace vie
 			fatalError("Vertex shader failed to compile!");
 		}
 
-		compileShader(vertexShaderFilePath, vertexShaderID);
-		compileShader(fragmentShaderFilePath, fragmentShaderID);
+		compileShader(getVertexShader(), vertexShaderID);
+		compileShader(getFragmentShader(), fragmentShaderID);
 
 	}
 
-	void Graphics::GLSLProgram::compileShader(const std::string& filePath, GLuint id)
+	std::string Graphics::GLSLProgram::getVertexShader()
 	{
-		std::ifstream vertexFile(filePath);
+		std::string shaderText = "";
 
-		if (vertexFile.fail()) {
-			perror(filePath.c_str());
-			fatalError("Failed to open " + filePath);
-		}
+		shaderText += "in vec2 vertexPosition;";
+		shaderText += "in vec4 vertexColor;";
+		shaderText += "in vec2 vertexUV;";
+		shaderText += "out vec2 fragmentPosition;";
+		shaderText += "out vec4 fragmentColor;";
+		shaderText += "out vec2 fragmentUV;";
+		shaderText += "uniform mat4 P;";
+		shaderText += "void main() {";
+		shaderText += "	gl_Position.xy = (P * vec4(vertexPosition.x, vertexPosition.y, 0.0, 1.0)).xy;";
+		shaderText += "	gl_Position.z = 0.0;";
+		shaderText += "	gl_Position.w = 1.0;";
+		shaderText += "	fragmentPosition = vertexPosition;";
+		shaderText += "	fragmentColor = vertexColor;";
+		shaderText += "	fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);";
+		shaderText += "}";
 
-		std::string fileContents = "";
-		std::string line;
+		return shaderText;
+	}
 
-		while (std::getline(vertexFile, line))
-		{
-			fileContents += line + "\n";
-		}
+	std::string Graphics::GLSLProgram::getFragmentShader()
+	{
+		std::string shaderText = "";
 
-		vertexFile.close();
+		shaderText += "in vec2 fragmentPosition;";
+		shaderText += "in vec4 fragmentColor;";
+		shaderText += "in vec2 fragmentUV;";
+		shaderText += "out vec4 color;";
+		shaderText += "uniform sampler2D mySampler;";
+		shaderText += "void main() {";
+		shaderText += "vec4 textureColor = texture(mySampler, fragmentUV);";
+		shaderText += "color = textureColor * fragmentColor;";
+		shaderText += "}";
 
-		const char *contentsPtr = fileContents.c_str();
+		return shaderText;
+	}
+
+	void Graphics::GLSLProgram::compileShader(const std::string& shaderText, GLuint id)
+	{
+		const char *contentsPtr = shaderText.c_str();
 
 		glShaderSource(id, 1, &contentsPtr, nullptr);
 
@@ -445,7 +452,7 @@ namespace vie
 			glDeleteShader(id);
 
 			std::printf("%s\n", &errorLog[0]);
-			fatalError("Shader " + filePath + "failed to compile!");
+			fatalError("Shader " + shaderText + "failed to compile!");
 		}
 	}
 

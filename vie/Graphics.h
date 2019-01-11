@@ -91,7 +91,7 @@ namespace vie
 			GLSLProgram();
 			~GLSLProgram();
 
-			void compileShaders(const std::string&, const std::string&);
+			void compileShaders();
 
 			void linkShaders();
 
@@ -111,6 +111,8 @@ namespace vie
 			GLuint fragmentShaderID;
 
 			void compileShader(const std::string&, GLuint);
+			std::string getVertexShader();
+			std::string getFragmentShader();
 		};
 
 		/////////////////////////////////////////////////////////////////////////////////////////
