@@ -52,6 +52,7 @@ namespace vie
 		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color = WHITE);
 
 		void fillRect(const glm::vec2& position, const glm::vec2& size, const Color& color);
+		void drawRect(const glm::vec2& position, const glm::vec2& size, const Color& color);
 
 		void setTranslate(glm::vec2 newTranslate);
 		void setScale(float newScale);

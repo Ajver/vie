@@ -47,11 +47,15 @@ void Player::update(float et)
 
 void Player::render(vie::Graphics* g)
 {
+	g->setScale(3.0f);
 	//g->translate(-size * 0.5f);
 	//g->drawTexture(texture, position, size);
 	//g->translate(size * 0.5f);
 
+	g->translate(glm::vec2(-450, -300));
 	g->fillRect(position, glm::vec2(60, 100), vie::RED);
+	g->drawRect(position, glm::vec2(60, 100), vie::Color(255, 255, 255, 100));
+	g->translate(glm::vec2(450, 300));
 }
 
 void Player::onMouseEnter()

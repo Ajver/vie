@@ -156,6 +156,21 @@ namespace vie
 		drawTexture(onePixelTexture, position, size, color);
 	}
 
+	void Graphics::drawRect(const glm::vec2& position, const glm::vec2& size, const Color& color)
+	{
+		// Top
+		fillRect(glm::vec2(position.x + 1, position.y), glm::vec2(size.x - 1, 1), color);
+
+		// Bottom
+		fillRect(glm::vec2(position.x + 1, position.y + size.y - 1), glm::vec2(size.x - 1, 1), color);
+
+		// Left
+		fillRect(position, glm::vec2(1, size.y), color);
+
+		// Right
+		fillRect(glm::vec2(position.x + size.x - 1, position.y + 1), glm::vec2(1, size.y - 2), color);
+	}
+
 	void Graphics::renderBatch()
 	{
 		glBindVertexArray(vao);

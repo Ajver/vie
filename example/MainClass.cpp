@@ -31,7 +31,7 @@ MainClass::~MainClass()
 void MainClass::onCreate()
 {
 	//g->setScale(6.0f);
-	mainCamera->setScale(0.1f);
+	//mainCamera->setScale(0.1f);
 
 	Player *player = new Player();
 	player->create(objectsManager);
@@ -51,7 +51,7 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
-	float speed = 100.0f / g->getScale();
+	float speed = 10.0f / g->getScale();
 	float scaleSpeed = 1.02f;
 
 	if (vie::InputManager::isKeyPressed(SDLK_w))
