@@ -42,22 +42,52 @@ namespace vie
 		return objects[id];
 	}
 
-	void ObjectsManager::appendMouseInteractiveObject(Object* ob)
+	void ObjectsManager::appendMouseListener(Object* ob)
 	{
 		mouseListeners.push_back(ob);
 	}
 
-	Object* ObjectsManager::getMouseInteractiveObject(size_t id) const
+	Object* ObjectsManager::getMouseListener(size_t id) const
 	{
 		return mouseListeners[id];
 	}
 
-	void ObjectsManager::appendKeyInteractiveObject(Object* ob)
+	void ObjectsManager::appendKeyListener(Object* ob)
 	{
 		keyListeners.push_back(ob);
 	}
 
-	Object* ObjectsManager::getKeyInteractiveObject(size_t id) const
+	void ObjectsManager::removeObject(Object* ob)
+	{
+		for (int i = 0; i < objects.size(); i++)
+			if (objects[i] == ob)
+			{
+				objects.erase(objects.begin() + i);
+				return;
+			}
+	}
+
+	void ObjectsManager::removeMouseListener(Object* ob)
+	{
+		for (int i = 0; i < mouseListeners.size(); i++)
+			if (mouseListeners[i] == ob)
+			{
+				mouseListeners.erase(mouseListeners.begin() + i);
+				return;
+			}
+	}
+
+	void ObjectsManager::removeKeyListener(Object* ob)
+	{
+		for (int i = 0; i < keyListeners.size(); i++)
+			if (keyListeners[i] == ob)
+			{
+				keyListeners.erase(keyListeners.begin() + i);
+				return;
+			}
+	}
+
+	Object* ObjectsManager::getKeyListener(size_t id) const
 	{
 		return keyListeners[id];
 	}

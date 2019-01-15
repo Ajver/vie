@@ -39,8 +39,8 @@ void MainClass::onCreate()
 	player->setSize(glm::vec2(32, 32));
 
 	objectsManager->appendObject(player);
-	objectsManager->appendMouseInteractiveObject(player);
-	objectsManager->appendKeyInteractiveObject(player);
+	objectsManager->appendMouseListener(player);
+	objectsManager->appendKeyListener(player);
 }
 
 void MainClass::update(float et)

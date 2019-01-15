@@ -18,12 +18,16 @@ namespace vie
 		void render(Graphics* g);
 
 		void appendObject(Object* ob);
-		void appendMouseInteractiveObject(Object* ob);
-		void appendKeyInteractiveObject(Object* ob);
+		void appendMouseListener(Object* ob);
+		void appendKeyListener(Object* ob);
+
+		void removeObject(Object* ob);
+		void removeMouseListener(Object* ob);
+		void removeKeyListener(Object* ob);
 
 		Object* getObject(size_t id) const;
-		Object* getMouseInteractiveObject(size_t id) const;
-		Object* getKeyInteractiveObject(size_t id) const;
+		Object* getMouseListener(size_t id) const;
+		Object* getKeyListener(size_t id) const;
 
 		void onKeyPress();
 		void onKeyRelease();
