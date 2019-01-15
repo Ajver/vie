@@ -149,20 +149,17 @@ namespace vie
 
 	void Graphics::drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color)
 	{
-		nextTextureDepth += 0.1f;
-		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth, color);
+		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth + 0.1f, color);
 	}
 	
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const Color& color)
 	{
-		nextTextureDepth += 0.1f;
-		draw(glm::vec4(position.x, position.y, texture.getWidth(), texture.getHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth, color);
+		draw(glm::vec4(position.x, position.y, texture.getWidth(), texture.getHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth + 0.1f, color);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color)
 	{
-		nextTextureDepth += 0.1f;
-		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth, color);
+		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth + 0.1f, color);
 	}	
 
 	void Graphics::fillRect(const glm::vec2& position, const glm::vec2& size, const Color& color)
