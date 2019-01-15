@@ -47,12 +47,11 @@ void Player::update(float et)
 
 void Player::render(vie::Graphics* g)
 {
-	g->translate(-size * 0.5f);
-	g->drawTexture(texture, position, size);
-	g->translate(size * 0.5f);
+	//g->translate(-size * 0.5f);
+	//g->drawTexture(texture, position, size);
+	//g->translate(size * 0.5f);
 
-	glm::vec2 pos2 = position + glm::vec2(100, 20);
-	g->drawTexture(vie::IOManager::getTexture("Graphics/ItemSpawner.png"), pos2);
+	g->fillRect(position, glm::vec2(60, 100), vie::RED);
 }
 
 void Player::onMouseEnter()

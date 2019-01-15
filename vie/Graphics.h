@@ -45,11 +45,13 @@ namespace vie
 		
 		// Sipmly draw texture on position x, y
 		void drawTexture(const Texture& texture, float x, float y, const Color& color = WHITE);
-		void drawTexture(const Texture& texture, glm::vec2& position, const Color& color = WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const Color& color = WHITE);
 
 		// Drawp texture on position x, y by scaling it into w, h size
 		void drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color = WHITE);
-		void drawTexture(const Texture& texture, glm::vec2& position, glm::vec2& size, const Color& color = WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color = WHITE);
+
+		void fillRect(const glm::vec2& position, const glm::vec2& size, const Color& color);
 
 		void setTranslate(glm::vec2 newTranslate);
 		void setScale(float newScale);
@@ -71,12 +73,14 @@ namespace vie
 		Camera2D* camera;
 		GLSLProgram colorProgram;
 
+		Texture onePixelTexture;
 		std::vector<Glyph*> glyphs;
 		std::vector<RenderBatch> renderBatches;
 
 		glm::vec2 translateVec;
 		float scale;
 
+		void createOnePixelTexture();
 		void createVertexArray();
 		void createRenderBatches();
 		void sortGlyphs();

@@ -39,7 +39,25 @@ namespace vie
 
 		camera = ncamera;
 
+		createOnePixelTexture();
+
 		createVertexArray();
+	}
+
+	void Graphics::createOnePixelTexture()
+	{
+		std::vector<unsigned char> out(4, 255);
+
+		GLuint textureID;
+		glGenTextures(1, &textureID);
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(out[0]));
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		onePixelTexture = Texture(textureID, 1, 1, &(out[0]));
 	}
 
 	void Graphics::begin(GlyphSortType st)
@@ -123,15 +141,20 @@ namespace vie
 		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
 	}
 	
-	void Graphics::drawTexture(const Texture& texture, glm::vec2& position, const Color& color)
+	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const Color& color)
 	{
 		draw(glm::vec4(position.x, position.y, texture.getWidth(), texture.getHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
 	}
 
-	void Graphics::drawTexture(const Texture& texture, glm::vec2& position, glm::vec2& size, const Color& color)
+	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color)
 	{
 		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
 	}	
+
+	void Graphics::fillRect(const glm::vec2& position, const glm::vec2& size, const Color& color)
+	{
+		drawTexture(onePixelTexture, position, size, color);
+	}
 
 	void Graphics::renderBatch()
 	{
