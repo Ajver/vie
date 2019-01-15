@@ -14,7 +14,8 @@ namespace vie
 		sortType(GlyphSortType::TEXTURE),
 		camera(nullptr),
 		scale(1.0f),
-		translateVec(glm::vec2(0, 0))
+		translateVec(glm::vec2(0, 0)),
+		nextTextureDepth(0.0f)
 	{
 	}
 
@@ -60,12 +61,14 @@ namespace vie
 		onePixelTexture = Texture(textureID, 1, 1, &(out[0]));
 	}
 
-	void Graphics::begin(GlyphSortType st)
+	void Graphics::begin(GlyphSortType newSortType)
 	{
 		glClearDepth(1.0);
 
 		// Clear the color and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		nextTextureDepth = 0.0f;
 
 		// Enable the shader
 		colorProgram.use();
@@ -80,7 +83,7 @@ namespace vie
 
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
-		sortType = st;
+		setSortType(newSortType);
 
 		// Free the memory
 		renderBatches.clear();
@@ -97,6 +100,11 @@ namespace vie
 		createRenderBatches();
 	}
 
+	void Graphics::setSortType(GlyphSortType newSortType)
+	{
+		sortType = newSortType;
+	}
+
 	void Graphics::setBackgroundColor(const Color& color)
 	{
 		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
@@ -104,6 +112,9 @@ namespace vie
 
 	void Graphics::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
 	{
+		if (depth > nextTextureDepth)
+			nextTextureDepth = depth;
+
 		Glyph *newGlyph = new Glyph();
 		newGlyph->textureID = textureID;
 		newGlyph->depth = depth;
@@ -138,17 +149,20 @@ namespace vie
 
 	void Graphics::drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color)
 	{
-		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
+		nextTextureDepth += 0.1f;
+		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth, color);
 	}
 	
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const Color& color)
 	{
-		draw(glm::vec4(position.x, position.y, texture.getWidth(), texture.getHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
+		nextTextureDepth += 0.1f;
+		draw(glm::vec4(position.x, position.y, texture.getWidth(), texture.getHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth, color);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color)
 	{
-		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
+		nextTextureDepth += 0.1f;
+		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth, color);
 	}	
 
 	void Graphics::fillRect(const glm::vec2& position, const glm::vec2& size, const Color& color)

@@ -47,6 +47,7 @@ void Player::update(float et)
 
 void Player::render(vie::Graphics* g)
 {
+	g->setSortType(vie::GlyphSortType::FRONT_TO_BACK);
 	g->setScale(3.0f);
 	//g->translate(-size * 0.5f);
 	//g->drawTexture(texture, position, size);

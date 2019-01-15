@@ -16,7 +16,7 @@ namespace vie
 		// No sort
 		NONE,
 
-		// Normaly 
+		// Normaly (Default)
 		FRONT_TO_BACK,
 
 		// Reverse
@@ -35,8 +35,10 @@ namespace vie
 		void init(Camera2D* ncamera);
 
 		// Controll the rendering
-		void begin(GlyphSortType st = GlyphSortType::FRONT_TO_BACK);
+		void begin(GlyphSortType newSortType = GlyphSortType::FRONT_TO_BACK);
 		void end();
+
+		void setSortType(GlyphSortType newSortType);
 
 		void setBackgroundColor(const Color& color);
 
@@ -74,6 +76,7 @@ namespace vie
 		Camera2D* camera;
 		GLSLProgram colorProgram;
 
+		float nextTextureDepth;
 		Texture onePixelTexture;
 		std::vector<Glyph*> glyphs;
 		std::vector<RenderBatch> renderBatches;
