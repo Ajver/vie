@@ -19,26 +19,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Errors.h" />
+    <ClInclude Include="GLSLProgram.h" />
+    <ClInclude Include="Glyph.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectsManager.h" />
+    <ClInclude Include="RenderBatch.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowFlags.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Errors.cpp" />
+    <ClCompile Include="GLSLProgram.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

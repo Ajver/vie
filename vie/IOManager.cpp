@@ -32,8 +32,6 @@ namespace vie
 
 	Texture IOManager::loadPNG(std::string filePath)
 	{
-		Texture texture = {};
-
 		std::vector<unsigned char> in;
 		std::vector<unsigned char> out;
 		unsigned long width;
@@ -52,9 +50,10 @@ namespace vie
 			fatalError("decodePNG failed with error: " + std::to_string(errorCode));
 		}
 
-		glGenTextures(1, &(texture.id));
+		GLuint textureID;
+		glGenTextures(1, &textureID);
 
-		glBindTexture(GL_TEXTURE_2D, texture.id);
+		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(out[0]));
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -65,8 +64,7 @@ namespace vie
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		texture.width = width;
-		texture.height = height;
+		Texture texture(textureID, width, height, out);
 
 		// Return a copy of texture data
 		return texture;

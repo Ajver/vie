@@ -1,8 +1,6 @@
 #include "Graphics.h"
 
-#include <fstream>
 #include <algorithm>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "Errors.h"
 #include "Window.h"
@@ -13,7 +11,10 @@ namespace vie
 	Graphics::Graphics() :
 		vbo(0),
 		vao(0),
-		sortType(GlyphSortType::TEXTURE)
+		sortType(GlyphSortType::TEXTURE),
+		camera(nullptr),
+		scale(1.0f),
+		translateVec(glm::vec2(0, 0))
 	{
 	}
 
@@ -21,7 +22,7 @@ namespace vie
 	{
 	}
 
-	void Graphics::init()
+	void Graphics::init(Camera2D* ncamera)
 	{
 		// Enable alpha blending
 		glEnable(GL_BLEND);
@@ -33,7 +34,10 @@ namespace vie
 		colorProgram.addAtribute("vertexUV");
 		colorProgram.linkShaders();
 
-		camera.init();
+		translateVec.x = Window::getScreenWidth() * 0.5f;
+		translateVec.y = Window::getScreenHeight() * 0.5f;
+
+		camera = ncamera;
 
 		createVertexArray();
 	}
@@ -52,9 +56,9 @@ namespace vie
 		glUniform1i(textureLocation, 0);
 
 		// Set camera matrix
-		camera.update();
+		camera->update();
 		GLint pLocation = colorProgram.getUnitformLocation("P");
-		glm::mat4 cameraMatrix = camera.getCameraMatrix();
+		glm::mat4 cameraMatrix = camera->getCameraMatrix();
 
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
@@ -64,9 +68,8 @@ namespace vie
 		renderBatches.clear();
 
 		for (int i = 0; i < glyphs.size(); i++)
-		{
 			delete glyphs[i];
-		}
+
 		glyphs.clear();
 	}
 
@@ -87,15 +90,20 @@ namespace vie
 		newGlyph->textureID = textureID;
 		newGlyph->depth = depth;
 
+		glm::vec4 newDestRect = destRect;
+		newDestRect.x += translateVec.x;
+		newDestRect.y += translateVec.y;
+		newDestRect *= scale;
+
 		newGlyph->topLeft.setColor(color.r, color.g, color.b, color.a);
 		newGlyph->topRight.setColor(color.r, color.g, color.b, color.a);
 		newGlyph->bottomLeft.setColor(color.r, color.g, color.b, color.a);
 		newGlyph->bottomRight.setColor(color.r, color.g, color.b, color.a);
 
-		newGlyph->topLeft.setPosition(destRect.x, Window::getScreenHeight() - destRect.y);
-		newGlyph->topRight.setPosition(destRect.x + destRect.z, Window::getScreenHeight() - destRect.y);
-		newGlyph->bottomLeft.setPosition(destRect.x, Window::getScreenHeight() - (destRect.y + destRect.w));
-		newGlyph->bottomRight.setPosition(destRect.x + destRect.z, Window::getScreenHeight() - (destRect.y + destRect.w));
+		newGlyph->topLeft.setPosition(newDestRect.x, Window::getScreenHeight() - newDestRect.y);
+		newGlyph->topRight.setPosition(newDestRect.x + newDestRect.z, Window::getScreenHeight() - newDestRect.y);
+		newGlyph->bottomLeft.setPosition(newDestRect.x, Window::getScreenHeight() - (newDestRect.y + newDestRect.w));
+		newGlyph->bottomRight.setPosition(newDestRect.x + newDestRect.z, Window::getScreenHeight() - (newDestRect.y + newDestRect.w));
 
 		newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
 		newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
@@ -107,22 +115,22 @@ namespace vie
 
 	void Graphics::drawTexture(const Texture& texture, float x, float y, const Color& color)
 	{
-		drawTexture(texture, x, y, texture.width, texture.height, color);
+		drawTexture(texture, x, y, texture.getWidth(), texture.getHeight(), color);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color)
 	{
-		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color);
+		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
 	}
 	
 	void Graphics::drawTexture(const Texture& texture, glm::vec2& position, const Color& color)
 	{
-		draw(glm::vec4(position.x, position.y, texture.width, texture.height), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color);
+		draw(glm::vec4(position.x, position.y, texture.getWidth(), texture.getHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, glm::vec2& position, glm::vec2& size, const Color& color)
 	{
-		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color);
+		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), 1.0f, color);
 	}	
 
 	void Graphics::renderBatch()
@@ -256,280 +264,39 @@ namespace vie
 		return a->textureID < b->textureID;
 	}
 
-	Graphics::Camera2D::Camera2D() :
-		position(0.0f, 0.0f),
-		cameraMatrix(1.0f),
-		scale(1.0f),
-		needsMatrixUpdate(true),
-		orthoMatrix(1.0f)
+	void Graphics::setTranslate(glm::vec2 newTranslate)
 	{
+		translateVec = newTranslate;
 	}
 
-	Graphics::Camera2D::~Camera2D()
+	void Graphics::setScale(float newScale)
 	{
+		scale = newScale;
 	}
 
-	void Graphics::Camera2D::init()
+	void Graphics::translate(const glm::vec2& translateVector)
 	{
-		orthoMatrix = glm::ortho(0.0f, (float)Window::getScreenWidth(), 0.0f, (float)Window::getScreenHeight());
+		translateVec += translateVector;
 	}
 
-	void Graphics::Camera2D::update()
+	void Graphics::scaleUp(float scaleMod)
 	{
-		if (needsMatrixUpdate)
-		{
-			init();
-
-			// Camera translation
-			glm::vec3 translateVec(-position.x, -position.y, 0.0f);
-			cameraMatrix = glm::translate(orthoMatrix, translateVec);
-
-			// Camera scale
-			glm::vec3 scaleVec(scale, scale, 0.0f);
-			cameraMatrix = glm::scale(glm::mat4(1.0f), scaleVec) * cameraMatrix;
-
-			needsMatrixUpdate = false;
-		}
+		scale *= scaleMod;
 	}
 
-	glm::vec2 Graphics::Camera2D::screenToWorldPos(glm::vec2 screenPosition)
+	void Graphics::scaleDown(float scaleMod)
 	{
-		screenPosition -= glm::vec2(Window::getScreenWidth() * 0.5f, Window::getScreenHeight() * 0.5f);
-		screenPosition /= scale;
-		screenPosition += position;
-
-		return screenPosition;
+		scale /= scaleMod;
 	}
 
-	void Graphics::Camera2D::setPosition(glm::vec2 npos)
+	glm::vec2 Graphics::getTranslate()
 	{
-		position = npos;
-		needsMatrixUpdate = true;
+		return translateVec;
 	}
 
-	void Graphics::Camera2D::setScale(float nscale)
-	{
-		scale = nscale;
-		needsMatrixUpdate = true;
-	}
-
-	glm::vec2 Graphics::Camera2D::getPosition()
-	{
-		return position;
-	}
-
-	float Graphics::Camera2D::getScale()
+	float Graphics::getScale()
 	{
 		return scale;
 	}
 
-	glm::mat4 Graphics::Camera2D::getCameraMatrix()
-	{
-		return cameraMatrix;
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Graphics::GLSLProgram::GLSLProgram() :
-		programID(0),
-		vertexShaderID(0),
-		fragmentShaderID(0),
-		numAttributes(0)
-	{
-	}
-
-	Graphics::GLSLProgram::~GLSLProgram()
-	{
-
-	}
-
-	void Graphics::GLSLProgram::compileShaders()
-	{
-		// Vertex and fragment shaders are successfully compiled.
-		// Now time to link them together into a program.
-		// Get a program object.
-		programID = glCreateProgram();
-
-		vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-
-		if (vertexShaderID == 0)
-			fatalError("Vertex shader failed to be created!");
-
-		fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
-		if (fragmentShaderID == 0)
-			fatalError("Fragment shader failed to be created!");
-
-		std::string vertexShader = getVertexShader();
-		const char *contentsPtr = vertexShader.c_str();
-
-		glShaderSource(vertexShaderID, 1, &contentsPtr, nullptr);
-
-		glCompileShader(vertexShaderID);
-
-		GLint success = 0;
-		glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &success);
-
-		if (success == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<char> errorLog(maxLength);
-			glGetShaderInfoLog(vertexShaderID, maxLength, &maxLength, &errorLog[0]);
-
-			glDeleteShader(vertexShaderID);
-
-
-			std::printf("%s\n", &errorLog[0]);
-			fatalError("Vertex shader failed to compile!");
-		}
-
-		compileShader(getVertexShader(), vertexShaderID);
-		compileShader(getFragmentShader(), fragmentShaderID);
-
-	}
-
-	std::string Graphics::GLSLProgram::getVertexShader()
-	{
-		std::string shaderText = "";
-
-		shaderText += "in vec2 vertexPosition;";
-		shaderText += "in vec4 vertexColor;";
-		shaderText += "in vec2 vertexUV;";
-		shaderText += "out vec2 fragmentPosition;";
-		shaderText += "out vec4 fragmentColor;";
-		shaderText += "out vec2 fragmentUV;";
-		shaderText += "uniform mat4 P;";
-		shaderText += "void main() {";
-		shaderText += "	gl_Position.xy = (P * vec4(vertexPosition.x, vertexPosition.y, 0.0, 1.0)).xy;";
-		shaderText += "	gl_Position.z = 0.0;";
-		shaderText += "	gl_Position.w = 1.0;";
-		shaderText += "	fragmentPosition = vertexPosition;";
-		shaderText += "	fragmentColor = vertexColor;";
-		shaderText += "	fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);";
-		shaderText += "}";
-
-		return shaderText;
-	}
-
-	std::string Graphics::GLSLProgram::getFragmentShader()
-	{
-		std::string shaderText = "";
-
-		shaderText += "in vec2 fragmentPosition;";
-		shaderText += "in vec4 fragmentColor;";
-		shaderText += "in vec2 fragmentUV;";
-		shaderText += "out vec4 color;";
-		shaderText += "uniform sampler2D mySampler;";
-		shaderText += "void main() {";
-		shaderText += "vec4 textureColor = texture(mySampler, fragmentUV);";
-		shaderText += "color = textureColor * fragmentColor;";
-		shaderText += "}";
-
-		return shaderText;
-	}
-
-	void Graphics::GLSLProgram::compileShader(const std::string& shaderText, GLuint id)
-	{
-		const char *contentsPtr = shaderText.c_str();
-
-		glShaderSource(id, 1, &contentsPtr, nullptr);
-
-		glCompileShader(id);
-
-		GLint success = 0;
-		glGetShaderiv(id, GL_COMPILE_STATUS, &success);
-
-		if (success == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<char> errorLog(maxLength);
-			glGetShaderInfoLog(id, maxLength, &maxLength, &errorLog[0]);
-
-			glDeleteShader(id);
-
-			std::printf("%s\n", &errorLog[0]);
-			fatalError("Shader " + shaderText + "failed to compile!");
-		}
-	}
-
-	void Graphics::GLSLProgram::linkShaders()
-	{
-		// Attach our shaders to our program
-		glAttachShader(programID, vertexShaderID);
-		glAttachShader(programID, fragmentShaderID);
-
-		// Link our program
-		glLinkProgram(programID);
-
-		// Note the different functions here: glGetProgram* instead of glGetShader*.
-		GLint isLinked = 0;
-		glGetProgramiv(programID, GL_LINK_STATUS, (int *)&isLinked);
-		if (isLinked == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &maxLength);
-
-			// The maxLength includes the NULL character
-			std::vector<char> errorLog(maxLength);
-			glGetProgramInfoLog(programID, maxLength, &maxLength, &errorLog[0]);
-
-			// We don't need the program anymore.
-			glDeleteProgram(programID);
-			// Don't leak shaders either.
-			glDeleteShader(vertexShaderID);
-			glDeleteShader(fragmentShaderID);
-
-
-			// In this simple program, we'll just leave
-			std::printf("%s\n", &errorLog[0]);
-			fatalError("Shader failed to link!");
-		}
-
-		// Always detach shaders after a successful link.
-		glDetachShader(programID, vertexShaderID);
-		glDetachShader(programID, fragmentShaderID);
-		glDeleteShader(vertexShaderID);
-		glDeleteShader(fragmentShaderID);
-	}
-
-
-	void Graphics::GLSLProgram::addAtribute(const std::string &attributeName)
-	{
-		glBindAttribLocation(programID, numAttributes++, attributeName.c_str());
-	}
-
-	GLuint Graphics::GLSLProgram::getUnitformLocation(const std::string & uniformName)
-	{
-		GLuint location = glGetUniformLocation(programID, uniformName.c_str());
-		if (location == GL_INVALID_INDEX)
-		{
-			fatalError("Uniform " + uniformName + " not found in shader!");
-		}
-
-		return location;
-	}
-
-	void Graphics::GLSLProgram::use()
-	{
-		glUseProgram(programID);
-
-		for (int i = 0; i < numAttributes; i++)
-		{
-			glEnableVertexAttribArray(i);
-		}
-	}
-
-	void Graphics::GLSLProgram::unuse()
-	{
-		glUseProgram(0);
-
-		for (int i = 0; i < numAttributes; i++)
-		{
-			glDisableVertexAttribArray(i);
-		}
-	}
 }

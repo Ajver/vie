@@ -20,11 +20,19 @@ void Player::create(vie::ObjectsManager* om)
 {
 	objectsManager = om;
 	texture = vie::IOManager::getTexture("Graphics/Player.png");
+
+	for (int y = 0; y < texture.getHeight(); y++)
+		for (int x = 0; x < texture.getWidth(); x++)
+		{
+			texture.setPixelColor(x, y, vie::ORANGE);
+		}
+
+	texture.refreshGLBuffer();
 }
 
 void Player::update(float et)
 {
-	position += velocity * et;
+	//position += velocity * et;
 
 	if (position.x < 0)
 		position.x = 0;
@@ -39,7 +47,12 @@ void Player::update(float et)
 
 void Player::render(vie::Graphics* g)
 {
+	g->translate(-size * 0.5f);
 	g->drawTexture(texture, position, size);
+	g->translate(size * 0.5f);
+
+	glm::vec2 pos2 = position + glm::vec2(100, 20);
+	g->drawTexture(vie::IOManager::getTexture("Graphics/ItemSpawner.png"), pos2);
 }
 
 void Player::onMouseEnter()

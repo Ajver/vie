@@ -8,6 +8,7 @@ namespace vie
 {
 	class Graphics;
 	class ObjectsManager;
+	class Camera2D;
 
 	class Engine
 	{
@@ -19,6 +20,10 @@ namespace vie
 
 	protected:
 		ObjectsManager* objectsManager;
+
+		// Draw all stuff with this
+		Graphics* g;
+		Camera2D* mainCamera;
 
 		// Runs once after all systems init
 		virtual void onCreate();
@@ -59,9 +64,6 @@ namespace vie
 
 		// Maximum Frames per second
 		unsigned int maxFPS;
-
-		// Draw all stuff with this
-		Graphics* g;
 
 		// Init all systems (title, screen width, screen height, window type)
 		void initSDLAndWindowAndGraphics(const char* title,

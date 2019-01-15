@@ -18,7 +18,9 @@ namespace vie
 	Engine::Engine() :
 		isRunning(false),
 		FPS(0),
-		maxFPS(60)
+		maxFPS(60),
+		g(nullptr),
+		mainCamera(nullptr)
 	{
 	}
 
@@ -53,8 +55,11 @@ namespace vie
 
 		printOpenGLVersion();
 		
+		mainCamera = new Camera2D();
+		mainCamera->init();
+
 		g = new Graphics();
-		g->init();
+		g->init(mainCamera);
 
 		objectsManager = new ObjectsManager();
 	}

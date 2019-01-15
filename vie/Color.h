@@ -23,6 +23,20 @@ namespace vie
 			a = na;
 		}
 
+		bool operator == (const Color& other)
+		{
+			return
+				r == other.r &&
+				g == other.g &&
+				b == other.b &&
+				a == other.a;
+		}
+
+		bool operator != (const Color& other)
+		{
+			return !(operator == (other));
+		}
+
 		GLubyte r;
 		GLubyte g;
 		GLubyte b;
@@ -36,7 +50,7 @@ namespace vie
 	const Color WHITE(255, 255, 255);
 	const Color BLACK(0, 0, 0);
 	const Color TRANSPARENT(0, 0, 0, 0);
-	const Color ORANGE(255, 192, 0);
+	const Color ORANGE(255, 128, 0);
 	const Color PURPLE(255, 0, 255);
 	const Color PINK(255, 0, 128);
 

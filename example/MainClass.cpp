@@ -30,10 +30,13 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
+	//g->setScale(6.0f);
+	mainCamera->setScale(0.1f);
+
 	Player *player = new Player();
 	player->create(objectsManager);
-	player->setPosition(glm::vec2(0, 100));
-	player->setSize(glm::vec2(128, 128));
+	player->setPosition(glm::vec2(0, 0));
+	player->setSize(glm::vec2(32, 32));
 
 	objectsManager->appendObject(player);
 	objectsManager->appendMouseInteractiveObject(player);
@@ -42,14 +45,29 @@ void MainClass::onCreate()
 
 void MainClass::update(float et)
 {
+	//mainCamera->scaleUp(1.01f);
 	//std::cout << ".";
-
-	//player.update(et);
 }
 
 void MainClass::render(vie::Graphics* g)
 {
-	//player.render(g);
+	float speed = 100.0f / g->getScale();
+	float scaleSpeed = 1.02f;
+
+	if (vie::InputManager::isKeyPressed(SDLK_w))
+		g->translate(glm::vec2(0, -speed));
+	if (vie::InputManager::isKeyPressed(SDLK_s))
+		g->translate(glm::vec2(0, speed));
+
+	if (vie::InputManager::isKeyPressed(SDLK_a))
+		g->translate(glm::vec2(-speed, 0));
+	if (vie::InputManager::isKeyPressed(SDLK_d))
+		g->translate(glm::vec2(speed, 0));
+
+	if (vie::InputManager::isKeyPressed(SDLK_q))
+		g->scaleDown(scaleSpeed);
+	if (vie::InputManager::isKeyPressed(SDLK_e))
+		g->scaleUp(scaleSpeed);
 }
 
 void MainClass::onKeyPress()
