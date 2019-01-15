@@ -32,6 +32,7 @@ namespace vie
 		void mouseClickedObject(vie::Object* ob);
 
 		void onMouseRelease();
+		bool isNoClickedObject();
 		void mouseReleasedClickedObject();
 		void mouseReleasedOutsideClickedObject();
 		

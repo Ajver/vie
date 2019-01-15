@@ -92,7 +92,7 @@ namespace vie
 
 	void ObjectsManager::onMouseRelease()
 	{
-		if (clickedObject == nullptr)
+		if (isNoClickedObject())
 			return;
 
 		if (clickedObject->isPointInside(InputManager::getMousePosition()))
@@ -101,6 +101,11 @@ namespace vie
 			mouseReleasedOutsideClickedObject();
 
 		clickedObject = nullptr;
+	}
+
+	bool ObjectsManager::isNoClickedObject()
+	{
+		return clickedObject == nullptr;
 	}
 
 	void ObjectsManager::mouseReleasedClickedObject()
@@ -151,8 +156,10 @@ namespace vie
 
 	void ObjectsManager::onMouseDrag()
 	{
-		if (clickedObject != nullptr)
-			clickedObject->onMouseDrag();
+		if (isNoClickedObject())
+			return;
+
+		clickedObject->onMouseDrag();
 	}
 
 	void ObjectsManager::forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*))
