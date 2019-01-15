@@ -45,8 +45,8 @@ namespace vie
 
 	private:
 		std::vector<Object*> objects;
-		std::vector<Object*> mouseInteractiveObjects;
-		std::vector<Object*> keyInteractiveObjects;
+		std::vector<Object*> mouseListeners;
+		std::vector<Object*> keyListeners;
 
 		Object* clickedObject;
 

@@ -16,8 +16,8 @@ namespace vie
 	ObjectsManager::~ObjectsManager()
 	{
 		objects.clear();
-		mouseInteractiveObjects.clear();
-		keyInteractiveObjects.clear();
+		mouseListeners.clear();
+		keyListeners.clear();
 	}
 
 	void ObjectsManager::update(float et)
@@ -44,41 +44,41 @@ namespace vie
 
 	void ObjectsManager::appendMouseInteractiveObject(Object* ob)
 	{
-		mouseInteractiveObjects.push_back(ob);
+		mouseListeners.push_back(ob);
 	}
 
 	Object* ObjectsManager::getMouseInteractiveObject(size_t id) const
 	{
-		return mouseInteractiveObjects[id];
+		return mouseListeners[id];
 	}
 
 	void ObjectsManager::appendKeyInteractiveObject(Object* ob)
 	{
-		keyInteractiveObjects.push_back(ob);
+		keyListeners.push_back(ob);
 	}
 
 	Object* ObjectsManager::getKeyInteractiveObject(size_t id) const
 	{
-		return keyInteractiveObjects[id];
+		return keyListeners[id];
 	}
 
 	void ObjectsManager::onKeyPress()
 	{
-		forAllObjectsRunFunction(keyInteractiveObjects, [](Object* ob) {
+		forAllObjectsRunFunction(keyListeners, [](Object* ob) {
 			ob->onKeyPress();
 		});
 	}
 
 	void ObjectsManager::onKeyRelease()
 	{
-		forAllObjectsRunFunction(keyInteractiveObjects, [](Object* ob) {
+		forAllObjectsRunFunction(keyListeners, [](Object* ob) {
 			ob->onKeyRelease();
 		});
 	}
 
 	void ObjectsManager::onMousePress()
 	{
-		forAllObjectsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
+		forAllObjectsRunFunction(mouseListeners, [](ObjectsManager* m, Object* ob) {
 			if (ob->isPointInside(InputManager::getMousePosition()))
 				m->mouseClickedObject(ob);
 		});
@@ -115,7 +115,7 @@ namespace vie
 
 	void ObjectsManager::onMouseMove() 
 	{
-		forAllObjectsRunFunction(mouseInteractiveObjects, [](ObjectsManager* m, Object* ob) {
+		forAllObjectsRunFunction(mouseListeners, [](ObjectsManager* m, Object* ob) {
 			if (ob->isPointInside(InputManager::getMousePosition()))
 				m->mouseIsInsideObject(ob);
 			else
