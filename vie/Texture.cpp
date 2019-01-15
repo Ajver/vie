@@ -7,11 +7,11 @@ namespace vie
 		id(0),
 		width(0),
 		height(0),
-		pixels(NULL)
+		pixels(nullptr)
 	{
 	}
 
-	Texture::Texture(GLuint nid, unsigned int w, unsigned int h, std::vector<unsigned char>& npixels) :
+	Texture::Texture(GLuint nid, unsigned int w, unsigned int h, unsigned char* npixels) :
 		id(nid),
 		width(w),
 		height(h),

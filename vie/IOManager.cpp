@@ -64,7 +64,7 @@ namespace vie
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		Texture texture(textureID, width, height, out);
+		Texture texture(textureID, width, height, &(out[0]));
 
 		// Return a copy of texture data
 		return texture;

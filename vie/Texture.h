@@ -12,7 +12,7 @@ namespace vie
 	{
 	public:
 		Texture();
-		Texture(GLuint nid, unsigned int w, unsigned int h, std::vector<unsigned char>& npixels);
+		Texture(GLuint nid, unsigned int w, unsigned int h, unsigned char* npixels);
 		~Texture();
 
 		GLuint getID() const;
@@ -29,7 +29,7 @@ namespace vie
 		GLuint id;
 		unsigned int width;
 		unsigned int height;
-		std::vector<unsigned char> pixels;
+		unsigned char* pixels;
 	};
 
 }
