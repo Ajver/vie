@@ -8,6 +8,16 @@
 #include <vie/InputManager.h>
 #include <vie/ObjectsManager.h>
 
+/*
+Link those libs:
+
+vie.lib
+SDL2.lib
+SDL2main.lib
+Opengl32.lib
+glew32.lib
+
+*/
 
 MainClass::MainClass()
 {
