@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include <glm/glm.hpp>
 #include "../vie/Object.cpp"
 #include "../vie/ObjectsManager.cpp"
 #include "../vie/InputManager.cpp"
