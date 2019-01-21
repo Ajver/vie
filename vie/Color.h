@@ -23,7 +23,7 @@ namespace vie
 			a = na;
 		}
 
-		bool operator == (const Color& other)
+		bool operator == (const Color& other) const
 		{
 			return
 				r == other.r &&
@@ -32,7 +32,7 @@ namespace vie
 				a == other.a;
 		}
 
-		bool operator != (const Color& other)
+		bool operator != (const Color& other) const
 		{
 			return !(operator == (other));
 		}
@@ -52,6 +52,6 @@ namespace vie
 	const Color TRANSPARENT(0, 0, 0, 0);
 	const Color ORANGE(255, 128, 0);
 	const Color PURPLE(255, 0, 255);
-	const Color PINK(255, 0, 128);
+	const Color PINK(255, 128, 128);
 
 }
