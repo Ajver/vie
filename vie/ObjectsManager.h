@@ -35,21 +35,9 @@ namespace vie
 
 		void onKeyPress();
 		void onKeyRelease();
-
 		void onMousePress(); 
-		void mouseClickedObject(vie::Object* ob);
-
 		void onMouseRelease();
-		bool isNoClickedObject();
-		void mouseReleasedClickedObject();
-		void mouseReleasedOutsideClickedObject();
-		
 		void onMouseMove();
-		void mouseIsInsideObject(vie::Object* ob);
-		void mouseEnteredObject(vie::Object* ob);
-		void mouseIsOutsideObject(vie::Object* ob);
-		void mouseLeavedObject(vie::Object* ob);
-
 		void onMouseDrag();
 
 	private:
@@ -58,6 +46,17 @@ namespace vie
 		std::vector<Object*> keyListeners;
 
 		Object* clickedObject;
+
+		void mouseClickedObject(vie::Object* ob);
+
+		bool isNoClickedObject();
+		void mouseReleasedClickedObject();
+		void mouseReleasedOutsideClickedObject();
+
+		void mouseIsInsideObject(vie::Object* ob);
+		void mouseEnteredObject(vie::Object* ob);
+		void mouseIsOutsideObject(vie::Object* ob);
+		void mouseLeavedObject(vie::Object* ob);
 
 		void forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*));
 		void forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*));
