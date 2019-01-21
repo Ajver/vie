@@ -25,6 +25,10 @@ namespace vie
 		void removeMouseListener(Object* ob);
 		void removeKeyListener(Object* ob);
 
+		bool containsObject(Object* ob) const;
+		bool containsMouseListener(Object* ob) const;
+		bool containsKeyListener(Object* ob) const;
+
 		Object* getObject(size_t id) const;
 		Object* getMouseListener(size_t id) const;
 		Object* getKeyListener(size_t id) const;

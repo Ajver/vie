@@ -4,6 +4,7 @@
 #include "InputManager.h"
 
 #include <iostream>
+#include <algorithm>
 
 namespace vie
 {
@@ -85,6 +86,21 @@ namespace vie
 				keyListeners.erase(keyListeners.begin() + i);
 				return;
 			}
+	}
+
+	bool ObjectsManager::containsObject(Object* ob) const
+	{
+		return std::find(objects.begin(), objects.end(), ob) != objects.end();
+	}
+
+	bool ObjectsManager::containsMouseListener(Object* ob) const
+	{
+		return std::find(mouseListeners.begin(), mouseListeners.end(), ob) != mouseListeners.end();
+	}
+
+	bool ObjectsManager::containsKeyListener(Object* ob) const
+	{
+		return std::find(keyListeners.begin(), keyListeners.end(), ob) != keyListeners.end();
 	}
 
 	Object* ObjectsManager::getKeyListener(size_t id) const
