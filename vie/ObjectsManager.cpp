@@ -43,6 +43,18 @@ namespace vie
 		return objects[id];
 	}
 
+	Object* ObjectsManager::getObjectByLabel(std::string label) const
+	{
+		for (int i = 0; i < objects.size(); i++)
+		{
+			Object* ob = objects[i];
+			if (ob->is(label))
+				return ob;
+		}
+
+		return nullptr;
+	}
+
 	void ObjectsManager::appendMouseListener(Object* ob)
 	{
 		mouseListeners.push_back(ob);
@@ -219,4 +231,10 @@ namespace vie
 		for (int i = 0; i < vtr.size(); i++)
 			fnc(vtr[i]);
 	}
+
+	std::vector<Object*> ObjectsManager::getObjectsVector() const
+	{
+		return objects;
+	}
+
 }

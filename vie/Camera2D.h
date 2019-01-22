@@ -21,7 +21,7 @@ namespace vie
 		void setPosition(glm::vec2 npos);
 		void setScale(float nscale);
 
-		glm::vec2 screenToWorldPos(glm::vec2 screenPosition);
+		glm::vec2 screenToWorldPos(glm::vec2 screenPosition) const;
 
 		glm::vec2 getPosition() const;
 		float getScale() const;

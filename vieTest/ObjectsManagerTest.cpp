@@ -70,3 +70,29 @@ TEST(ObjectsManagerTest, ShouldRemove_Key_Listener)
 	om.removeKeyListener(object);
 	EXPECT_FALSE(om.containsKeyListener(object));
 }
+
+TEST(ObjectsManagerTest, ShouldReturn_Object_ByLabel)
+{
+	vie::ObjectsManager om;
+	vie::Object* object = new vie::Object();
+	object->setLabel("test_label");
+	om.appendObject(object);
+	EXPECT_EQ(object, om.getObjectByLabel("test_label"));
+}
+
+TEST(ObjectsManagerTest, ShouldReturn_nullptr_IfNoObjectWithLabel)
+{
+	vie::ObjectsManager om;
+	EXPECT_EQ(nullptr, om.getObjectByLabel("wrong_label_name"));
+}
+
+TEST(ObjectsManagerTest, ShouldReturn_objectsVector)
+{
+	vie::ObjectsManager om;
+	EXPECT_EQ(0, om.getObjectsVector().size());
+
+	vie::Object* object = new vie::Object();
+	om.appendObject(object);
+	EXPECT_EQ(1, om.getObjectsVector().size());
+	EXPECT_EQ(object, om.getObjectsVector()[0]);
+}

@@ -43,7 +43,7 @@ namespace vie
 		}
 	}
 
-	glm::vec2 Camera2D::screenToWorldPos(glm::vec2 screenPosition)
+	glm::vec2 Camera2D::screenToWorldPos(glm::vec2 screenPosition) const
 	{
 		screenPosition -= glm::vec2(Window::getScreenWidth() * 0.5f, Window::getScreenHeight() * 0.5f);
 		screenPosition /= scale;

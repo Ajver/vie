@@ -1,5 +1,7 @@
 #include "Object.h"
 
+#include <string>
+
 namespace vie
 {
 
@@ -35,6 +37,11 @@ namespace vie
 		isMouseHover = flag;
 	}
 
+	void Object::setLabel(std::string nlabel)
+	{
+		label = nlabel;
+	}
+
 	glm::vec2 Object::getPosition() const
 	{
 		return position;
@@ -54,6 +61,11 @@ namespace vie
 	{
 		return isMouseHover;
 	}
+	
+	std::string Object::getLabel() const
+	{
+		return label;
+	}
 
 	bool Object::isPointInside(const glm::vec2& point) const
 	{
@@ -61,6 +73,11 @@ namespace vie
 			point.x <= position.x + size.x &&
 			point.y >= position.y &&
 			point.y <= position.y + size.y;
+	}
+
+	bool Object::is(const std::string& lab) const
+	{
+		return label == lab;
 	}
 
 	void Object::update(float et) {}

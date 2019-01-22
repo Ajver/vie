@@ -28,13 +28,16 @@ namespace vie
 		void setSize(const glm::vec2& nsize);
 		void setVelocity(const glm::vec2& nvel);
 		void setIsMouseHover(bool flag);
+		void setLabel(std::string nlabel);
 
 		glm::vec2 getPosition() const;
 		glm::vec2 getSize() const;
 		glm::vec2 getVelocity() const;
 		bool getIsMouseHover() const;
+		std::string getLabel() const;
 
 		bool isPointInside(const glm::vec2& point) const;
+		bool is(const std::string& lab) const;
 
 	protected:
 		glm::vec2 position;
@@ -43,6 +46,7 @@ namespace vie
 		
 		bool isMouseHover;
 
+		std::string label;
 	};
 
 }
