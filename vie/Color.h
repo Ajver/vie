@@ -9,7 +9,7 @@ namespace vie
 	public: 
 		Color()
 		{
-			setColor(255, 255, 255);
+			setColor(255, 255, 255, 255);
 		}
 
 		Color(GLubyte nr, GLubyte ng, GLubyte nb, GLubyte na = 255) :

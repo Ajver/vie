@@ -45,9 +45,6 @@
     <ClInclude Include="ObjectsManager.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Glyph.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>

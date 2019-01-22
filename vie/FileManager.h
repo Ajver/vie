@@ -11,13 +11,13 @@ namespace vie
 	class FileManager
 	{
 	public:
-		static Texture getTexture(std::string filePath);
+		static Texture getTexture(const std::string& filePath);
 
 	private:
 		static std::map<std::string, Texture> texturesMap;
 
-		static bool readFileToBuffer(std::string filePath, std::vector<unsigned char>& buffer);
-		static Texture loadPNG(std::string filePath); 
+		static bool readFileToBuffer(const std::string& filePath, std::vector<unsigned char>& buffer);
+		static Texture loadPNG(const std::string& filePath);
 		static int decodePNG(std::vector<unsigned char>&, unsigned long&, unsigned long&, const unsigned char*, size_t, bool = true);
 	};
 

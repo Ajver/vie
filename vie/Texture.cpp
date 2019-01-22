@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+#include "FileManager.h"
+
 namespace vie
 {
 
@@ -9,6 +11,11 @@ namespace vie
 		height(0),
 		pixels(nullptr)
 	{
+	}
+
+	Texture::Texture(const std::string& texturePath)
+	{
+		*this = FileManager::getTexture(texturePath);
 	}
 
 	Texture::Texture(GLuint nid, GLuint w, GLuint h, unsigned char* npixels) :

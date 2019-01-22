@@ -77,7 +77,7 @@ void MainClass::render(vie::Graphics* g)
 	if (vie::InputManager::isKeyPressed(SDLK_x))
 		g->rotate(rotateSpeed);
 
-	static vie::Texture chessBoard = vie::FileManager::getTexture("Graphics/HugeSquare.png");
+	static vie::Texture chessBoard("Graphics/HugeSquare.png");
 
 	g->drawTexture(chessBoard, glm::vec2(0, 0));
 }

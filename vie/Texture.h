@@ -12,6 +12,7 @@ namespace vie
 	{
 	public:
 		Texture();
+		explicit Texture(const std::string& texturePath);
 		Texture(GLuint nid, GLuint w, GLuint h, unsigned char* npixels);
 		~Texture();
 

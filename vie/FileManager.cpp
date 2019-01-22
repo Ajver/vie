@@ -10,7 +10,7 @@ namespace vie
 {
 	std::map<std::string, Texture> FileManager::texturesMap;
 
-	Texture FileManager::getTexture(std::string texturePath)
+	Texture FileManager::getTexture(const std::string& texturePath)
 	{
 		// Lookup the texture and see if its in the map
 		auto mit = texturesMap.find(texturePath);
@@ -30,7 +30,7 @@ namespace vie
 		return mit->second;
 	}
 
-	Texture FileManager::loadPNG(std::string filePath)
+	Texture FileManager::loadPNG(const std::string& filePath)
 	{
 		std::vector<unsigned char> in;
 		std::vector<unsigned char>* out = new std::vector<unsigned char>;
@@ -60,7 +60,7 @@ namespace vie
 		return texture;
 	}
 
-	bool FileManager::readFileToBuffer(std::string filePath, std::vector<unsigned char> &buffer)
+	bool FileManager::readFileToBuffer(const std::string& filePath, std::vector<unsigned char> &buffer)
 	{
 		std::ifstream file(filePath, std::ios::binary);
 		if (file.fail())

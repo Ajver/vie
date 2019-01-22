@@ -31,7 +31,6 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectsManager.h" />
     <ClInclude Include="RenderBatch.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowFlags.h" />
     <ClInclude Include="Texture.h" />
