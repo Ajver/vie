@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example\example.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vieTest", "vieTest\vieTest.vcxproj", "{485CE470-B45B-455C-AF47-47328EDCA822}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9} = {ADE7330C-B86B-42FD-92D9-CB3A904E34A9}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

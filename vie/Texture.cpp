@@ -37,6 +37,11 @@ namespace vie
 		return height;
 	}
 
+	unsigned char* Texture::getPixelsArray() const
+	{
+		return pixels;
+	}
+
 	Color Texture::getPixelColor(int x, int y) const
 	{
 		y *= 4;

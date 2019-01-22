@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../vie/Color.h"
+#include <vie/Color.h>
 
 TEST(ColorTest, ShouldCreate_WhiteColorAsDefault)
 {

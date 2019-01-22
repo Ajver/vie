@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../vie/ObjectsManager.h"
+#include <vie/ObjectsManager.h>
 
 TEST(ObjectsManagerTest, ShouldAppend_Object)
 {

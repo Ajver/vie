@@ -18,6 +18,7 @@ namespace vie
 		GLuint getID() const;
 		unsigned int getWidth() const;
 		unsigned int getHeight() const;
+		unsigned char* getPixelsArray() const;
 
 		Color getPixelColor(int x, int y) const;
 		void setPixelColor(int x, int y, Color color);

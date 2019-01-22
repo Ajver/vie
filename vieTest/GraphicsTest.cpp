@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../vie/Graphics.h"
+#include<vie/Graphics.h>
 
 glm::vec2 getRotatedPoint(const glm::vec2& point, float angle);
 
