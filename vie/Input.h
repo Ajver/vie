@@ -7,7 +7,7 @@
 namespace vie
 {
 
-	class InputManager
+	class Input
 	{
 	public:
 		static void setKey(unsigned int id, bool flag);

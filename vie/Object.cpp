@@ -37,7 +37,7 @@ namespace vie
 		isMouseHover = flag;
 	}
 
-	void Object::setLabel(std::string nlabel)
+	void Object::setLabel(const std::string& nlabel)
 	{
 		label = nlabel;
 	}

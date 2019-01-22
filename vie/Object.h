@@ -28,7 +28,7 @@ namespace vie
 		void setSize(const glm::vec2& nsize);
 		void setVelocity(const glm::vec2& nvel);
 		void setIsMouseHover(bool flag);
-		void setLabel(std::string nlabel);
+		void setLabel(const std::string& nlabel);
 
 		glm::vec2 getPosition() const;
 		glm::vec2 getSize() const;

@@ -96,7 +96,15 @@ TEST(GraphicsTest, Should_RotatePoint)
 	EXPECT_EQ(getRotatedPoint(glm::vec2(100.0f, 50.0f), 3.0f), g.rotatePoint(glm::vec2(100.0f, 50.0f)));
 }
 
-
+TEST(GraphicsTest, Should_Not_ChangeOriginalVec2)
+{
+	vie::Graphics g;
+	glm::vec2 translateVec(10.0f, 5.0f);
+	g.setTranslate(translateVec);
+	g.translate(glm::vec2(20.0f, -15.0f));
+	EXPECT_EQ(glm::vec2(30.0f, -10.0f), g.getTranslate());
+	EXPECT_EQ(glm::vec2(10.0f, 5.0f), translateVec);
+}
 
 glm::vec2 getRotatedPoint(const glm::vec2& point, float angle)
 {

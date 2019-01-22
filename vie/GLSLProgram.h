@@ -16,9 +16,9 @@ namespace vie
 
 		void linkShaders();
 
-		void addAtribute(const std::string&);
+		void addAtribute(const std::string& attributeName);
 
-		GLuint getUnitformLocation(const std::string &);
+		GLuint getUnitformLocation(const std::string& uniformName);
 
 		void use();
 		void unuse();

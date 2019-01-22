@@ -1,7 +1,7 @@
 #include "ObjectsManager.h"
 
 #include "Errors.h"
-#include "InputManager.h"
+#include "Input.h"
 
 #include <iostream>
 #include <algorithm>
@@ -43,7 +43,7 @@ namespace vie
 		return objects[id];
 	}
 
-	Object* ObjectsManager::getObjectByLabel(std::string label) const
+	Object* ObjectsManager::getObjectByLabel(const std::string& label) const
 	{
 		for (int i = 0; i < objects.size(); i++)
 		{
@@ -137,7 +137,7 @@ namespace vie
 	void ObjectsManager::onMousePress()
 	{
 		forAllObjectsRunFunction(mouseListeners, [](ObjectsManager* m, Object* ob) {
-			if (ob->isPointInside(InputManager::getMousePosition()))
+			if (ob->isPointInside(Input::getMousePosition()))
 				m->mouseClickedObject(ob);
 		});
 	}
@@ -153,7 +153,7 @@ namespace vie
 		if (isNoClickedObject())
 			return;
 
-		if (clickedObject->isPointInside(InputManager::getMousePosition()))
+		if (clickedObject->isPointInside(Input::getMousePosition()))
 			mouseReleasedClickedObject();
 		else
 			mouseReleasedOutsideClickedObject();
@@ -179,7 +179,7 @@ namespace vie
 	void ObjectsManager::onMouseMove() 
 	{
 		forAllObjectsRunFunction(mouseListeners, [](ObjectsManager* m, Object* ob) {
-			if (ob->isPointInside(InputManager::getMousePosition()))
+			if (ob->isPointInside(Input::getMousePosition()))
 				m->mouseIsInsideObject(ob);
 			else
 				m->mouseIsOutsideObject(ob);

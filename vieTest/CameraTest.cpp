@@ -54,8 +54,8 @@ TEST(CameraTest, Should_Not_ChangeOriginalVec2)
 	glm::vec2 newCameraPosition(10.0f, 5.0f);
 	camera.setPosition(newCameraPosition);
 	camera.move(glm::vec2(20.0f, -15.0f));
-	EXPECT_EQ(10.0f, newCameraPosition.x);
-	EXPECT_EQ(5.0f, newCameraPosition.y);
+	EXPECT_EQ(glm::vec2(30.0f, -10.0f), camera.getPosition());
+	EXPECT_EQ(glm::vec2(10.0f, 5.0f), newCameraPosition);
 }
 
 TEST(CameraTest, Should_TransformScreenToWorldPos)

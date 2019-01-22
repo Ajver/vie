@@ -33,7 +33,7 @@ namespace vie
 		Object* getMouseListener(size_t id) const;
 		Object* getKeyListener(size_t id) const;
 
-		Object* getObjectByLabel(std::string label) const;
+		Object* getObjectByLabel(const std::string& label) const;
 
 		std::vector<Object*> getObjectsVector() const;
 

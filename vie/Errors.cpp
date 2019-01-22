@@ -4,7 +4,7 @@
 
 namespace vie
 {
-	void fatalError(std::string errorString)
+	void fatalError(const std::string& errorString)
 	{
 		printf((errorString + "\n").c_str());
 		system("pause");

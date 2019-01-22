@@ -108,7 +108,7 @@ namespace vie
 		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
 	}
 
-	void Graphics::draw(glm::vec4 destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
+	void Graphics::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
 	{
 		if (depth > nextTextureDepth)
 			nextTextureDepth = depth;
@@ -139,16 +139,13 @@ namespace vie
 		glyphs.push_back(newGlyph);
 	}
 
-	glm::vec2 Graphics::transformPoint(const glm::vec2& point) const
+	glm::vec2 Graphics::transformPoint(glm::vec2 point) const
 	{
-		glm::vec2 transformedPoint;
+		point = rotatePoint(point);
+		point *= scale;
+		point += translateVec;
 
-		glm::vec2 rotatedPoint = rotatePoint(point);
-		transformedPoint = rotatedPoint;
-		transformedPoint *= scale;
-		transformedPoint += translateVec;
-
-		return transformedPoint;
+		return point;
 	}
 
 	glm::vec2 Graphics::rotatePoint(const glm::vec2& point) const
@@ -345,7 +342,7 @@ namespace vie
 		return a->textureID < b->textureID;
 	}
 
-	void Graphics::setTranslate(glm::vec2 newTranslate)
+	void Graphics::setTranslate(const glm::vec2& newTranslate)
 	{
 		translateVec = newTranslate;
 	}

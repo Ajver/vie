@@ -5,7 +5,7 @@
 #include <vie/FileManager.h>
 #include <vie/Texture.h>
 #include <vie/Graphics.h>
-#include <vie/InputManager.h>
+#include <vie/Input.h>
 #include <vie/ObjectsManager.h>
 
 /*
@@ -55,24 +55,24 @@ void MainClass::render(vie::Graphics* g)
 	float scaleSpeed = 1.02f;
 	float rotateSpeed = 0.1f;
 
-	if (vie::InputManager::isKeyPressed(SDLK_w))
+	if (vie::Input::isKeyPressed(SDLK_w))
 		mainCamera->move(glm::vec2(0, speed / mainCamera->getScale()));
-	if (vie::InputManager::isKeyPressed(SDLK_s))
+	if (vie::Input::isKeyPressed(SDLK_s))
 		mainCamera->move(glm::vec2(0, -speed / mainCamera->getScale()));
 
-	if (vie::InputManager::isKeyPressed(SDLK_a))
+	if (vie::Input::isKeyPressed(SDLK_a))
 		mainCamera->move(glm::vec2(-speed / mainCamera->getScale(), 0));
-	if (vie::InputManager::isKeyPressed(SDLK_d))
+	if (vie::Input::isKeyPressed(SDLK_d))
 		mainCamera->move(glm::vec2(speed / mainCamera->getScale(), 0));
 
-	if (vie::InputManager::isKeyPressed(SDLK_q))
+	if (vie::Input::isKeyPressed(SDLK_q))
 		mainCamera->scaleDown(scaleSpeed);
-	if (vie::InputManager::isKeyPressed(SDLK_e))
+	if (vie::Input::isKeyPressed(SDLK_e))
 		mainCamera->scaleUp(scaleSpeed);
 
-	if (vie::InputManager::isKeyPressed(SDLK_z))
+	if (vie::Input::isKeyPressed(SDLK_z))
 		g->rotate(-rotateSpeed);
-	if (vie::InputManager::isKeyPressed(SDLK_x))
+	if (vie::Input::isKeyPressed(SDLK_x))
 		g->rotate(rotateSpeed);
 
 	static vie::Texture chessBoard("Graphics/HugeSquare.png");
@@ -84,7 +84,7 @@ void MainClass::onKeyPress()
 {
 	//std::cout << "Key press: " << keyID << std::endl;
 
-	if (vie::InputManager::getLastKey() == SDLK_ESCAPE)
+	if (vie::Input::getLastKey() == SDLK_ESCAPE)
 		destroy();
 }
 

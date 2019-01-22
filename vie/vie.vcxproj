@@ -26,7 +26,7 @@
     <ClInclude Include="GLSLProgram.h" />
     <ClInclude Include="Glyph.h" />
     <ClInclude Include="Graphics.h" />
-    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectsManager.h" />
@@ -42,7 +42,7 @@
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
     <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />

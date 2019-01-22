@@ -10,7 +10,7 @@
 #include "Errors.h"
 #include "Graphics.h"
 #include "ObjectsManager.h"
-#include "InputManager.h"
+#include "Input.h"
 
 namespace vie
 {
@@ -132,29 +132,29 @@ namespace vie
 				destroyEngine();
 				break;
 			case SDL_KEYDOWN:
-				InputManager::setKey(evnt.key.keysym.sym, true);
+				Input::setKey(evnt.key.keysym.sym, true);
 				objectsManager->onKeyPress();
 				onKeyPress();
 				break;
 			case SDL_KEYUP:
-				InputManager::setKey(evnt.key.keysym.sym, false);
+				Input::setKey(evnt.key.keysym.sym, false);
 				objectsManager->onKeyRelease();
 				onKeyRelease();
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				InputManager::setKey(evnt.button.button, true);
+				Input::setKey(evnt.button.button, true);
 				objectsManager->onMousePress();
 				onMousePress();
 				break;
 			case SDL_MOUSEBUTTONUP:
-				InputManager::setKey(evnt.button.button, false);
+				Input::setKey(evnt.button.button, false);
 				objectsManager->onMouseRelease();
 				onMouseRelease();
 				break;
 			case SDL_MOUSEMOTION:
-				InputManager::setMousePosition(evnt.motion.x, evnt.motion.y);
+				Input::setMousePosition(evnt.motion.x, evnt.motion.y);
 
-				if (InputManager::isSomeMouseButtonPressed())
+				if (Input::isSomeMouseButtonPressed())
 				{
 					onMouseDrag();
 					objectsManager->onMouseDrag();

@@ -174,12 +174,12 @@ namespace vie
 	}
 
 
-	void GLSLProgram::addAtribute(const std::string &attributeName)
+	void GLSLProgram::addAtribute(const std::string& attributeName)
 	{
 		glBindAttribLocation(programID, numAttributes++, attributeName.c_str());
 	}
 
-	GLuint GLSLProgram::getUnitformLocation(const std::string & uniformName)
+	GLuint GLSLProgram::getUnitformLocation(const std::string& uniformName)
 	{
 		GLuint location = glGetUniformLocation(programID, uniformName.c_str());
 		if (location == GL_INVALID_INDEX)
