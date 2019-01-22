@@ -34,8 +34,6 @@ void Player::update(float et)
 {
 	//position += velocity * et;
 
-	position = glm::vec2(0, 0);
-
 	if (position.x < 0)
 		position.x = 0;
 	else if (position.x + size.x > vie::Window::getScreenWidth())
@@ -52,12 +50,12 @@ void Player::render(vie::Graphics* g)
 	g->setSortType(vie::GlyphSortType::FRONT_TO_BACK);
 	//g->setScale(3.0f);
 	//g->translate(-size * 0.5f);
-	//g->drawTexture(texture, position, size);
+	g->drawTexture(vie::IOManager::getTexture("Graphics/ItemSpawner.png"), position - size*0.5f, size);
 	//g->translate(size * 0.5f);
 
 	//g->translate(glm::vec2(-450, -300));
-	g->fillRect(position - size * 0.5f, size, vie::PINK);
-	g->drawRect(position - size * 0.5f, size, vie::Color(255, 255, 255, 100));
+	//g->fillRect(position, size, vie::PINK);
+	//g->drawRect(position, size, vie::Color(255, 255, 255, 100));
 	//g->translate(glm::vec2(450, 300));
 }
 

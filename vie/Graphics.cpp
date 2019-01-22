@@ -113,8 +113,6 @@ namespace vie
 
 	void Graphics::draw(glm::vec4 destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
 	{
-		translateVec.x = translateVec.y = 0;
-
 		if (depth > nextTextureDepth)
 			nextTextureDepth = depth;
 
@@ -122,55 +120,43 @@ namespace vie
 		newGlyph->textureID = textureID;
 		newGlyph->depth = depth;
 
-		glm::vec2 topLeft(destRect.x, Window::getScreenHeight() - destRect.y);
-		glm::vec2 topRight(destRect.x + destRect.z, Window::getScreenHeight() - destRect.y);
-		glm::vec2 bottomLeft(destRect.x, Window::getScreenHeight() - (destRect.y + destRect.w));
-		glm::vec2 bottomRight(destRect.x + destRect.z, Window::getScreenHeight() - (destRect.y + destRect.w));
+		glm::vec2 topLeft(destRect.x, destRect.y);
+		glm::vec2 topRight(destRect.x + destRect.z, destRect.y);
+		glm::vec2 bottomLeft(destRect.x, destRect.y + destRect.w);
+		glm::vec2 bottomRight(destRect.x + destRect.z, destRect.y + destRect.w);
 
-		glm::vec2 rotatedPosition = rotatePoint(topLeft);
-		topLeft.x = rotatedPosition.x;
-		topLeft.y = rotatedPosition.y;
-		topLeft *= scale;
-		topLeft.x += translateVec.x;
-		topLeft.y += translateVec.y;
+		topLeft = transformPoint(topLeft);
+		bottomLeft = transformPoint(bottomLeft);
+		bottomRight = transformPoint(bottomRight);
+		topRight = transformPoint(topRight);
 
-		rotatedPosition = rotatePoint(bottomLeft);
-		bottomLeft.x = rotatedPosition.x;
-		bottomLeft.y = rotatedPosition.y;
-		bottomLeft *= scale;
-		bottomLeft.x += translateVec.x;
-		bottomLeft.y += translateVec.y;
-
-		rotatedPosition = rotatePoint(topRight);
-		topRight.x = rotatedPosition.x;
-		topRight.y = rotatedPosition.y;
-		topRight *= scale;
-		topRight.x += translateVec.x;
-		topRight.y += translateVec.y;
-
-		rotatedPosition = rotatePoint(bottomRight);
-		bottomRight.x = rotatedPosition.x;
-		bottomRight.y = rotatedPosition.y;
-		bottomRight *= scale;
-		bottomRight.x += translateVec.x;
-		bottomRight.y += translateVec.y;
 
 		newGlyph->topLeft.setPosition(topLeft.x, topLeft.y);
 		newGlyph->topRight.setPosition(topRight.x, topRight.y);
 		newGlyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
 		newGlyph->bottomRight.setPosition(bottomRight.x, bottomRight.y);
 
-		newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
-		newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
-		newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
-		newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+		setGlyphUV(newGlyph, uvRect);
 
-		newGlyph->topLeft.setColor(color);
-		newGlyph->topRight.setColor(color);
-		newGlyph->bottomLeft.setColor(color);
-		newGlyph->bottomRight.setColor(color);
+		setGlyphColor(newGlyph, color);
 
 		glyphs.push_back(newGlyph);
+	}
+
+	glm::vec2 Graphics::transformPoint(const glm::vec2& point) const
+	{
+		glm::vec2 transformedPoint;
+
+		glm::vec2 rotatedPoint = rotatePoint(point);
+		transformedPoint.x = rotatedPoint.x;
+		transformedPoint.y = rotatedPoint.y;
+		transformedPoint *= scale;
+		transformedPoint.x += translateVec.x;
+		transformedPoint.y += translateVec.y;
+
+		transformedPoint.y = Window::getScreenHeight() - transformedPoint.y;
+
+		return transformedPoint;
 	}
 
 	glm::vec2 Graphics::rotatePoint(const glm::vec2& point) const
@@ -178,6 +164,22 @@ namespace vie
 		float nx = point.x * cos(rotateAngleInRadians) - point.y * sin(rotateAngleInRadians);
 		float ny = point.x * sin(rotateAngleInRadians) + point.y * cos(rotateAngleInRadians);
 		return glm::vec2(nx, ny);
+	}
+
+	void Graphics::setGlyphUV(Glyph* glyph, const glm::vec4& uvRect)
+	{
+		glyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+		glyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+		glyph->bottomLeft.setUV(uvRect.x, uvRect.y);
+		glyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+	}
+
+	void Graphics::setGlyphColor(Glyph* glyph, const Color& color)
+	{
+		glyph->topLeft.setColor(color);
+		glyph->topRight.setColor(color);
+		glyph->bottomLeft.setColor(color);
+		glyph->bottomRight.setColor(color);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, float x, float y, const Color& color)

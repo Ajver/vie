@@ -92,7 +92,11 @@ namespace vie
 		void createRenderBatches();
 		void sortGlyphs();
 
+		glm::vec2 transformPoint(const glm::vec2& point) const;
 		glm::vec2 rotatePoint(const glm::vec2& point) const;
+
+		void setGlyphUV(Glyph* glyph, const glm::vec4& uvRect);
+		void setGlyphColor(Glyph* glyph, const Color& color);
 
 		static bool compareFrontToBack(Glyph* a, Glyph* b);
 		static bool compareBackToFront(Glyph* a, Glyph* b);

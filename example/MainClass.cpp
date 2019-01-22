@@ -35,8 +35,8 @@ void MainClass::onCreate()
 
 	Player *player = new Player();
 	player->create(objectsManager);
-	player->setPosition(glm::vec2(0, 0));
-	player->setSize(glm::vec2(32, 128));
+	player->setPosition(glm::vec2(50, 0));
+	player->setSize(glm::vec2(256, 256));
 
 	objectsManager->appendObject(player);
 	objectsManager->appendMouseListener(player);
