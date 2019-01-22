@@ -11,7 +11,7 @@ namespace vie
 	{
 	}
 
-	Texture::Texture(GLuint nid, unsigned int w, unsigned int h, unsigned char* npixels) :
+	Texture::Texture(GLuint nid, GLuint w, GLuint h, unsigned char* npixels) :
 		id(nid),
 		width(w),
 		height(h),
@@ -42,36 +42,71 @@ namespace vie
 		return pixels;
 	}
 
-	Color Texture::getPixelColor(int x, int y) const
+	Color Texture::getPixelColor(GLuint x, GLuint y) const
 	{
 		y *= 4;
 		x *= 4;
 
+		GLuint idx = y * width + x;
 		Color color;
-		color.r = pixels[y*width + x];
-		color.g = pixels[y*width + x + 1];
-		color.b = pixels[y*width + x + 2];
-		color.a = pixels[y*width + x + 3];
+		color.r = pixels[idx++];
+		color.g = pixels[idx++];
+		color.b = pixels[idx++];
+		color.a = pixels[idx];
 
 		return color;
 	}
 
-	void Texture::setPixelColor(int x, int y, Color color)
+	void Texture::setPixelColor(GLuint x, GLuint y, Color color)
 	{
 		y *= 4;
 		x *= 4;
 
-		pixels[y * width + x] = color.r;
-		pixels[y * width + x + 1] = color.g;
-		pixels[y * width + x + 2] = color.b;
-		pixels[y * width + x + 3] = color.a;
+		GLuint idx = y * width + x;
+
+		pixels[idx++] = color.r;
+		pixels[idx++] = color.g;
+		pixels[idx++] = color.b;
+		pixels[idx] = color.a;
 	}
 
 	void Texture::refreshGLBuffer() const
 	{
 		glBindTexture(GL_TEXTURE_2D, id);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(pixels[0]));
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
+	Texture Texture::getSubTexture(GLuint x, GLuint y, GLuint w, GLuint h) const
+	{
+		unsigned char* subTexturePixels = new unsigned char[w * h * 4];
+
+		GLuint textureID;
+		glGenTextures(1, &textureID);
+		Texture subTexture(textureID, w, h, subTexturePixels);
+		
+		//GLuint counter = 0;
+		//for (int yy = y; yy < y + h; yy++)
+		//	for (int xx = x; xx < x + w; xx++)
+		//	{
+		//		GLuint idx = 4 * (yy * w + xx);
+		//		subTexturePixels[counter++] = pixels[idx++];
+		//		subTexturePixels[counter++] = pixels[idx++];
+		//		subTexturePixels[counter++] = pixels[idx++];
+		//		subTexturePixels[counter++] = pixels[idx];
+		//	}
+
+		GLuint counter = 0;
+		for (int yy = y; yy < y + h; yy++)
+			for (int xx = x; xx < x + w; xx++)
+			{
+				subTexture.setPixelColor(xx-x, yy-y, getPixelColor(xx, yy));
+			}
+
+		subTexture.refreshGLBuffer();
+
+		return subTexture;
+	}
+
 }

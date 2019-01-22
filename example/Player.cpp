@@ -16,18 +16,18 @@ Player::~Player()
 {
 }
 
+void write2DArr(const unsigned char* arr, GLuint size)
+{
+	for (int i = 0; i < size; i++)
+		std::cout << (int)arr[i] << " ";
+}
+
 void Player::create(vie::ObjectsManager* om)
 {
 	objectsManager = om;
 	texture = vie::IOManager::getTexture("Graphics/Player.png");
 
-	for (int y = 0; y < texture.getHeight(); y++)
-		for (int x = 0; x < texture.getWidth(); x++)
-		{
-			texture.setPixelColor(x, y, vie::ORANGE);
-		}
-
-	texture.refreshGLBuffer();
+	texture = texture.getSubTexture(0, 0, 16, 16);
 }
 
 void Player::update(float et)
@@ -50,7 +50,7 @@ void Player::render(vie::Graphics* g)
 	g->setSortType(vie::GlyphSortType::FRONT_TO_BACK);
 	//g->setScale(3.0f);
 	//g->translate(-size * 0.5f);
-	g->drawTexture(vie::IOManager::getTexture("Graphics/ItemSpawner.png"), position - size*0.5f, size);
+	g->drawTexture(texture, position - size*0.5f, size);
 	//g->translate(size * 0.5f);
 
 	//g->translate(glm::vec2(-450, -300));

@@ -48,18 +48,13 @@ namespace vie
 
 	void Graphics::createOnePixelTexture()
 	{
-		std::vector<unsigned char> out(4, 255);
+		unsigned char out[] = { 255, 255, 255, 255 };
 
 		GLuint textureID;
 		glGenTextures(1, &textureID);
 
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(out[0]));
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		onePixelTexture = Texture(textureID, 1, 1, &(out[0]));
+		onePixelTexture = Texture(textureID, 1, 1, out);
+		onePixelTexture.refreshGLBuffer();
 	}
 
 	void Graphics::begin(GlyphSortType newSortType)

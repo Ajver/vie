@@ -12,24 +12,26 @@ namespace vie
 	{
 	public:
 		Texture();
-		Texture(GLuint nid, unsigned int w, unsigned int h, unsigned char* npixels);
+		Texture(GLuint nid, GLuint w, GLuint h, unsigned char* npixels);
 		~Texture();
 
 		GLuint getID() const;
-		unsigned int getWidth() const;
-		unsigned int getHeight() const;
+		GLuint getWidth() const;
+		GLuint getHeight() const;
 		unsigned char* getPixelsArray() const;
 
-		Color getPixelColor(int x, int y) const;
-		void setPixelColor(int x, int y, Color color);
+		Color getPixelColor(GLuint x, GLuint y) const;
+		void setPixelColor(GLuint x, GLuint y, Color color);
 		
 		// Refresh OpenGL buffer (do it after calling setPixelColor)
 		void refreshGLBuffer() const;
 
+		Texture getSubTexture(GLuint x, GLuint y, GLuint w, GLuint h) const;
+
 	private:
 		GLuint id;
-		unsigned int width;
-		unsigned int height;
+		GLuint width;
+		GLuint height;
 		unsigned char* pixels;
 	};
 

@@ -33,7 +33,7 @@ namespace vie
 	Texture IOManager::loadPNG(std::string filePath)
 	{
 		std::vector<unsigned char> in;
-		std::vector<unsigned char> out;
+		std::vector<unsigned char>* out = new std::vector<unsigned char>;
 		unsigned long width;
 		unsigned long height;
 
@@ -42,7 +42,7 @@ namespace vie
 			fatalError("Failed to load PNG file to buffer: " + filePath);
 		}
 
-		int errorCode = decodePNG(out, width, height, &(in[0]), in.size());
+		int errorCode = decodePNG(*out, width, height, &(in[0]), in.size());
 
 		// 0 - no error
 		if (errorCode != 0)
@@ -54,7 +54,7 @@ namespace vie
 		glGenTextures(1, &textureID);
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(out[0]));
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &((*out)[0]));
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -64,7 +64,7 @@ namespace vie
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		Texture texture(textureID, width, height, &(out[0]));
+		Texture texture(textureID, width, height, &((*out)[0]));
 
 		// Return a copy of texture data
 		return texture;
