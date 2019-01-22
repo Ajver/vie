@@ -14,7 +14,7 @@ int main(int argc, char *args[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	vie::Window::create("", 600, 400, vie::WindowFlags::INVISIBLE);
+	vie::Window::create("", SCREEN_W, SCREEN_H, vie::WindowFlags::INVISIBLE);
 
 	SDL_GLContext glContext = vie::Window::getSDLGLContext();
 

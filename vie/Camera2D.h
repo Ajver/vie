@@ -14,11 +14,11 @@ namespace vie
 		void init();
 		void update();
 
-		void translate(const glm::vec2& translateVector);
+		void move(const glm::vec2& translateVector);
 		void scaleUp(float scaleM);
 		void scaleDown(float scaleM);
 
-		void setPosition(glm::vec2 npos);
+		void setPosition(const glm::vec2& npos);
 		void setScale(float nscale);
 
 		glm::vec2 screenToWorldPos(glm::vec2 screenPosition) const;

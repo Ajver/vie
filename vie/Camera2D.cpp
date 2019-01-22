@@ -52,7 +52,7 @@ namespace vie
 		return screenPosition;
 	}
 
-	void Camera2D::translate(const glm::vec2& translateVector)
+	void Camera2D::move(const glm::vec2& translateVector)
 	{
 		position += translateVector;
 		needsMatrixUpdate = true;
@@ -70,7 +70,7 @@ namespace vie
 		needsMatrixUpdate = true;
 	}
 
-	void Camera2D::setPosition(glm::vec2 npos)
+	void Camera2D::setPosition(const glm::vec2& npos)
 	{
 		position = npos;
 		needsMatrixUpdate = true;

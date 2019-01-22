@@ -40,6 +40,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraTest.cpp" />
     <ClCompile Include="ColorTest.cpp" />
     <ClCompile Include="GraphicsTest.cpp" />
     <ClCompile Include="ObjectsManagerTest.cpp" />
