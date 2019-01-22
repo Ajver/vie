@@ -58,6 +58,7 @@ namespace vie
 
 		void setTranslate(glm::vec2 newTranslate);
 		void setScale(float newScale);
+		void setRotate(float newRotate);
 
 		void translate(const glm::vec2& translateVector);
 		void scaleUp(float scaleMod);
@@ -67,8 +68,12 @@ namespace vie
 		glm::vec2 getTranslate() const;
 		float getScale() const;
 		float getRotate() const;
+		GlyphSortType getSortType() const;
 
 		void renderBatch();
+
+		glm::vec2 transformPoint(const glm::vec2& point) const;
+		glm::vec2 rotatePoint(const glm::vec2& point) const;
 
 	private:
 		GLuint vbo;
@@ -91,9 +96,6 @@ namespace vie
 		void createVertexArray();
 		void createRenderBatches();
 		void sortGlyphs();
-
-		glm::vec2 transformPoint(const glm::vec2& point) const;
-		glm::vec2 rotatePoint(const glm::vec2& point) const;
 
 		void setGlyphUV(Glyph* glyph, const glm::vec4& uvRect);
 		void setGlyphColor(Glyph* glyph, const Color& color);

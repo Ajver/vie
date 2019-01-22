@@ -77,8 +77,9 @@ namespace vie
 		shaderText += "out vec4 fragmentColor;";
 		shaderText += "out vec2 fragmentUV;";
 		shaderText += "uniform mat4 P;";
+		shaderText += "uniform float screenHeight;";
 		shaderText += "void main() {";
-		shaderText += "	gl_Position.xy = (P * vec4(vertexPosition.x, vertexPosition.y, 0.0, 1.0)).xy;";
+		shaderText += "	gl_Position.xy = (P * vec4(vertexPosition.x, screenHeight - vertexPosition.y, 0.0, 1.0)).xy;";
 		shaderText += "	gl_Position.z = 0.0;";
 		shaderText += "	gl_Position.w = 1.0;";
 		shaderText += "	fragmentPosition = vertexPosition;";

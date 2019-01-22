@@ -2,7 +2,7 @@
 
 #include "../vie/Color.h"
 
-TEST(ColorTest, ShouldCreateWhiteColorAsDefault)
+TEST(ColorTest, ShouldCreate_WhiteColorAsDefault)
 {
 	vie::Color color;
 	EXPECT_EQ(255, color.r);
@@ -11,7 +11,7 @@ TEST(ColorTest, ShouldCreateWhiteColorAsDefault)
 	EXPECT_EQ(255, color.a);
 }
 
-TEST(ColorTest, ShouldSetColor)
+TEST(ColorTest, ShouldSet_Color)
 {
 	vie::Color color;
 	color.setColor(10, 20, 30, 40);
@@ -21,7 +21,7 @@ TEST(ColorTest, ShouldSetColor)
 	EXPECT_EQ(40, color.a);
 }
 
-TEST(ColorTest, ShouldSetAlphaAs255)
+TEST(ColorTest, ShouldSet_AlphaAs255)
 {
 	vie::Color color(5, 5, 5, 0);
 	EXPECT_EQ(0, color.a);
@@ -30,7 +30,7 @@ TEST(ColorTest, ShouldSetAlphaAs255)
 	EXPECT_EQ(255, color.a);
 }
 
-TEST(ColorTest, ShouldColorsBeEquals)
+TEST(ColorTest, Should_ColorsBeEquals)
 {
 	vie::Color redColor(255, 0, 0);
 	vie::Color anotherRedColor(255, 0, 0);
@@ -39,7 +39,7 @@ TEST(ColorTest, ShouldColorsBeEquals)
 	EXPECT_FALSE(redColor != anotherRedColor);
 }
 
-TEST(ColorTest, ShouldColorsBe_NOT_Equals)
+TEST(ColorTest, Should_ColorsBe_NOT_Equals)
 {
 	vie::Color white(255, 255, 255);
 	vie::Color black(0, 0, 0);
@@ -48,7 +48,7 @@ TEST(ColorTest, ShouldColorsBe_NOT_Equals)
 	EXPECT_FALSE(white == black);
 }
 
-TEST(ColorTest, ShouldExampleColorsBeValid)
+TEST(ColorTest, Should_ExampleColorsBeValid)
 {
 	EXPECT_EQ(vie::Color(255, 0, 0), vie::RED);
 	EXPECT_EQ(vie::Color(0, 255, 0), vie::GREEN);

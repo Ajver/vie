@@ -81,8 +81,10 @@ namespace vie
 		camera->update();
 		GLint pLocation = colorProgram.getUnitformLocation("P");
 		glm::mat4 cameraMatrix = camera->getCameraMatrix();
-
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+		GLint screeenHeightLocation = colorProgram.getUnitformLocation("screenHeight");
+		glUniform1f(screeenHeightLocation, Window::getScreenHeight());
 
 		setSortType(newSortType);
 
@@ -130,7 +132,6 @@ namespace vie
 		bottomRight = transformPoint(bottomRight);
 		topRight = transformPoint(topRight);
 
-
 		newGlyph->topLeft.setPosition(topLeft.x, topLeft.y);
 		newGlyph->topRight.setPosition(topRight.x, topRight.y);
 		newGlyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
@@ -148,13 +149,9 @@ namespace vie
 		glm::vec2 transformedPoint;
 
 		glm::vec2 rotatedPoint = rotatePoint(point);
-		transformedPoint.x = rotatedPoint.x;
-		transformedPoint.y = rotatedPoint.y;
+		transformedPoint = rotatedPoint;
 		transformedPoint *= scale;
-		transformedPoint.x += translateVec.x;
-		transformedPoint.y += translateVec.y;
-
-		transformedPoint.y = Window::getScreenHeight() - transformedPoint.y;
+		transformedPoint += translateVec;
 
 		return transformedPoint;
 	}
@@ -363,6 +360,11 @@ namespace vie
 		scale = newScale;
 	}
 
+	void Graphics::setRotate(float newRotate)
+	{
+		rotateAngleInRadians = newRotate;
+	}
+
 	void Graphics::translate(const glm::vec2& translateVector)
 	{
 		translateVec += translateVector;
@@ -398,4 +400,9 @@ namespace vie
 		return rotateAngleInRadians;
 	}
 
+	GlyphSortType Graphics::getSortType() const
+	{
+		return sortType;
+	}
+	
 }

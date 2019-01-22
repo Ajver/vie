@@ -54,7 +54,7 @@ void Player::render(vie::Graphics* g)
 	//g->translate(size * 0.5f);
 
 	//g->translate(glm::vec2(-450, -300));
-	//g->fillRect(position, size, vie::PINK);
+	g->fillRect(glm::vec2(0, 0) , glm::vec2(200, 200), vie::PINK);
 	//g->drawRect(position, size, vie::Color(255, 255, 255, 100));
 	//g->translate(glm::vec2(450, 300));
 }

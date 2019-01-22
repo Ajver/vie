@@ -1,10 +1,8 @@
 #include "pch.h"
 
-#include "../vie/Object.cpp"
-#include "../vie/ObjectsManager.cpp"
-#include "../vie/InputManager.cpp"
+#include "../vie/ObjectsManager.h"
 
-TEST(ObjectsManagerTest, ShouldAppendObject)
+TEST(ObjectsManagerTest, ShouldAppend_Object)
 {
 	vie::ObjectsManager om;
 	vie::Object* object = new vie::Object();
@@ -15,7 +13,7 @@ TEST(ObjectsManagerTest, ShouldAppendObject)
 	EXPECT_TRUE(om.containsObject(object));
 }
 
-TEST(ObjectsManagerTest, ShouldAppendMouseListener)
+TEST(ObjectsManagerTest, ShouldAppend_Mouse_Listener)
 {
 	vie::ObjectsManager om;
 	vie::Object* object = new vie::Object();
@@ -26,7 +24,7 @@ TEST(ObjectsManagerTest, ShouldAppendMouseListener)
 	EXPECT_TRUE(om.containsMouseListener(object));
 }
 
-TEST(ObjectsManagerTest, ShouldAppendKeyListener)
+TEST(ObjectsManagerTest, ShouldAppend_Key_Listener)
 {
 	vie::ObjectsManager om;
 	vie::Object* object = new vie::Object();
@@ -37,7 +35,7 @@ TEST(ObjectsManagerTest, ShouldAppendKeyListener)
 	EXPECT_TRUE(om.containsKeyListener(object));
 }
 
-TEST(ObjectsManagerTest, ShouldRemoveObject)
+TEST(ObjectsManagerTest, ShouldRemove_Object)
 {
 	vie::ObjectsManager om;
 	vie::Object* object = new vie::Object();
