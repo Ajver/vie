@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include <vie/IOManager.h>
+#include <vie/FileManager.h>
 #include <vie/Texture.h>
 #include <vie/Graphics.h>
 #include <vie/InputManager.h>
@@ -58,24 +58,28 @@ void MainClass::render(vie::Graphics* g)
 	float rotateSpeed = 0.1f;
 
 	if (vie::InputManager::isKeyPressed(SDLK_w))
-		g->translate(glm::vec2(0, -speed));
+		mainCamera->translate(glm::vec2(0, speed / mainCamera->getScale()));
 	if (vie::InputManager::isKeyPressed(SDLK_s))
-		g->translate(glm::vec2(0, speed));
+		mainCamera->translate(glm::vec2(0, -speed / mainCamera->getScale()));
 
 	if (vie::InputManager::isKeyPressed(SDLK_a))
-		g->translate(glm::vec2(-speed, 0));
+		mainCamera->translate(glm::vec2(-speed / mainCamera->getScale(), 0));
 	if (vie::InputManager::isKeyPressed(SDLK_d))
-		g->translate(glm::vec2(speed, 0));
+		mainCamera->translate(glm::vec2(speed / mainCamera->getScale(), 0));
 
 	if (vie::InputManager::isKeyPressed(SDLK_q))
-		g->scaleDown(scaleSpeed);
+		mainCamera->scaleDown(scaleSpeed);
 	if (vie::InputManager::isKeyPressed(SDLK_e))
-		g->scaleUp(scaleSpeed);
+		mainCamera->scaleUp(scaleSpeed);
 
 	if (vie::InputManager::isKeyPressed(SDLK_z))
 		g->rotate(-rotateSpeed);
 	if (vie::InputManager::isKeyPressed(SDLK_x))
 		g->rotate(rotateSpeed);
+
+	static vie::Texture chessBoard = vie::FileManager::getTexture("Graphics/HugeSquare.png");
+
+	g->drawTexture(chessBoard, glm::vec2(0, 0));
 }
 
 void MainClass::onKeyPress()

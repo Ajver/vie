@@ -1,4 +1,4 @@
-#include "IOManager.h"
+#include "FileManager.h"
 
 #include <vector>
 #include <fstream>
@@ -8,9 +8,9 @@
 
 namespace vie
 {
-	std::map<std::string, Texture> IOManager::texturesMap;
+	std::map<std::string, Texture> FileManager::texturesMap;
 
-	Texture IOManager::getTexture(std::string texturePath)
+	Texture FileManager::getTexture(std::string texturePath)
 	{
 		// Lookup the texture and see if its in the map
 		auto mit = texturesMap.find(texturePath);
@@ -30,7 +30,7 @@ namespace vie
 		return mit->second;
 	}
 
-	Texture IOManager::loadPNG(std::string filePath)
+	Texture FileManager::loadPNG(std::string filePath)
 	{
 		std::vector<unsigned char> in;
 		std::vector<unsigned char>* out = new std::vector<unsigned char>;
@@ -53,24 +53,14 @@ namespace vie
 		GLuint textureID;
 		glGenTextures(1, &textureID);
 
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &((*out)[0]));
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_MIPMAP);
-
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
 		Texture texture(textureID, width, height, &((*out)[0]));
+		texture.refreshGLBuffer();
 
 		// Return a copy of texture data
 		return texture;
 	}
 
-	bool IOManager::readFileToBuffer(std::string filePath, std::vector<unsigned char> &buffer)
+	bool FileManager::readFileToBuffer(std::string filePath, std::vector<unsigned char> &buffer)
 	{
 		std::ifstream file(filePath, std::ios::binary);
 		if (file.fail())
@@ -103,7 +93,7 @@ namespace vie
 		return true;
 	}
 
-	int IOManager::decodePNG(std::vector<unsigned char>& out_image, unsigned long& image_width, unsigned long& image_height, const unsigned char* in_png, size_t in_size, bool convert_to_rgba32)
+	int FileManager::decodePNG(std::vector<unsigned char>& out_image, unsigned long& image_width, unsigned long& image_height, const unsigned char* in_png, size_t in_size, bool convert_to_rgba32)
 	{
 		// picoPNG version 20101224
 		// Copyright (c) 2005-2010 Lode Vandevenne
