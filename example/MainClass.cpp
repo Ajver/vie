@@ -36,11 +36,13 @@ void MainClass::onCreate()
 	Player *player = new Player();
 	player->create(objectsManager);
 	player->setPosition(glm::vec2(0, 0));
-	player->setSize(glm::vec2(32, 32));
+	player->setSize(glm::vec2(32, 128));
 
 	objectsManager->appendObject(player);
 	objectsManager->appendMouseListener(player);
 	objectsManager->appendKeyListener(player);
+
+	//g->setTranslate(glm::vec2(0, 0));
 }
 
 void MainClass::update(float et)
@@ -53,6 +55,7 @@ void MainClass::render(vie::Graphics* g)
 {
 	float speed = 10.0f / g->getScale();
 	float scaleSpeed = 1.02f;
+	float rotateSpeed = 0.1f;
 
 	if (vie::InputManager::isKeyPressed(SDLK_w))
 		g->translate(glm::vec2(0, -speed));
@@ -68,6 +71,11 @@ void MainClass::render(vie::Graphics* g)
 		g->scaleDown(scaleSpeed);
 	if (vie::InputManager::isKeyPressed(SDLK_e))
 		g->scaleUp(scaleSpeed);
+
+	if (vie::InputManager::isKeyPressed(SDLK_z))
+		g->rotate(-rotateSpeed);
+	if (vie::InputManager::isKeyPressed(SDLK_x))
+		g->rotate(rotateSpeed);
 }
 
 void MainClass::onKeyPress()

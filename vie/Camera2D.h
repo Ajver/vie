@@ -14,7 +14,7 @@ namespace vie
 		void init();
 		void update();
 
-		void translate(glm::vec2 translateVector);
+		void translate(const glm::vec2& translateVector);
 		void scaleUp(float scaleM);
 		void scaleDown(float scaleM);
 
@@ -23,9 +23,9 @@ namespace vie
 
 		glm::vec2 screenToWorldPos(glm::vec2 screenPosition);
 
-		glm::vec2 getPosition();
-		float getScale();
-		glm::mat4 getCameraMatrix();
+		glm::vec2 getPosition() const;
+		float getScale() const;
+		glm::mat4 getCameraMatrix() const;
 
 	private:
 		bool needsMatrixUpdate;

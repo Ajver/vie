@@ -43,7 +43,7 @@ namespace vie
 		void setBackgroundColor(const Color& color);
 
 		// Add new sprite to the batch
-		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color = WHITE);
+		void draw(glm::vec4 destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color = WHITE);
 		
 		// Sipmly draw texture on position x, y
 		void drawTexture(const Texture& texture, float x, float y, const Color& color = WHITE);
@@ -62,9 +62,11 @@ namespace vie
 		void translate(const glm::vec2& translateVector);
 		void scaleUp(float scaleMod);
 		void scaleDown(float scaleMod);
+		void rotate(float angle);
 
-		glm::vec2 getTranslate();
-		float getScale();
+		glm::vec2 getTranslate() const;
+		float getScale() const;
+		float getRotate() const;
 
 		void renderBatch();
 
@@ -83,11 +85,14 @@ namespace vie
 
 		glm::vec2 translateVec;
 		float scale;
+		float rotateAngleInRadians;
 
 		void createOnePixelTexture();
 		void createVertexArray();
 		void createRenderBatches();
 		void sortGlyphs();
+
+		glm::vec2 rotatePoint(const glm::vec2& point) const;
 
 		static bool compareFrontToBack(Glyph* a, Glyph* b);
 		static bool compareBackToFront(Glyph* a, Glyph* b);

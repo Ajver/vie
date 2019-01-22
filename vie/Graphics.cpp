@@ -15,7 +15,8 @@ namespace vie
 		camera(nullptr),
 		scale(1.0f),
 		translateVec(glm::vec2(0, 0)),
-		nextTextureDepth(0.0f)
+		nextTextureDepth(0.0f),
+		rotateAngleInRadians(0.0f)
 	{
 	}
 
@@ -110,8 +111,10 @@ namespace vie
 		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
 	}
 
-	void Graphics::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
+	void Graphics::draw(glm::vec4 destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
 	{
+		translateVec.x = translateVec.y = 0;
+
 		if (depth > nextTextureDepth)
 			nextTextureDepth = depth;
 
@@ -119,27 +122,62 @@ namespace vie
 		newGlyph->textureID = textureID;
 		newGlyph->depth = depth;
 
-		glm::vec4 newDestRect = destRect;
-		newDestRect.x += translateVec.x;
-		newDestRect.y += translateVec.y;
-		newDestRect *= scale;
+		glm::vec2 topLeft(destRect.x, Window::getScreenHeight() - destRect.y);
+		glm::vec2 topRight(destRect.x + destRect.z, Window::getScreenHeight() - destRect.y);
+		glm::vec2 bottomLeft(destRect.x, Window::getScreenHeight() - (destRect.y + destRect.w));
+		glm::vec2 bottomRight(destRect.x + destRect.z, Window::getScreenHeight() - (destRect.y + destRect.w));
 
-		newGlyph->topLeft.setColor(color.r, color.g, color.b, color.a);
-		newGlyph->topRight.setColor(color.r, color.g, color.b, color.a);
-		newGlyph->bottomLeft.setColor(color.r, color.g, color.b, color.a);
-		newGlyph->bottomRight.setColor(color.r, color.g, color.b, color.a);
+		glm::vec2 rotatedPosition = rotatePoint(topLeft);
+		topLeft.x = rotatedPosition.x;
+		topLeft.y = rotatedPosition.y;
+		topLeft *= scale;
+		topLeft.x += translateVec.x;
+		topLeft.y += translateVec.y;
 
-		newGlyph->topLeft.setPosition(newDestRect.x, Window::getScreenHeight() - newDestRect.y);
-		newGlyph->topRight.setPosition(newDestRect.x + newDestRect.z, Window::getScreenHeight() - newDestRect.y);
-		newGlyph->bottomLeft.setPosition(newDestRect.x, Window::getScreenHeight() - (newDestRect.y + newDestRect.w));
-		newGlyph->bottomRight.setPosition(newDestRect.x + newDestRect.z, Window::getScreenHeight() - (newDestRect.y + newDestRect.w));
+		rotatedPosition = rotatePoint(bottomLeft);
+		bottomLeft.x = rotatedPosition.x;
+		bottomLeft.y = rotatedPosition.y;
+		bottomLeft *= scale;
+		bottomLeft.x += translateVec.x;
+		bottomLeft.y += translateVec.y;
+
+		rotatedPosition = rotatePoint(topRight);
+		topRight.x = rotatedPosition.x;
+		topRight.y = rotatedPosition.y;
+		topRight *= scale;
+		topRight.x += translateVec.x;
+		topRight.y += translateVec.y;
+
+		rotatedPosition = rotatePoint(bottomRight);
+		bottomRight.x = rotatedPosition.x;
+		bottomRight.y = rotatedPosition.y;
+		bottomRight *= scale;
+		bottomRight.x += translateVec.x;
+		bottomRight.y += translateVec.y;
+
+		newGlyph->topLeft.setPosition(topLeft.x, topLeft.y);
+		newGlyph->topRight.setPosition(topRight.x, topRight.y);
+		newGlyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
+		newGlyph->bottomRight.setPosition(bottomRight.x, bottomRight.y);
 
 		newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
 		newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
 		newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
 		newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
 
+		newGlyph->topLeft.setColor(color);
+		newGlyph->topRight.setColor(color);
+		newGlyph->bottomLeft.setColor(color);
+		newGlyph->bottomRight.setColor(color);
+
 		glyphs.push_back(newGlyph);
+	}
+
+	glm::vec2 Graphics::rotatePoint(const glm::vec2& point) const
+	{
+		float nx = point.x * cos(rotateAngleInRadians) - point.y * sin(rotateAngleInRadians);
+		float ny = point.x * sin(rotateAngleInRadians) + point.y * cos(rotateAngleInRadians);
+		return glm::vec2(nx, ny);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, float x, float y, const Color& color)
@@ -338,14 +376,24 @@ namespace vie
 		scale /= scaleMod;
 	}
 
-	glm::vec2 Graphics::getTranslate()
+	void Graphics::rotate(float angle)
+	{
+		rotateAngleInRadians += angle;
+	}
+
+	glm::vec2 Graphics::getTranslate() const
 	{
 		return translateVec;
 	}
 
-	float Graphics::getScale()
+	float Graphics::getScale() const
 	{
 		return scale;
+	}
+
+	float Graphics::getRotate() const
+	{
+		return rotateAngleInRadians;
 	}
 
 }

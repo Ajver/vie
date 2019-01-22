@@ -32,9 +32,9 @@ namespace vie
 			position.y = y;
 		}
 
-		void setColor(GLubyte r, GLubyte g, GLubyte b, GLubyte a = 255)
+		void setColor(const Color& ncolor)
 		{
-			color.setColor(r, g, b, a);
+			color = ncolor;
 		}
 
 		void setUV(float u, float v)

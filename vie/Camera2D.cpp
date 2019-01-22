@@ -52,7 +52,7 @@ namespace vie
 		return screenPosition;
 	}
 
-	void Camera2D::translate(glm::vec2 translateVector)
+	void Camera2D::translate(const glm::vec2& translateVector)
 	{
 		position += translateVector;
 		needsMatrixUpdate = true;
@@ -82,17 +82,17 @@ namespace vie
 		needsMatrixUpdate = true;
 	}
 
-	glm::vec2 Camera2D::getPosition()
+	glm::vec2 Camera2D::getPosition() const
 	{
 		return position;
 	}
 
-	float Camera2D::getScale()
+	float Camera2D::getScale() const
 	{
 		return scale;
 	}
 
-	glm::mat4 Camera2D::getCameraMatrix()
+	glm::mat4 Camera2D::getCameraMatrix() const
 	{
 		return cameraMatrix;
 	}
