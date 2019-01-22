@@ -2,6 +2,7 @@
 
 #include "../vie/Graphics.h"
 
+glm::vec2 getRotatedPoint(const glm::vec2& point, float angle);
 
 TEST(GraphicsTest, ShouldSet_Translate)
 {
@@ -77,5 +78,30 @@ TEST(GraphicsTest, Should_TransformPoint)
 	vie::Graphics g;
 	g.setTranslate(glm::vec2(10.0f, 30.0f));
 	g.setScale(2.0f);
-	EXPECT_EQ(glm::vec2(210.0f, 230.0f), g.transformPoint(glm::vec2(100.0f, 100.0f)));
+	g.setRotate(3.0f);
+
+	glm::vec2 point(100.0f, 100.0f);
+	point = getRotatedPoint(point, 3.0f);
+	point *= 2.0f;
+	point.x += 10.0f;
+	point.y += 30.0f;
+
+	EXPECT_EQ(point, g.transformPoint(glm::vec2(100.0f, 100.0f)));
+}
+
+TEST(GraphicsTest, Should_RotatePoint)
+{
+	vie::Graphics g;
+	g.setRotate(3.0f);
+	EXPECT_EQ(getRotatedPoint(glm::vec2(100.0f, 50.0f), 3.0f), g.rotatePoint(glm::vec2(100.0f, 50.0f)));
+}
+
+
+
+glm::vec2 getRotatedPoint(const glm::vec2& point, float angle)
+{
+	glm::vec2 rotatedPoint;
+	rotatedPoint.x = point.x * cos(angle) - point.y * sin(angle);
+	rotatedPoint.y = point.x * sin(angle) + point.y * cos(angle);
+	return rotatedPoint;
 }
