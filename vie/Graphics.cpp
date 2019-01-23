@@ -31,21 +31,18 @@ namespace vie
 
 	void Graphics::init(Camera2D* ncamera)
 	{
-		// Enable alpha blending
+		setCamera(ncamera);
+		colorProgram.init();
+
+		enableAlphaBlending();
+		createOnePixelTexture();
+		createVertexArray();
+	}
+
+	void Graphics::enableAlphaBlending()
+	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		colorProgram.compileShaders();
-		colorProgram.addAtribute("vertexPosition");
-		colorProgram.addAtribute("vertexColor");
-		colorProgram.addAtribute("vertexUV");
-		colorProgram.linkShaders();
-
-		camera = ncamera;
-
-		createOnePixelTexture();
-
-		createVertexArray();
 	}
 
 	void Graphics::createOnePixelTexture()
@@ -59,37 +56,26 @@ namespace vie
 		onePixelTexture.refreshGLBuffer();
 	}
 
-	glm::vec2 rotatePointt(float angle, const glm::vec2& point)
-	{
-		float nx = point.x * cos(angle) - point.y * sin(angle);
-		float ny = point.x * sin(angle) + point.y * cos(angle);
-		return glm::vec2(nx, ny);
-	}
-
 	void Graphics::begin(GlyphSortType newSortType)
 	{
-		glClearDepth(1.0);
-
-		// Clear the color and depth buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		setSortType(newSortType);
 		nextTextureDepth = 0.0f;
+		clearGL();
 
-		// Enable the shader
 		colorProgram.use();
+		resetSamplerInShader();
+	}
 
+	void Graphics::clearGL()
+	{
+		glClearDepth(1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Graphics::resetSamplerInShader()
+	{
 		GLint textureLocation = colorProgram.getUnitformLocation("mySampler");
 		glUniform1i(textureLocation, 0);
-
-		setSortType(newSortType);
-
-		// Free the memory
-		renderBatches.clear();
-
-		for (int i = 0; i < glyphs.size(); i++)
-			delete glyphs[i];
-
-		glyphs.clear();
 	}
 
 	void Graphics::end()
@@ -141,6 +127,53 @@ namespace vie
 		sortType = newSortType;
 	}
 
+	void Graphics::createRenderBatches()
+	{
+		if (glyphs.empty())
+			return;
+
+		std::vector<Vertex> vertices;
+		vertices.resize(glyphs.size() * 6);
+
+		for (int curGlyph = 0, curVertex = 0, offset = 0; curGlyph < glyphs.size(); curGlyph++)
+		{
+			if (curGlyph > 0)
+			{
+				if (glyphs[curGlyph]->textureID != glyphs[curGlyph - 1]->textureID)
+					renderBatches.emplace_back(offset, 6, glyphs[curGlyph]->textureID);
+				else
+					renderBatches.back().numVertices += 6;
+			}
+			else
+			{
+				renderBatches.emplace_back(0, 6, glyphs[0]->textureID);
+			}
+
+			vertices[curVertex++] = glyphs[curGlyph]->topLeft;
+			vertices[curVertex++] = glyphs[curGlyph]->bottomLeft;
+			vertices[curVertex++] = glyphs[curGlyph]->bottomRight;
+			vertices[curVertex++] = glyphs[curGlyph]->bottomRight;
+			vertices[curVertex++] = glyphs[curGlyph]->topRight;
+			vertices[curVertex++] = glyphs[curGlyph]->topLeft;
+			offset += 6;
+		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void Graphics::freeMemory()
+	{
+		renderBatches.clear();
+
+		for (int i = 0; i < glyphs.size(); i++)
+			delete glyphs[i];
+
+		glyphs.clear();
+	}
+
 	void Graphics::setBackgroundColor(const Color& color)
 	{
 		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
@@ -152,27 +185,18 @@ namespace vie
 			nextTextureDepth = depth;
 
 		Glyph *newGlyph = new Glyph();
-		newGlyph->textureID = textureID;
-		newGlyph->depth = depth;
 
-		glm::vec2 topLeft(destRect.x, destRect.y);
-		glm::vec2 topRight(destRect.x + destRect.z, destRect.y);
-		glm::vec2 bottomLeft(destRect.x, destRect.y + destRect.w);
-		glm::vec2 bottomRight(destRect.x + destRect.z, destRect.y + destRect.w);
-
-		topLeft = transformPoint(topLeft);
-		bottomLeft = transformPoint(bottomLeft);
-		bottomRight = transformPoint(bottomRight);
-		topRight = transformPoint(topRight);
+		glm::vec2 topLeft = transformPoint(glm::vec2(destRect.x, destRect.y));
+		glm::vec2 topRight = transformPoint(glm::vec2(destRect.x + destRect.z, destRect.y));
+		glm::vec2 bottomLeft = transformPoint(glm::vec2(destRect.x, destRect.y + destRect.w));
+		glm::vec2 bottomRight = transformPoint(glm::vec2(destRect.x + destRect.z, destRect.y + destRect.w));
 
 		newGlyph->topLeft.setPosition(topLeft.x, topLeft.y);
 		newGlyph->topRight.setPosition(topRight.x, topRight.y);
 		newGlyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
 		newGlyph->bottomRight.setPosition(bottomRight.x, bottomRight.y);
 
-		setGlyphUV(newGlyph, uvRect);
-
-		setGlyphColor(newGlyph, color);
+		setGlyphAttributes(newGlyph, textureID, depth, uvRect, color);
 
 		glyphs.push_back(newGlyph);
 	}
@@ -184,6 +208,14 @@ namespace vie
 		point += translateVec;
 
 		return point;
+	}
+
+	void Graphics::setGlyphAttributes(Glyph* glyph, GLuint textureID, float depth, const glm::vec4& uvRect, const Color& color)
+	{
+		glyph->textureID = textureID;
+		glyph->depth = depth;
+		setGlyphUV(glyph, uvRect);
+		setGlyphColor(glyph, color);
 	}
 
 	void Graphics::setGlyphUV(Glyph* glyph, const glm::vec4& uvRect)
@@ -201,20 +233,11 @@ namespace vie
 		glyph->bottomLeft.setColor(color);
 		glyph->bottomRight.setColor(color);
 	}
-
-	void Graphics::drawTexture(const Texture& texture, float x, float y, const Color& color)
-	{
-		drawTexture(texture, x, y, texture.getWidth(), texture.getHeight(), color);
-	}
-
-	void Graphics::drawTexture(const Texture& texture, float x, float y, float w, float h, const Color& color)
-	{
-		draw(glm::vec4(x, y, w, h), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth + 0.1f, color);
-	}
 	
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const Color& color)
 	{
-		draw(glm::vec4(position.x, position.y, texture.getWidth(), texture.getHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth + 0.1f, color);
+		glm::vec2 size(texture.getWidth(), texture.getHeight());
+		drawTexture(texture, position, size, color);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color)
@@ -227,19 +250,19 @@ namespace vie
 		drawTexture(onePixelTexture, position, size, color);
 	}
 
-	void Graphics::drawRect(const glm::vec2& position, const glm::vec2& size, const Color& color)
+	void Graphics::drawRect(const glm::vec2& position, const glm::vec2& size, float weight, const Color& color)
 	{
 		// Top
-		fillRect(glm::vec2(position.x + 1, position.y), glm::vec2(size.x - 1, 1), color);
+		fillRect(glm::vec2(position.x + weight, position.y), glm::vec2(size.x - weight, weight), color);
 
 		// Bottom
-		fillRect(glm::vec2(position.x + 1, position.y + size.y - 1), glm::vec2(size.x - 1, 1), color);
+		fillRect(glm::vec2(position.x + weight, position.y + size.y - weight), glm::vec2(size.x - weight, weight), color);
 
 		// Left
-		fillRect(position, glm::vec2(1, size.y), color);
+		fillRect(position, glm::vec2(weight, size.y), color);
 
 		// Right
-		fillRect(glm::vec2(position.x + size.x - 1, position.y + 1), glm::vec2(1, size.y - 2), color);
+		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2* weight), color);
 	}
 
 	void Graphics::renderBatch()
@@ -259,6 +282,8 @@ namespace vie
 
 		// Disable the shader
 		colorProgram.unuse();
+
+		freeMemory();
 	}
 
 	void Graphics::createVertexArray()
@@ -289,60 +314,6 @@ namespace vie
 		glBindVertexArray(0);
 	}
 
-	void Graphics::createRenderBatches()
-	{
-		if (glyphs.empty())
-			return;
-
-		std::vector<Vertex> vertices;
-		vertices.resize(glyphs.size() * 6);
-
-		int offset = 0;
-
-		// Current Vertex
-		int cv = 0;
-
-		// Create and push new element with specyfic attributes
-		renderBatches.emplace_back(0, 6, glyphs[0]->textureID);
-		vertices[cv++] = glyphs[0]->topLeft;
-		vertices[cv++] = glyphs[0]->bottomLeft;
-		vertices[cv++] = glyphs[0]->bottomRight;
-		vertices[cv++] = glyphs[0]->bottomRight;
-		vertices[cv++] = glyphs[0]->topRight;
-		vertices[cv++] = glyphs[0]->topLeft;
-
-		offset += 6;
-
-		// Current Glyph
-		int cg = 1;
-
-		for (int cg = 1; cg < glyphs.size(); cg++)
-		{
-			if (glyphs[cg]->textureID != glyphs[cg - 1]->textureID)
-				renderBatches.emplace_back(offset, 6, glyphs[cg]->textureID);
-			else
-				renderBatches.back().numVertices += 6;
-
-			vertices[cv++] = glyphs[cg]->topLeft;
-			vertices[cv++] = glyphs[cg]->bottomLeft;
-			vertices[cv++] = glyphs[cg]->bottomRight;
-			vertices[cv++] = glyphs[cg]->bottomRight;
-			vertices[cv++] = glyphs[cg]->topRight;
-			vertices[cv++] = glyphs[cg]->topLeft;
-			offset += 6;
-		}
-
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-		// Orphan the buffer
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
-
-		// Upload the data
-		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-
 	void Graphics::sortGlyphs()
 	{
 		switch (sortType)
@@ -371,6 +342,11 @@ namespace vie
 	{
 		// Sorted by texture id
 		return a->textureID < b->textureID;
+	}
+
+	void Graphics::setCamera(Camera2D* ncamera)
+	{
+		camera = ncamera;
 	}
 
 	void Graphics::setTranslate(const glm::vec2& newTranslate)
@@ -427,5 +403,15 @@ namespace vie
 	{
 		return sortType;
 	}
+
+	Camera2D* Graphics::getCamera() const
+	{
+		return camera;
+	}
 	
+	std::vector<Glyph*> Graphics::getGlyphsVector() const
+	{
+		return glyphs;
+	}
+
 }

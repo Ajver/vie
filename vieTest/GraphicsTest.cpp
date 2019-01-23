@@ -1,9 +1,18 @@
 #include "pch.h"
 
 #include<vie/Graphics.h>
+#include<vie/Camera2D.h>
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/rotate_vector.hpp>
+void drawSomething(vie::Graphics* g);
+vie::Graphics* getInitedGraphics();
+
+TEST(GraphicsTest, ShouldSet_Camera)
+{
+	vie::Graphics g;
+	vie::Camera2D* cam = new vie::Camera2D();
+	g.setCamera(cam);
+	EXPECT_EQ(cam, g.getCamera());
+}
 
 TEST(GraphicsTest, ShouldSet_Translate)
 {
@@ -98,4 +107,49 @@ TEST(GraphicsTest, Should_Not_ChangeOriginalVec2)
 	g.translate(glm::vec2(20.0f, -15.0f));
 	EXPECT_EQ(glm::vec2(30.0f, -10.0f), g.getTranslate());
 	EXPECT_EQ(glm::vec2(10.0f, 5.0f), translateVec);
+}
+
+TEST(GraphicsTest, Should_AppendGlyphs)
+{
+	vie::Graphics* g = new vie::Graphics();
+	drawSomething(g);
+	EXPECT_LT(0, g->getGlyphsVector().size());
+}
+
+TEST(GraphicsTest, Should_Not_FreeMemoryAfter_Begin)
+{
+	vie::Graphics* g = getInitedGraphics();
+	drawSomething(g);
+	g->begin();
+	EXPECT_LT(0, g->getGlyphsVector().size());
+}
+
+TEST(GraphicsTest, Should_Not_FreeMemoryAfter_End)
+{
+	vie::Graphics* g = getInitedGraphics();
+	drawSomething(g);
+	g->end();
+	EXPECT_LT(0, g->getGlyphsVector().size());
+}
+
+TEST(GraphicsTest, Should_FreeMemoryAfter_RenderBatch)
+{
+	vie::Graphics* g = new vie::Graphics();
+	drawSomething(g);
+	g->renderBatch();
+	EXPECT_EQ(0, g->getGlyphsVector().size());
+}
+
+
+void drawSomething(vie::Graphics* g)
+{
+	for (int i = 0; i < 5; i++)
+		g->fillRect(glm::vec2(), glm::vec2(), vie::Color());
+}
+
+vie::Graphics* getInitedGraphics()
+{
+	vie::Graphics* g = new vie::Graphics();
+	g->init(new vie::Camera2D());
+	return g;
 }

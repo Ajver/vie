@@ -19,6 +19,15 @@ namespace vie
 
 	}
 
+	void GLSLProgram::init()
+	{
+		compileShaders();
+		addAtribute("vertexPosition");
+		addAtribute("vertexColor");
+		addAtribute("vertexUV");
+		linkShaders();
+	}
+
 	void GLSLProgram::compileShaders()
 	{
 		// Vertex and fragment shaders are successfully compiled.

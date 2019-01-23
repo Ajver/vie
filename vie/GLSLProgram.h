@@ -12,11 +12,7 @@ namespace vie
 		GLSLProgram();
 		~GLSLProgram();
 
-		void compileShaders();
-
-		void linkShaders();
-
-		void addAtribute(const std::string& attributeName);
+		void init();
 
 		GLuint getUnitformLocation(const std::string& uniformName);
 
@@ -31,7 +27,10 @@ namespace vie
 		GLuint vertexShaderID;
 		GLuint fragmentShaderID;
 
+		void compileShaders();
 		void compileShader(const std::string&, GLuint);
+		void linkShaders();
+		void addAtribute(const std::string& attributeName);
 		std::string getVertexShader();
 		std::string getFragmentShader();
 	};

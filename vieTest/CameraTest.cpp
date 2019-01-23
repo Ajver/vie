@@ -2,9 +2,6 @@
 
 #include <vie/Camera2D.h>
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/rotate_vector.hpp>
-
 glm::vec2 getTransformedPoint(glm::vec2 point);
 vie::Camera2D getUpdatedCamera();
 vie::Camera2D getInitedCamera();
