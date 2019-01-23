@@ -2,8 +2,13 @@
 
 #include <algorithm>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
+
+#include "Camera2D.h"
 #include "Errors.h"
 #include "Window.h"
+#include "Glyph.h"
 
 namespace vie
 {
@@ -36,9 +41,6 @@ namespace vie
 		colorProgram.addAtribute("vertexUV");
 		colorProgram.linkShaders();
 
-		translateVec.x = Window::getScreenWidth() * 0.5f;
-		translateVec.y = Window::getScreenHeight() * 0.5f;
-
 		camera = ncamera;
 
 		createOnePixelTexture();
@@ -57,6 +59,13 @@ namespace vie
 		onePixelTexture.refreshGLBuffer();
 	}
 
+	glm::vec2 rotatePointt(float angle, const glm::vec2& point)
+	{
+		float nx = point.x * cos(angle) - point.y * sin(angle);
+		float ny = point.x * sin(angle) + point.y * cos(angle);
+		return glm::vec2(nx, ny);
+	}
+
 	void Graphics::begin(GlyphSortType newSortType)
 	{
 		glClearDepth(1.0);
@@ -72,15 +81,6 @@ namespace vie
 		GLint textureLocation = colorProgram.getUnitformLocation("mySampler");
 		glUniform1i(textureLocation, 0);
 
-		// Set camera matrix
-		camera->update();
-		GLint pLocation = colorProgram.getUnitformLocation("P");
-		glm::mat4 cameraMatrix = camera->getCameraMatrix();
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-
-		GLint screeenHeightLocation = colorProgram.getUnitformLocation("screenHeight");
-		glUniform1f(screeenHeightLocation, Window::getScreenHeight());
-
 		setSortType(newSortType);
 
 		// Free the memory
@@ -94,8 +94,46 @@ namespace vie
 
 	void Graphics::end()
 	{
+		setCameraMatrix();
 		sortGlyphs();
 		createRenderBatches();
+	}
+
+	void Graphics::setCameraMatrix()
+	{
+		camera->update();
+
+		GLint pLocation = colorProgram.getUnitformLocation("P");
+		glm::mat4 cameraMatrix = camera->getCameraMatrix();
+		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+		GLint screeenHeightLocation = colorProgram.getUnitformLocation("screenHeight");
+		glUniform1f(screeenHeightLocation, (float)Window::getScreenHeight());
+
+		transformGlyphsByCamera();
+	}
+
+	void Graphics::transformGlyphsByCamera()
+	{
+		translateGlyphsByCamera();
+		rotateGlyphsByCamera();
+	}
+
+	void Graphics::translateGlyphsByCamera()
+	{
+		glm::vec2 cameraPosition = camera->getPosition();
+		cameraPosition.x *= -1.0f;
+
+		for (int i = 0; i < glyphs.size(); i++)
+			glyphs[i]->translateByVec2(cameraPosition);
+	}
+
+	void Graphics::rotateGlyphsByCamera()
+	{
+		float angle = -camera->getRotate();
+
+		for (int i = 0; i < glyphs.size(); i++)
+			glyphs[i]->rotateByAngle(angle);
 	}
 
 	void Graphics::setSortType(GlyphSortType newSortType)
@@ -141,18 +179,11 @@ namespace vie
 
 	glm::vec2 Graphics::transformPoint(glm::vec2 point) const
 	{
-		point = rotatePoint(point);
+		point = glm::rotate(point, rotateAngleInRadians);
 		point *= scale;
 		point += translateVec;
 
 		return point;
-	}
-
-	glm::vec2 Graphics::rotatePoint(const glm::vec2& point) const
-	{
-		float nx = point.x * cos(rotateAngleInRadians) - point.y * sin(rotateAngleInRadians);
-		float ny = point.x * sin(rotateAngleInRadians) + point.y * cos(rotateAngleInRadians);
-		return glm::vec2(nx, ny);
 	}
 
 	void Graphics::setGlyphUV(Glyph* glyph, const glm::vec4& uvRect)

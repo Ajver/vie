@@ -17,14 +17,20 @@ namespace vie
 		void move(const glm::vec2& translateVector);
 		void scaleUp(float scaleM);
 		void scaleDown(float scaleM);
+		void rotate(float angle);
 
 		void setPosition(const glm::vec2& npos);
 		void setScale(float nscale);
+		void setRotate(float angle);
 
 		glm::vec2 screenToWorldPos(glm::vec2 screenPosition) const;
 
 		glm::vec2 getPosition() const;
 		float getScale() const;
+		float getRotate() const;
+
+		bool getNeedsMatrixUpdate() const;
+
 		glm::mat4 getCameraMatrix() const;
 
 	private:
@@ -35,6 +41,7 @@ namespace vie
 		glm::mat4 orthoMatrix;
 
 		float scale;
+		float rotateAngleInRadians;
 	};
 
 }

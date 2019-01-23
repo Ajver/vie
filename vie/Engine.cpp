@@ -11,6 +11,7 @@
 #include "Graphics.h"
 #include "ObjectsManager.h"
 #include "Input.h"
+#include "Camera2D.h"
 
 namespace vie
 {

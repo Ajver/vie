@@ -7,6 +7,7 @@
 #include <vie/Graphics.h>
 #include <vie/Input.h>
 #include <vie/ObjectsManager.h>
+#include <vie/Camera2D.h>
 
 /*
 Link those libs:
@@ -30,9 +31,6 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	//g->setScale(6.0f);
-	//mainCamera->setScale(0.1f);
-
 	Player *player = new Player();
 	player->create(objectsManager);
 	player->setPosition(glm::vec2(0, 0));
@@ -51,9 +49,9 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
-	float speed = 10.0f / g->getScale();
+	float speed = 8.0f / g->getScale();
 	float scaleSpeed = 1.02f;
-	float rotateSpeed = 0.1f;
+	float rotateSpeed = 0.01f;
 
 	if (vie::Input::isKeyPressed(SDLK_w))
 		mainCamera->move(glm::vec2(0, speed / mainCamera->getScale()));
@@ -71,13 +69,13 @@ void MainClass::render(vie::Graphics* g)
 		mainCamera->scaleUp(scaleSpeed);
 
 	if (vie::Input::isKeyPressed(SDLK_z))
-		g->rotate(-rotateSpeed);
+		mainCamera->rotate(-rotateSpeed);
 	if (vie::Input::isKeyPressed(SDLK_x))
-		g->rotate(rotateSpeed);
+		mainCamera->rotate(rotateSpeed);
 
 	static vie::Texture chessBoard("Graphics/HugeSquare.png");
 
-	g->drawTexture(chessBoard, glm::vec2(0, 0));
+	g->drawTexture(chessBoard, 0.5f * glm::vec2(-(float)chessBoard.getWidth(), -(float)chessBoard.getHeight()));
 }
 
 void MainClass::onKeyPress()

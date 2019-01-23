@@ -1,15 +1,16 @@
 #pragma once
 
 #include <vector>
+#include <glm/glm.hpp>
 
-#include "Camera2D.h"
 #include "RenderBatch.h"
 #include "GLSLProgram.h"
-#include "Glyph.h"
 #include "Texture.h"
 
 namespace vie
 {
+	class Camera2D;
+	class Glyph;
 
 	enum class GlyphSortType
 	{
@@ -73,7 +74,6 @@ namespace vie
 		void renderBatch();
 
 		glm::vec2 transformPoint(glm::vec2 point) const;
-		glm::vec2 rotatePoint(const glm::vec2& point) const;
 
 	private:
 		GLuint vbo;
@@ -91,6 +91,11 @@ namespace vie
 		glm::vec2 translateVec;
 		float scale;
 		float rotateAngleInRadians;
+
+		void setCameraMatrix();
+		void transformGlyphsByCamera();
+		void translateGlyphsByCamera();
+		void rotateGlyphsByCamera();
 
 		void createOnePixelTexture();
 		void createVertexArray();

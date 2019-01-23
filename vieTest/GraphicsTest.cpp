@@ -2,7 +2,8 @@
 
 #include<vie/Graphics.h>
 
-glm::vec2 getRotatedPoint(const glm::vec2& point, float angle);
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
 
 TEST(GraphicsTest, ShouldSet_Translate)
 {
@@ -81,19 +82,12 @@ TEST(GraphicsTest, Should_TransformPoint)
 	g.setRotate(3.0f);
 
 	glm::vec2 point(100.0f, 100.0f);
-	point = getRotatedPoint(point, 3.0f);
+	point = glm::rotate(point, 3.0f);
 	point *= 2.0f;
 	point.x += 10.0f;
 	point.y += 30.0f;
 
 	EXPECT_EQ(point, g.transformPoint(glm::vec2(100.0f, 100.0f)));
-}
-
-TEST(GraphicsTest, Should_RotatePoint)
-{
-	vie::Graphics g;
-	g.setRotate(3.0f);
-	EXPECT_EQ(getRotatedPoint(glm::vec2(100.0f, 50.0f), 3.0f), g.rotatePoint(glm::vec2(100.0f, 50.0f)));
 }
 
 TEST(GraphicsTest, Should_Not_ChangeOriginalVec2)
@@ -104,12 +98,4 @@ TEST(GraphicsTest, Should_Not_ChangeOriginalVec2)
 	g.translate(glm::vec2(20.0f, -15.0f));
 	EXPECT_EQ(glm::vec2(30.0f, -10.0f), g.getTranslate());
 	EXPECT_EQ(glm::vec2(10.0f, 5.0f), translateVec);
-}
-
-glm::vec2 getRotatedPoint(const glm::vec2& point, float angle)
-{
-	glm::vec2 rotatedPoint;
-	rotatedPoint.x = point.x * cos(angle) - point.y * sin(angle);
-	rotatedPoint.y = point.x * sin(angle) + point.y * cos(angle);
-	return rotatedPoint;
 }

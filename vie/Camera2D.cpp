@@ -2,6 +2,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
+
 #include "Window.h"
 
 namespace vie
@@ -12,7 +15,8 @@ namespace vie
 		cameraMatrix(1.0f),
 		scale(1.0f),
 		needsMatrixUpdate(true),
-		orthoMatrix(1.0f)
+		orthoMatrix(1.0f),
+		rotateAngleInRadians(0.0f)
 	{
 	}
 
@@ -30,14 +34,15 @@ namespace vie
 		if (needsMatrixUpdate)
 		{
 			init();
-
+			
 			// Camera translation
-			glm::vec3 translateVec(-position.x, -position.y, 0.0f);
+			glm::vec3 translateVec(Window::getScreenWidth() * 0.5f, -Window::getScreenHeight() * 0.5f, 0.0f);
 			cameraMatrix = glm::translate(orthoMatrix, translateVec);
 
 			// Camera scale
 			glm::vec3 scaleVec(scale, scale, 0.0f);
 			cameraMatrix = glm::scale(glm::mat4(1.0f), scaleVec) * cameraMatrix;
+
 
 			needsMatrixUpdate = false;
 		}
@@ -54,7 +59,7 @@ namespace vie
 
 	void Camera2D::move(const glm::vec2& translateVector)
 	{
-		position += translateVector;
+		position += glm::rotate(translateVector, -rotateAngleInRadians);
 		needsMatrixUpdate = true;
 	}
 
@@ -70,15 +75,27 @@ namespace vie
 		needsMatrixUpdate = true;
 	}
 
+	void Camera2D::rotate(float angle)
+	{
+		rotateAngleInRadians += angle;
+		needsMatrixUpdate = true;
+	}
+
 	void Camera2D::setPosition(const glm::vec2& npos)
 	{
-		position = npos;
+		position = glm::rotate(npos, -rotateAngleInRadians);
 		needsMatrixUpdate = true;
 	}
 
 	void Camera2D::setScale(float nscale)
 	{
 		scale = nscale;
+		needsMatrixUpdate = true;
+	}
+
+	void Camera2D::setRotate(float angle)
+	{
+		rotateAngleInRadians = angle;
 		needsMatrixUpdate = true;
 	}
 
@@ -92,9 +109,19 @@ namespace vie
 		return scale;
 	}
 
+	float Camera2D::getRotate() const
+	{
+		return rotateAngleInRadians;
+	}
+
 	glm::mat4 Camera2D::getCameraMatrix() const
 	{
 		return cameraMatrix;
+	}
+
+	bool  Camera2D::getNeedsMatrixUpdate() const
+	{
+		return needsMatrixUpdate;
 	}
 
 }

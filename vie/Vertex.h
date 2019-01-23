@@ -42,6 +42,19 @@ namespace vie
 			uv.u = u;
 			uv.v = v;
 		}
+
+		void rotate(float angle)
+		{
+			float x = position.x * cos(angle) - position.y * sin(angle);
+			float y = position.x * sin(angle) + position.y * cos(angle);
+			setPosition(x, y);
+		}
+
+		void translate(float x, float y)
+		{
+			position.x += x;
+			position.y += y;
+		}
 	};
 
 }
