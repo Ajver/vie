@@ -26,7 +26,6 @@ namespace vie
 		for (int i = 0; i < objects.size(); i++)
 			objects[i]->update(et);
 	}
-
 	void ObjectsManager::render(Graphics* g)
 	{
 		for (int i = 0; i < objects.size(); i++)
@@ -37,10 +36,26 @@ namespace vie
 	{
 		objects.push_back(ob);
 	}
+	void ObjectsManager::appendMouseListener(Object* ob)
+	{
+		mouseListeners.push_back(ob);
+	}
+	void ObjectsManager::appendKeyListener(Object* ob)
+	{
+		keyListeners.push_back(ob);
+	}
 
 	Object* ObjectsManager::getObject(size_t id) const
 	{
 		return objects[id];
+	}
+	Object* ObjectsManager::getMouseListener(size_t id) const
+	{
+		return mouseListeners[id];
+	}
+	Object* ObjectsManager::getKeyListener(size_t id) const
+	{
+		return keyListeners[id];
 	}
 
 	Object* ObjectsManager::getObjectByLabel(const std::string& label) const
@@ -54,20 +69,27 @@ namespace vie
 
 		return nullptr;
 	}
-
-	void ObjectsManager::appendMouseListener(Object* ob)
+	Object* ObjectsManager::getMouseListenerByLabel(const std::string& label) const
 	{
-		mouseListeners.push_back(ob);
+		for (int i = 0; i < mouseListeners.size(); i++)
+		{
+			Object* ob = mouseListeners[i];
+			if (ob->is(label))
+				return ob;
+		}
+
+		return nullptr;
 	}
-
-	Object* ObjectsManager::getMouseListener(size_t id) const
+	Object* ObjectsManager::getKeyListenerByLabel(const std::string& label) const
 	{
-		return mouseListeners[id];
-	}
+		for (int i = 0; i < keyListeners.size(); i++)
+		{
+			Object* ob = keyListeners[i];
+			if (ob->is(label))
+				return ob;
+		}
 
-	void ObjectsManager::appendKeyListener(Object* ob)
-	{
-		keyListeners.push_back(ob);
+		return nullptr;
 	}
 
 	void ObjectsManager::removeObject(Object* ob)
@@ -79,7 +101,6 @@ namespace vie
 				return;
 			}
 	}
-
 	void ObjectsManager::removeMouseListener(Object* ob)
 	{
 		for (int i = 0; i < mouseListeners.size(); i++)
@@ -89,7 +110,6 @@ namespace vie
 				return;
 			}
 	}
-
 	void ObjectsManager::removeKeyListener(Object* ob)
 	{
 		for (int i = 0; i < keyListeners.size(); i++)
@@ -104,20 +124,26 @@ namespace vie
 	{
 		return std::find(objects.begin(), objects.end(), ob) != objects.end();
 	}
-
 	bool ObjectsManager::containsMouseListener(Object* ob) const
 	{
 		return std::find(mouseListeners.begin(), mouseListeners.end(), ob) != mouseListeners.end();
 	}
-
 	bool ObjectsManager::containsKeyListener(Object* ob) const
 	{
 		return std::find(keyListeners.begin(), keyListeners.end(), ob) != keyListeners.end();
 	}
 
-	Object* ObjectsManager::getKeyListener(size_t id) const
+	bool ObjectsManager::containsObjectWithLabel(const std::string& label) const
 	{
-		return keyListeners[id];
+		return getObjectByLabel(label) != nullptr;
+	}
+	bool ObjectsManager::containsMouseListenerWithLabel(const std::string& label) const
+	{
+		return getMouseListenerByLabel(label) != nullptr;
+	}
+	bool ObjectsManager::containsKeyListenerWithLabel(const std::string& label) const
+	{
+		return getKeyListenerByLabel(label) != nullptr;
 	}
 
 	void ObjectsManager::onKeyPress()
@@ -126,7 +152,6 @@ namespace vie
 			ob->onKeyPress();
 		});
 	}
-
 	void ObjectsManager::onKeyRelease()
 	{
 		forAllObjectsRunFunction(keyListeners, [](Object* ob) {
@@ -141,13 +166,11 @@ namespace vie
 				m->mouseClickedObject(ob);
 		});
 	}
-
 	void ObjectsManager::mouseClickedObject(Object* ob)
 	{
 		clickedObject = ob;
 		ob->onMousePress();
 	}
-
 	void ObjectsManager::onMouseRelease()
 	{
 		if (isNoClickedObject())

@@ -29,11 +29,17 @@ namespace vie
 		bool containsMouseListener(Object* ob) const;
 		bool containsKeyListener(Object* ob) const;
 
+		bool containsObjectWithLabel(const std::string& label) const;
+		bool containsMouseListenerWithLabel(const std::string& label) const;
+		bool containsKeyListenerWithLabel(const std::string& label) const;
+
 		Object* getObject(size_t id) const;
 		Object* getMouseListener(size_t id) const;
 		Object* getKeyListener(size_t id) const;
 
 		Object* getObjectByLabel(const std::string& label) const;
+		Object* getMouseListenerByLabel(const std::string& label) const;
+		Object* getKeyListenerByLabel(const std::string& label) const;
 
 		std::vector<Object*> getObjectsVector() const;
 
