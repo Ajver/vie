@@ -50,14 +50,14 @@ TEST(ColorTest, Should_ColorsBe_NOT_Equals)
 
 TEST(ColorTest, Should_ExampleColorsBeValid)
 {
-	EXPECT_EQ(vie::Color(255, 0, 0), vie::RED);
-	EXPECT_EQ(vie::Color(0, 255, 0), vie::GREEN);
-	EXPECT_EQ(vie::Color(0, 0, 255), vie::BLUE);
-	EXPECT_EQ(vie::Color(255, 255, 255), vie::WHITE);
-	EXPECT_EQ(vie::Color(0, 0, 0, 255), vie::BLACK);
-	EXPECT_EQ(vie::Color(0, 0, 0, 0), vie::TRANSPARENT);
-	EXPECT_EQ(vie::Color(255, 255, 0), vie::YELLOW);
-	EXPECT_EQ(vie::Color(255, 128, 0), vie::ORANGE);
-	EXPECT_EQ(vie::Color(255, 0, 255), vie::PURPLE);
-	EXPECT_EQ(vie::Color(255, 128, 128), vie::PINK);
+	EXPECT_EQ(vie::Color(255, 0, 0), vie::COLOR::RED);
+	EXPECT_EQ(vie::Color(0, 255, 0), vie::COLOR::GREEN);
+	EXPECT_EQ(vie::Color(0, 0, 255), vie::COLOR::BLUE);
+	EXPECT_EQ(vie::Color(255, 255, 255), vie::COLOR::WHITE);
+	EXPECT_EQ(vie::Color(0, 0, 0, 255), vie::COLOR::BLACK);
+	EXPECT_EQ(vie::Color(0, 0, 0, 0), vie::COLOR::TRANSPARENT);
+	EXPECT_EQ(vie::Color(255, 255, 0), vie::COLOR::YELLOW);
+	EXPECT_EQ(vie::Color(255, 128, 0), vie::COLOR::ORANGE);
+	EXPECT_EQ(vie::Color(255, 0, 255), vie::COLOR::PURPLE);
+	EXPECT_EQ(vie::Color(255, 128, 128), vie::COLOR::PINK);
 }
