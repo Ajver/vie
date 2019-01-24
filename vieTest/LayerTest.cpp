@@ -1,0 +1,137 @@
+#include "pch.h"
+
+#include <vie/Layer.h>
+#include <vie/Glyph.h>
+#include <time.h>
+
+vie::Layer* getLayerWithSomeGlyphs();
+bool areGlyphsVectorTheSame(const std::vector<vie::Glyph*>& a, const std::vector<vie::Glyph*>& b);
+bool areSorted_FORWARD(const std::vector<vie::Glyph*>& glyphs);
+bool areSorted_BACKWARD(const std::vector<vie::Glyph*>& glyphs);
+bool areSorted_TEXTURE(const std::vector<vie::Glyph*>& glyphs);
+
+TEST(LayerTest, Should_CreateEmptyGlyphsVector)
+{
+	vie::Layer layer(1, 1);
+	EXPECT_EQ(0, layer.getGlyphsVector().size());
+}
+
+TEST(LayerTest, Should_AppendGlyph)
+{
+	vie::Layer layer(1, 1);
+	layer.appendGlyph(new vie::Glyph());
+	EXPECT_EQ(1, layer.getGlyphsVector().size());
+}
+
+TEST(LayerTest, Should_Not_SortGlyphs)
+{
+	vie::Layer* layer = getLayerWithSomeGlyphs();
+	std::vector<vie::Glyph*> glyphsBeforeSort = layer->getGlyphsVector();
+	layer->sortGlyphsBy(vie::GlyphSortType::NONE);
+	std::vector<vie::Glyph*> glyphsAfterSort = layer->getGlyphsVector();
+	bool areNOTSorted = areGlyphsVectorTheSame(glyphsBeforeSort, glyphsAfterSort);
+	EXPECT_TRUE(areNOTSorted);
+}
+
+TEST(LayerTest, Should_SortGlyphs_FORWARD)
+{
+	vie::Layer* layer = getLayerWithSomeGlyphs();
+	layer->sortGlyphsBy(vie::GlyphSortType::FORWARD);
+	std::vector<vie::Glyph*> glyphs = layer->getGlyphsVector();
+	bool areSorted = areSorted_FORWARD(glyphs);
+	EXPECT_TRUE(areSorted);
+}
+
+TEST(LayerTest, Should_SortGlyphs_BACKWARD)
+{
+	vie::Layer* layer = getLayerWithSomeGlyphs();
+	layer->sortGlyphsBy(vie::GlyphSortType::BACKWARD);
+	std::vector<vie::Glyph*> glyphs = layer->getGlyphsVector();
+	bool areSorted = areSorted_BACKWARD(glyphs);
+	EXPECT_TRUE(areSorted);
+}
+
+TEST(LayerTest, Should_SortGlyphs_TEXTURE)
+{
+	vie::Layer* layer = getLayerWithSomeGlyphs();
+	layer->sortGlyphsBy(vie::GlyphSortType::TEXTURE);
+	std::vector<vie::Glyph*> glyphs = layer->getGlyphsVector();
+	bool areSorted = areSorted_TEXTURE(glyphs);
+	EXPECT_TRUE(areSorted);
+}
+
+TEST(LayerTest, Should_RemoveGlyphsAfterRender)
+{
+	vie::Layer* layer = getLayerWithSomeGlyphs();
+	EXPECT_LT(0, layer->getGlyphsVector().size());
+
+	layer->renderGlyphs();
+	EXPECT_EQ(0, layer->getGlyphsVector().size());
+}
+
+
+vie::Layer* getLayerWithSomeGlyphs()
+{
+	vie::Layer* layer = new vie::Layer(1, 1);
+
+	for (int i = 0; i < 20; i++)
+	{
+		vie::Glyph* glyph = new vie::Glyph();
+		glyph->textureID = rand() % 200;
+		glyph->depth = rand() % 200;
+		layer->appendGlyph(glyph);
+	}
+
+	return layer;
+}
+
+bool areGlyphsVectorTheSame(const std::vector<vie::Glyph*>& a, const std::vector<vie::Glyph*>& b)
+{
+	if (a.size() != b.size())
+		return false;
+
+	for (int i = 0; i < a.size(); i++)
+		if (a[i] != b[i])
+			return false;
+	
+	return true;
+}
+
+bool areSorted_FORWARD(const std::vector<vie::Glyph*>& glyphs)
+{
+	for (int i = 1; i < glyphs.size(); i++)
+	{
+		if (glyphs[i - 1]->depth < glyphs[i]->depth)
+			continue;
+		else
+			return false;
+	}
+
+	return true;
+}
+
+bool areSorted_BACKWARD(const std::vector<vie::Glyph*>& glyphs)
+{
+	for (int i = 1; i < glyphs.size(); i++)
+	{
+		if (glyphs[i - 1]->depth > glyphs[i]->depth)
+			continue;
+		else
+			return false;
+	}
+
+	return true;
+}
+
+bool areSorted_TEXTURE(const std::vector<vie::Glyph*>& glyphs)
+{
+	for (int i = 1; i < glyphs.size(); i++)
+	{
+		if (glyphs[i - 1]->textureID < glyphs[i]->textureID)
+			continue;
+		else
+			return false;
+	}
+
+	return true;
+}

@@ -2,6 +2,8 @@
 
 #include "Vertex.h"
 
+#include <glm/glm.hpp>
+
 namespace vie
 {
 
@@ -32,4 +34,18 @@ namespace vie
 		}
 	};
 
+	enum class GlyphSortType
+	{
+		// No sort
+		NONE,
+
+		// Normaly (Default)
+		FORWARD,
+
+		// Reverse
+		BACKWARD,
+
+		// By texture (most efficient)
+		TEXTURE
+	};
 }

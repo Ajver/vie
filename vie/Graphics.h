@@ -6,26 +6,11 @@
 #include "RenderBatch.h"
 #include "GLSLProgram.h"
 #include "Texture.h"
+#include "Glyph.h"
 
 namespace vie
 {
 	class Camera2D;
-	class Glyph;
-
-	enum class GlyphSortType
-	{
-		// No sort
-		NONE,
-
-		// Normaly (Default)
-		FRONT_TO_BACK,
-
-		// Reverse
-		BACK_TO_FRONT,
-
-		// By texture (most efficient)
-		TEXTURE
-	};
 
 	class Graphics
 	{
@@ -36,7 +21,7 @@ namespace vie
 		void init(Camera2D* ncamera);
 
 		// Controll the rendering
-		void begin(GlyphSortType newSortType = GlyphSortType::FRONT_TO_BACK);
+		void begin(GlyphSortType newSortType = GlyphSortType::FORWARD);
 		void end();
 
 		void setSortType(GlyphSortType newSortType);
@@ -113,8 +98,8 @@ namespace vie
 		void setGlyphUV(Glyph* glyph, const glm::vec4& uvRect);
 		void setGlyphColor(Glyph* glyph, const Color& color);
 
-		static bool compareFrontToBack(Glyph* a, Glyph* b);
-		static bool compareBackToFront(Glyph* a, Glyph* b);
+		static bool compareForward(Glyph* a, Glyph* b);
+		static bool compareBackward(Glyph* a, Glyph* b);
 		static bool compareTexture(Glyph* a, Glyph* b);
 
 	};

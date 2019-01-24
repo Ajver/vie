@@ -28,6 +28,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Layer.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectsManager.h" />
     <ClInclude Include="RenderBatch.h" />
@@ -44,6 +45,7 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="Texture.cpp" />

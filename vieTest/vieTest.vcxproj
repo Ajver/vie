@@ -43,6 +43,7 @@
     <ClCompile Include="CameraTest.cpp" />
     <ClCompile Include="ColorTest.cpp" />
     <ClCompile Include="GraphicsTest.cpp" />
+    <ClCompile Include="LayerTest.cpp" />
     <ClCompile Include="ObjectsManagerTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -8,7 +8,6 @@
 #include "Camera2D.h"
 #include "Errors.h"
 #include "Window.h"
-#include "Glyph.h"
 
 namespace vie
 {
@@ -318,11 +317,11 @@ namespace vie
 	{
 		switch (sortType)
 		{
-		case GlyphSortType::FRONT_TO_BACK:
-			std::stable_sort(glyphs.begin(), glyphs.end(), compareFrontToBack);
+		case GlyphSortType::FORWARD:
+			std::stable_sort(glyphs.begin(), glyphs.end(), compareForward);
 			break;
-		case GlyphSortType::BACK_TO_FRONT:
-			std::stable_sort(glyphs.begin(), glyphs.end(), compareBackToFront);
+		case GlyphSortType::BACKWARD:
+			std::stable_sort(glyphs.begin(), glyphs.end(), compareBackward);
 			break;
 		case GlyphSortType::TEXTURE:
 			std::stable_sort(glyphs.begin(), glyphs.end(), compareTexture);
@@ -330,11 +329,11 @@ namespace vie
 		}
 	}
 
-	bool Graphics::compareFrontToBack(Glyph* a, Glyph* b)
+	bool Graphics::compareForward(Glyph* a, Glyph* b)
 	{
 		return a->depth < b->depth;
 	}
-	bool Graphics::compareBackToFront(Glyph* a, Glyph* b)
+	bool Graphics::compareBackward(Glyph* a, Glyph* b)
 	{
 		return a->depth > b->depth;
 	}
