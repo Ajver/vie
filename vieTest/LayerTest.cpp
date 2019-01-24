@@ -2,8 +2,10 @@
 
 #include <vie/Layer.h>
 #include <vie/Glyph.h>
+#include <vie/Camera2D.h>
 #include <time.h>
 
+vie::Layer* getInitedLayer();
 vie::Layer* getLayerWithSomeGlyphs();
 bool areGlyphsVectorTheSame(const std::vector<vie::Glyph*>& a, const std::vector<vie::Glyph*>& b);
 bool areSorted_FORWARD(const std::vector<vie::Glyph*>& glyphs);
@@ -12,15 +14,23 @@ bool areSorted_TEXTURE(const std::vector<vie::Glyph*>& glyphs);
 
 TEST(LayerTest, Should_CreateEmptyGlyphsVector)
 {
-	vie::Layer layer(1, 1);
-	EXPECT_EQ(0, layer.getGlyphsVector().size());
+	vie::Layer* layer = getInitedLayer();
+	EXPECT_EQ(0, layer->getGlyphsVector().size());
+}
+
+TEST(LayerTest, ShouldSet_Camera)
+{
+	vie::Layer* layer = getInitedLayer();
+	vie::Camera2D* cam = new vie::Camera2D();
+	layer->setCamera(cam);
+	EXPECT_EQ(cam, layer->getCamera());
 }
 
 TEST(LayerTest, Should_AppendGlyph)
 {
-	vie::Layer layer(1, 1);
-	layer.appendGlyph(new vie::Glyph());
-	EXPECT_EQ(1, layer.getGlyphsVector().size());
+	vie::Layer* layer = getInitedLayer();
+	layer->appendGlyph(new vie::Glyph());
+	EXPECT_EQ(1, layer->getGlyphsVector().size());
 }
 
 TEST(LayerTest, Should_Not_SortGlyphs)
@@ -65,14 +75,19 @@ TEST(LayerTest, Should_RemoveGlyphsAfterRender)
 	vie::Layer* layer = getLayerWithSomeGlyphs();
 	EXPECT_LT(0, layer->getGlyphsVector().size());
 
-	layer->renderGlyphs();
+	layer->render();
 	EXPECT_EQ(0, layer->getGlyphsVector().size());
 }
 
 
+vie::Layer* getInitedLayer()
+{
+	return new vie::Layer(1, 1, new vie::Camera2D());
+}
+
 vie::Layer* getLayerWithSomeGlyphs()
 {
-	vie::Layer* layer = new vie::Layer(1, 1);
+	vie::Layer* layer = getInitedLayer();
 
 	for (int i = 0; i < 20; i++)
 	{

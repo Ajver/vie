@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <map>
 #include <glm/glm.hpp>
 
 #include "RenderBatch.h"
@@ -11,6 +11,7 @@
 namespace vie
 {
 	class Camera2D;
+	class Layer;
 
 	class Graphics
 	{
@@ -18,14 +19,21 @@ namespace vie
 		Graphics();
 		~Graphics();
 
-		void init(Camera2D* ncamera);
+		void init(Camera2D* mainCamera);
+		void createLayer(const std::string& layerName);
+		bool hasLayer(const std::string& layerName);
+		void switchLayer(const std::string& layerName);
+		void removeLayer(const std::string& layerName);
+
+		Layer* getCurrentLayer() const;
+		std::string getCurrentLayerName() const;
 
 		// Controll the rendering
-		void begin(GlyphSortType newSortType = GlyphSortType::FORWARD);
+		void begin();
 		void end();
+		void render();
 
 		void setSortType(GlyphSortType newSortType);
-		void setCamera(Camera2D* ncamera);
 
 		void setBackgroundColor(const Color& color);
 
@@ -54,10 +62,6 @@ namespace vie
 		float getScale() const;
 		float getRotate() const;
 		GlyphSortType getSortType() const;
-		Camera2D* getCamera() const;
-		std::vector<Glyph*> getGlyphsVector() const;
-
-		void renderBatch();
 
 		glm::vec2 transformPoint(glm::vec2 point) const;
 
@@ -66,41 +70,24 @@ namespace vie
 		GLuint vao;
 		GlyphSortType sortType;
 
-		Camera2D* camera;
-		GLSLProgram colorProgram;
+		std::string currentLayerName;
+		Layer* currentLayer;
+		std::map<std::string, Layer*> layersMap;
 
 		float nextTextureDepth;
 		Texture onePixelTexture;
-		std::vector<Glyph*> glyphs;
-		std::vector<RenderBatch> renderBatches;
 
 		glm::vec2 translateVec;
 		float scale;
 		float rotateAngleInRadians;
 
-		void clearGL();
-		void resetSamplerInShader();
-
-		void setCameraMatrix();
-		void transformGlyphsByCamera();
-		void translateGlyphsByCamera();
-		void rotateGlyphsByCamera();
-
-		void sortGlyphs();
-		void freeMemory();
-
 		void enableAlphaBlending();
 		void createOnePixelTexture();
 		void createVertexArray();
-		void createRenderBatches();
 
 		void setGlyphAttributes(Glyph* glyph, GLuint id, float depth, const glm::vec4& uvRect, const Color& color);
 		void setGlyphUV(Glyph* glyph, const glm::vec4& uvRect);
 		void setGlyphColor(Glyph* glyph, const Color& color);
-
-		static bool compareForward(Glyph* a, Glyph* b);
-		static bool compareBackward(Glyph* a, Glyph* b);
-		static bool compareTexture(Glyph* a, Glyph* b);
 
 	};
 

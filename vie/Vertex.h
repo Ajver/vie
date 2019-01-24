@@ -26,35 +26,11 @@ namespace vie
 		Color color;
 		UV uv;
 
-		void setPosition(float x, float y)
-		{
-			position.x = x;
-			position.y = y;
-		}
-
-		void setColor(const Color& ncolor)
-		{
-			color = ncolor;
-		}
-
-		void setUV(float u, float v)
-		{
-			uv.u = u;
-			uv.v = v;
-		}
-
-		void rotate(float angle)
-		{
-			float x = position.x * cos(angle) - position.y * sin(angle);
-			float y = position.x * sin(angle) + position.y * cos(angle);
-			setPosition(x, y);
-		}
-
-		void translate(float x, float y)
-		{
-			position.x += x;
-			position.y += y;
-		}
+		void setPosition(float x, float y);
+		void setColor(const Color& ncolor);
+		void setUV(float u, float v);
+		void rotate(float angle);
+		void translate(float x, float y);
 	};
 
 }

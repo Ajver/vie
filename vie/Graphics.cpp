@@ -8,6 +8,7 @@
 #include "Camera2D.h"
 #include "Errors.h"
 #include "Window.h"
+#include "Layer.h"
 
 namespace vie
 {
@@ -15,12 +16,13 @@ namespace vie
 	Graphics::Graphics() :
 		vbo(0),
 		vao(0),
-		sortType(GlyphSortType::TEXTURE),
-		camera(nullptr),
+		sortType(GlyphSortType::FORWARD),
 		scale(1.0f),
 		translateVec(glm::vec2(0, 0)),
 		nextTextureDepth(0.0f),
-		rotateAngleInRadians(0.0f)
+		rotateAngleInRadians(0.0f),
+		currentLayerName(""),
+		currentLayer(nullptr)
 	{
 	}
 
@@ -28,14 +30,14 @@ namespace vie
 	{
 	}
 
-	void Graphics::init(Camera2D* ncamera)
+	void Graphics::init(Camera2D* mainCamera)
 	{
-		setCamera(ncamera);
-		colorProgram.init();
-
 		enableAlphaBlending();
 		createOnePixelTexture();
 		createVertexArray();
+		currentLayerName = "main_layer";
+		currentLayer = new Layer(vbo, vao, mainCamera);
+		layersMap[currentLayerName] = currentLayer;
 	}
 
 	void Graphics::enableAlphaBlending()
@@ -55,70 +57,91 @@ namespace vie
 		onePixelTexture.refreshGLBuffer();
 	}
 
-	void Graphics::begin(GlyphSortType newSortType)
+	void Graphics::createVertexArray()
 	{
-		setSortType(newSortType);
+		if (vao == 0)
+			glGenVertexArrays(1, &vao);
+
+		glBindVertexArray(vao);
+
+		if (vbo == 0)
+			glGenBuffers(1, &vbo);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+
+		// Position			  
+		// index, How many vars, type, normalize?, size, pointer
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, position)));
+		// Color 
+		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)(offsetof(Vertex, color)));
+		// UV
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, uv)));
+
+		// Disable all 
+		glBindVertexArray(0);
+	}
+
+	void Graphics::createLayer(const std::string& layerName)
+	{
+		if (hasLayer(layerName))
+			fatalError("Error: Cannot create layer with name: " + layerName + " (Layer exist)");
+		else
+			layersMap[layerName] = new Layer(vbo, vao, new Camera2D());
+	}
+
+	bool Graphics::hasLayer(const std::string& layerName)
+	{
+		return layersMap.find(layerName) != layersMap.end();
+	}
+
+	void Graphics::switchLayer(const std::string& layerName)
+	{
+		auto layer = layersMap.find(layerName);
+		if (layer != layersMap.end())
+		{
+			currentLayerName = layerName;
+			currentLayer = layer->second;
+		}
+		else
+			fatalError("Error: Cannot switch to layer with name: " + layerName + " (Layer not found)");
+	}
+
+	void Graphics::removeLayer(const std::string& layerName)
+	{
+		if (hasLayer(layerName))
+			layersMap.erase(layerName);
+		else
+			fatalError("Error: Cannot remove layer with name: " + layerName + " (Layer not found)");
+	}
+
+	Layer* Graphics::getCurrentLayer() const
+	{
+		return currentLayer;
+	}
+	std::string Graphics::getCurrentLayerName() const
+	{
+		return currentLayerName;
+	}
+
+	void Graphics::begin()
+	{
 		nextTextureDepth = 0.0f;
-		clearGL();
-
-		colorProgram.use();
-		resetSamplerInShader();
-	}
-
-	void Graphics::clearGL()
-	{
-		glClearDepth(1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-
-	void Graphics::resetSamplerInShader()
-	{
-		GLint textureLocation = colorProgram.getUnitformLocation("mySampler");
-		glUniform1i(textureLocation, 0);
+		currentLayer->begin();
 	}
 
 	void Graphics::end()
 	{
-		setCameraMatrix();
-		sortGlyphs();
-		createRenderBatches();
+		currentLayer->end();
+		currentLayer->sortGlyphsBy(sortType);
 	}
 
-	void Graphics::setCameraMatrix()
+	void Graphics::render()
 	{
-		camera->update();
-
-		GLint pLocation = colorProgram.getUnitformLocation("P");
-		glm::mat4 cameraMatrix = camera->getCameraMatrix();
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-
-		GLint screeenHeightLocation = colorProgram.getUnitformLocation("screenHeight");
-		glUniform1f(screeenHeightLocation, (float)Window::getScreenHeight());
-
-		transformGlyphsByCamera();
-	}
-
-	void Graphics::transformGlyphsByCamera()
-	{
-		translateGlyphsByCamera();
-		rotateGlyphsByCamera();
-	}
-
-	void Graphics::translateGlyphsByCamera()
-	{
-		glm::vec2 cameraPosition = camera->getPosition();
-		cameraPosition.x *= -1.0f;
-
-		for (int i = 0; i < glyphs.size(); i++)
-			glyphs[i]->translateByVec2(cameraPosition);
-	}
-
-	void Graphics::rotateGlyphsByCamera()
-	{
-		float angle = -camera->getRotate();
-
-		for (int i = 0; i < glyphs.size(); i++)
-			glyphs[i]->rotateByAngle(angle);
+		currentLayer->render();
 	}
 
 	void Graphics::setSortType(GlyphSortType newSortType)
@@ -126,56 +149,9 @@ namespace vie
 		sortType = newSortType;
 	}
 
-	void Graphics::createRenderBatches()
-	{
-		if (glyphs.empty())
-			return;
-
-		std::vector<Vertex> vertices;
-		vertices.resize(glyphs.size() * 6);
-
-		for (int curGlyph = 0, curVertex = 0, offset = 0; curGlyph < glyphs.size(); curGlyph++)
-		{
-			if (curGlyph > 0)
-			{
-				if (glyphs[curGlyph]->textureID != glyphs[curGlyph - 1]->textureID)
-					renderBatches.emplace_back(offset, 6, glyphs[curGlyph]->textureID);
-				else
-					renderBatches.back().numVertices += 6;
-			}
-			else
-			{
-				renderBatches.emplace_back(0, 6, glyphs[0]->textureID);
-			}
-
-			vertices[curVertex++] = glyphs[curGlyph]->topLeft;
-			vertices[curVertex++] = glyphs[curGlyph]->bottomLeft;
-			vertices[curVertex++] = glyphs[curGlyph]->bottomRight;
-			vertices[curVertex++] = glyphs[curGlyph]->bottomRight;
-			vertices[curVertex++] = glyphs[curGlyph]->topRight;
-			vertices[curVertex++] = glyphs[curGlyph]->topLeft;
-			offset += 6;
-		}
-
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-
-	void Graphics::freeMemory()
-	{
-		renderBatches.clear();
-
-		for (int i = 0; i < glyphs.size(); i++)
-			delete glyphs[i];
-
-		glyphs.clear();
-	}
-
 	void Graphics::setBackgroundColor(const Color& color)
 	{
-		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+		currentLayer->setBackgroundColor(color);
 	}
 
 	void Graphics::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
@@ -197,7 +173,7 @@ namespace vie
 
 		setGlyphAttributes(newGlyph, textureID, depth, uvRect, color);
 
-		glyphs.push_back(newGlyph);
+		currentLayer->appendGlyph(newGlyph);
 	}
 
 	glm::vec2 Graphics::transformPoint(glm::vec2 point) const
@@ -261,91 +237,7 @@ namespace vie
 		fillRect(position, glm::vec2(weight, size.y), color);
 
 		// Right
-		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2* weight), color);
-	}
-
-	void Graphics::renderBatch()
-	{
-		glBindVertexArray(vao);
-
-		for (int i = 0; i < renderBatches.size(); i++)
-		{
-			glBindTexture(GL_TEXTURE_2D, renderBatches[i].textureID);
-			glDrawArrays(GL_TRIANGLES, renderBatches[i].offset, renderBatches[i].numVertices);
-		}
-
-		glBindVertexArray(0);
-
-		// Disable all textures
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		// Disable the shader
-		colorProgram.unuse();
-
-		freeMemory();
-	}
-
-	void Graphics::createVertexArray()
-	{
-		if (vao == 0)
-			glGenVertexArrays(1, &vao);
-		
-		glBindVertexArray(vao);
-
-		if (vbo == 0)
-			glGenBuffers(1, &vbo);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-
-		// Position			  
-		// index, How many vars, type, normalize?, size, pointer
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, position)));
-		// Color 
-		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)(offsetof(Vertex, color)));
-		// UV
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, uv)));
-
-		// Disable all 
-		glBindVertexArray(0);
-	}
-
-	void Graphics::sortGlyphs()
-	{
-		switch (sortType)
-		{
-		case GlyphSortType::FORWARD:
-			std::stable_sort(glyphs.begin(), glyphs.end(), compareForward);
-			break;
-		case GlyphSortType::BACKWARD:
-			std::stable_sort(glyphs.begin(), glyphs.end(), compareBackward);
-			break;
-		case GlyphSortType::TEXTURE:
-			std::stable_sort(glyphs.begin(), glyphs.end(), compareTexture);
-			break;
-		}
-	}
-
-	bool Graphics::compareForward(Glyph* a, Glyph* b)
-	{
-		return a->depth < b->depth;
-	}
-	bool Graphics::compareBackward(Glyph* a, Glyph* b)
-	{
-		return a->depth > b->depth;
-	}
-	bool Graphics::compareTexture(Glyph* a, Glyph* b)
-	{
-		// Sorted by texture id
-		return a->textureID < b->textureID;
-	}
-
-	void Graphics::setCamera(Camera2D* ncamera)
-	{
-		camera = ncamera;
+		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2 * weight), color);
 	}
 
 	void Graphics::setTranslate(const glm::vec2& newTranslate)
@@ -401,16 +293,6 @@ namespace vie
 	GlyphSortType Graphics::getSortType() const
 	{
 		return sortType;
-	}
-
-	Camera2D* Graphics::getCamera() const
-	{
-		return camera;
-	}
-	
-	std::vector<Glyph*> Graphics::getGlyphsVector() const
-	{
-		return glyphs;
 	}
 
 }

@@ -6,12 +6,33 @@
 void drawSomething(vie::Graphics* g);
 vie::Graphics* getInitedGraphics();
 
-TEST(GraphicsTest, ShouldSet_Camera)
+TEST(GraphicsTest, Should_CreateLayer)
 {
 	vie::Graphics g;
-	vie::Camera2D* cam = new vie::Camera2D();
-	g.setCamera(cam);
-	EXPECT_EQ(cam, g.getCamera());
+	EXPECT_FALSE(g.hasLayer("test_layer"));
+
+	g.createLayer("test_layer");
+	EXPECT_TRUE(g.hasLayer("test_layer"));
+}
+
+TEST(GraphicsTest, Should_SwitchLayer)
+{
+	vie::Graphics g;
+	g.createLayer("test_layer");
+	EXPECT_FALSE("test_layer" == g.getCurrentLayerName());
+	
+	g.switchLayer("test_layer");
+	EXPECT_EQ("test_layer", g.getCurrentLayerName());
+}
+
+TEST(GraphicsTest, Should_RemoveLayer)
+{
+	vie::Graphics g;
+	g.createLayer("test_layer");
+	EXPECT_TRUE(g.hasLayer("test_layer"));
+
+	g.removeLayer("test_layer");
+	EXPECT_FALSE(g.hasLayer("test_layer"));
 }
 
 TEST(GraphicsTest, ShouldSet_Translate)
@@ -108,38 +129,6 @@ TEST(GraphicsTest, Should_Not_ChangeOriginalVec2)
 	EXPECT_EQ(glm::vec2(30.0f, -10.0f), g.getTranslate());
 	EXPECT_EQ(glm::vec2(10.0f, 5.0f), translateVec);
 }
-
-TEST(GraphicsTest, Should_AppendGlyphs)
-{
-	vie::Graphics* g = new vie::Graphics();
-	drawSomething(g);
-	EXPECT_LT(0, g->getGlyphsVector().size());
-}
-
-TEST(GraphicsTest, Should_Not_FreeMemoryAfter_Begin)
-{
-	vie::Graphics* g = getInitedGraphics();
-	drawSomething(g);
-	g->begin();
-	EXPECT_LT(0, g->getGlyphsVector().size());
-}
-
-TEST(GraphicsTest, Should_Not_FreeMemoryAfter_End)
-{
-	vie::Graphics* g = getInitedGraphics();
-	drawSomething(g);
-	g->end();
-	EXPECT_LT(0, g->getGlyphsVector().size());
-}
-
-TEST(GraphicsTest, Should_FreeMemoryAfter_RenderBatch)
-{
-	vie::Graphics* g = new vie::Graphics();
-	drawSomething(g);
-	g->renderBatch();
-	EXPECT_EQ(0, g->getGlyphsVector().size());
-}
-
 
 void drawSomething(vie::Graphics* g)
 {

@@ -22,7 +22,7 @@ namespace vie
 		ObjectsManager* objectsManager;
 
 		// Draw all stuff with this
-		Graphics* g;
+		Graphics* graphics;
 		Camera2D* mainCamera;
 
 		// Runs once after all systems init

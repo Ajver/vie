@@ -49,6 +49,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

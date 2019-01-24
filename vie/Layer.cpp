@@ -3,14 +3,20 @@
 #include <algorithm>
 
 #include "Glyph.h"
+#include "Camera2D.h"
+#include "Window.h"
+
+#include <iostream>
 
 namespace vie
 {
 
-	Layer::Layer(GLuint vbo, GLuint vao) :
+	Layer::Layer(GLuint vbo, GLuint vao, Camera2D* ncamera) :
 		vbo(vbo),
-		vao(vao)
+		vao(vao),
+		camera(ncamera)
 	{
+		colorProgram.init();
 	}
 
 
@@ -27,23 +33,84 @@ namespace vie
 	{
 		switch (sortType)
 		{
-		case vie::GlyphSortType::FORWARD:
+		case GlyphSortType::FORWARD:
 			std::sort(glyphs.begin(), glyphs.end(), compareForward);
 			break;
-		case vie::GlyphSortType::BACKWARD:
+		case GlyphSortType::BACKWARD:
 			std::sort(glyphs.begin(), glyphs.end(), compareBackward);
 			break;
-		case vie::GlyphSortType::TEXTURE:
+		case GlyphSortType::TEXTURE:
 			std::sort(glyphs.begin(), glyphs.end(), compareTexture);
 			break;
 		}
 	}
 
-	void Layer::renderGlyphs()
+	void Layer::begin()
+	{
+		clearGL();
+		colorProgram.use();
+		resetSamplerInShader();
+	}
+
+	void Layer::clearGL()
+	{
+		glClearDepth(1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Layer::resetSamplerInShader()
+	{
+		GLint textureLocation = colorProgram.getUnitformLocation("mySampler");
+		glUniform1i(textureLocation, 0);
+	}
+
+	void Layer::end()
+	{
+		setCameraMatrix();
+		transformGlyphsByCamera();
+	}
+
+	void Layer::render()
 	{
 		createRenderBatches();
 		renderBatch();
 		removeAllGlyphsAndRenderBatches();
+		colorProgram.unuse();
+	}
+
+	void Layer::setCameraMatrix()
+	{
+		camera->update();
+
+		GLint pLocation = colorProgram.getUnitformLocation("P");
+		glm::mat4 cameraMatrix = camera->getCameraMatrix();
+		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+		GLint screeenHeightLocation = colorProgram.getUnitformLocation("screenHeight");
+		glUniform1f(screeenHeightLocation, (float)Window::getScreenHeight());
+	}
+
+	void Layer::transformGlyphsByCamera()
+	{
+		translateGlyphsByCamera();
+		rotateGlyphsByCamera();
+	}
+
+	void Layer::translateGlyphsByCamera()
+	{
+		glm::vec2 cameraPosition = camera->getPosition();
+		cameraPosition.x *= -1.0f;
+
+		for (int i = 0; i < glyphs.size(); i++)
+			glyphs[i]->translateByVec2(cameraPosition);
+	}
+
+	void Layer::rotateGlyphsByCamera()
+	{
+		float angle = -camera->getRotate();
+
+		for (int i = 0; i < glyphs.size(); i++)
+			glyphs[i]->rotateByAngle(angle);
 	}
 
 	void Layer::createRenderBatches()
@@ -83,7 +150,7 @@ namespace vie
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void Layer::renderBatch()
+	void Layer::renderBatch() const
 	{
 		glBindVertexArray(vao);
 
@@ -109,7 +176,22 @@ namespace vie
 		glyphs.clear();
 	}
 
-	std::vector<Glyph*> Layer::getGlyphsVector()
+	void Layer::setBackgroundColor(const Color& color)
+	{
+		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+	}
+
+	void Layer::setCamera(Camera2D* ncamera)
+	{
+		camera = ncamera;
+	}
+
+	Camera2D* Layer::getCamera() const
+	{
+		return camera;
+	}
+
+	std::vector<Glyph*> Layer::getGlyphsVector() const
 	{
 		return glyphs;
 	}

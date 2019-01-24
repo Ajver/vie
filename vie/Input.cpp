@@ -23,7 +23,6 @@ namespace vie
 		if (keysMap.find(keyID) != keysMap.end())
 			return keysMap[keyID];
 		
-
 		return false;
 	}
 

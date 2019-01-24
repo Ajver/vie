@@ -70,9 +70,9 @@ namespace vie
 	bool Object::isPointInside(const glm::vec2& point) const
 	{
 		return point.x >= position.x &&
-			point.x <= position.x + size.x &&
+			point.x < position.x + size.x &&
 			point.y >= position.y &&
-			point.y <= position.y + size.y;
+			point.y < position.y + size.y;
 	}
 
 	bool Object::is(const std::string& lab) const

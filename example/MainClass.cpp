@@ -49,6 +49,8 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
+	g->setBackgroundColor(vie::COLOR::RED);
+
 	float speed = 8.0f / g->getScale();
 	float scaleSpeed = 1.02f;
 	float rotateSpeed = 0.01f;

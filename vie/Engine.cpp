@@ -20,7 +20,7 @@ namespace vie
 		isRunning(false),
 		FPS(0),
 		maxFPS(60),
-		g(nullptr),
+		graphics(nullptr),
 		mainCamera(nullptr)
 	{
 	}
@@ -59,8 +59,8 @@ namespace vie
 		mainCamera = new Camera2D();
 		mainCamera->init();
 
-		g = new Graphics();
-		g->init(mainCamera);
+		graphics = new Graphics();
+		graphics->init(mainCamera);
 
 		objectsManager = new ObjectsManager();
 	}
@@ -172,11 +172,13 @@ namespace vie
 
 	void Engine::manageRendering()
 	{
-		g->begin();
-		objectsManager->render(g);
-		render(g);
-		g->end();
-		g->renderBatch();
+		graphics->begin();
+
+		objectsManager->render(graphics);
+		render(graphics);
+
+		graphics->end();
+		graphics->render();
 		Window::swapSDLWindowBuffer();
 	}
 
