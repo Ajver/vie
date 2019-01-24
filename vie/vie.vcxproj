@@ -31,6 +31,7 @@
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectsManager.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="RenderBatch.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowFlags.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />

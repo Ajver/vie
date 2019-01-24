@@ -116,7 +116,7 @@ bool areSorted_FORWARD(const std::vector<vie::Glyph*>& glyphs)
 {
 	for (int i = 1; i < glyphs.size(); i++)
 	{
-		if (glyphs[i - 1]->depth < glyphs[i]->depth)
+		if (glyphs[i - 1]->depth <= glyphs[i]->depth)
 			continue;
 		else
 			return false;
@@ -129,7 +129,7 @@ bool areSorted_BACKWARD(const std::vector<vie::Glyph*>& glyphs)
 {
 	for (int i = 1; i < glyphs.size(); i++)
 	{
-		if (glyphs[i - 1]->depth > glyphs[i]->depth)
+		if (glyphs[i - 1]->depth >= glyphs[i]->depth)
 			continue;
 		else
 			return false;
@@ -142,7 +142,7 @@ bool areSorted_TEXTURE(const std::vector<vie::Glyph*>& glyphs)
 {
 	for (int i = 1; i < glyphs.size(); i++)
 	{
-		if (glyphs[i - 1]->textureID < glyphs[i]->textureID)
+		if (glyphs[i - 1]->textureID <= glyphs[i]->textureID)
 			continue;
 		else
 			return false;
