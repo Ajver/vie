@@ -54,7 +54,7 @@ namespace vie
 		virtual void onMouseMove();
 		virtual void onMouseDrag();
 
-		void destroy();
+		void destroyEngine();
 
 	private:
 		bool isRunning;
@@ -78,7 +78,7 @@ namespace vie
 		void processRender();
 		void limitFPS(unsigned int elapsedMillis);
 
-		void destroyEngine();
+		void destroy();
 	};
 
 }

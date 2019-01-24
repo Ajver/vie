@@ -44,7 +44,7 @@ namespace vie
 		isRunning = true;
 		mainLoop();
 		
-		destroyEngine();
+		destroy();
 	}
 
 	void Engine::initSDLAndWindowAndGraphics(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) {
@@ -130,7 +130,7 @@ namespace vie
 			switch (evnt.type)
 			{
 			case SDL_QUIT:
-				destroyEngine();
+				destroy();
 				break;
 			case SDL_KEYDOWN:
 				Input::setKey(evnt.key.keysym.sym, true);
@@ -185,7 +185,7 @@ namespace vie
 			SDL_Delay(maxET - elapsedMillis);
 	}
 
-	void Engine::destroyEngine()
+	void Engine::destroy()
 	{
 		onDestroy();
 
@@ -194,7 +194,7 @@ namespace vie
 		exit(0);
 	}
 
-	void Engine::destroy()
+	void Engine::destroyEngine()
 	{
 		isRunning = false;
 	}

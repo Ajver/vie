@@ -90,7 +90,7 @@ void MainClass::render(vie::Graphics* g)
 void MainClass::onKeyPress()
 {
 	if (vie::Input::getLastKey() == SDLK_ESCAPE)
-		destroy();
+		destroyEngine();
 }
 
 void MainClass::onKeyRelease()
