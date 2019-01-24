@@ -49,7 +49,7 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
-	g->setBackgroundColor(vie::COLOR::RED);
+	g->setBackgroundColor(vie::COLOR::DARK_GRAY);
 
 	float speed = 8.0f / g->getScale();
 	float scaleSpeed = 1.02f;

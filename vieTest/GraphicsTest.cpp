@@ -130,10 +130,17 @@ TEST(GraphicsTest, Should_Not_ChangeOriginalVec2)
 	EXPECT_EQ(glm::vec2(10.0f, 5.0f), translateVec);
 }
 
+TEST(GraphicsTest, ShouldSet_Color)
+{
+	vie::Graphics g;
+	g.setColor(vie::Color(10, 20, 30, 40));
+	EXPECT_EQ(vie::Color(10, 20, 30, 40), g.getDefaultColor());
+}
+
 void drawSomething(vie::Graphics* g)
 {
 	for (int i = 0; i < 5; i++)
-		g->fillRect(glm::vec2(), glm::vec2(), vie::Color());
+		g->fillRect(glm::vec2(), glm::vec2());
 }
 
 vie::Graphics* getInitedGraphics()

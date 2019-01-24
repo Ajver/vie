@@ -60,4 +60,7 @@ TEST(ColorTest, Should_ExampleColorsBeValid)
 	EXPECT_EQ(vie::Color(255, 128, 0), vie::COLOR::ORANGE);
 	EXPECT_EQ(vie::Color(255, 0, 255), vie::COLOR::PURPLE);
 	EXPECT_EQ(vie::Color(255, 128, 128), vie::COLOR::PINK);
+	EXPECT_EQ(vie::Color(128, 128, 128), vie::COLOR::GRAY);
+	EXPECT_EQ(vie::Color(192, 192, 192), vie::COLOR::LIGHT_GRAY);
+	EXPECT_EQ(vie::Color(64, 64, 64), vie::COLOR::DARK_GRAY);
 }

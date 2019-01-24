@@ -55,6 +55,9 @@ namespace vie
 		const Color ORANGE(255, 128, 0);
 		const Color PURPLE(255, 0, 255);
 		const Color PINK(255, 128, 128);
+		const Color GRAY(128, 128, 128);
+		const Color LIGHT_GRAY(192, 192, 192);
+		const Color DARK_GRAY(64, 64, 64);
 	};
 
 }

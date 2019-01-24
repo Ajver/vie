@@ -34,7 +34,7 @@ namespace vie
 		void render();
 
 		void setSortType(GlyphSortType newSortType);
-
+		void setColor(const Color& color);
 		void setBackgroundColor(const Color& color);
 
 		// Add new sprite to the batch
@@ -46,8 +46,8 @@ namespace vie
 		// Drawp texture on Position by scaling it to Size
 		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color = COLOR::WHITE);
 
-		void fillRect(const glm::vec2& position, const glm::vec2& size, const Color& color);
-		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight, const Color& color);
+		void fillRect(const glm::vec2& position, const glm::vec2& size);
+		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight);
 
 		void setTranslate(const glm::vec2& newTranslate);
 		void setScale(float newScale);
@@ -62,6 +62,7 @@ namespace vie
 		float getScale() const;
 		float getRotate() const;
 		GlyphSortType getSortType() const;
+		Color getDefaultColor() const;
 
 		glm::vec2 transformPoint(glm::vec2 point) const;
 
@@ -74,6 +75,7 @@ namespace vie
 		Layer* currentLayer;
 		std::map<std::string, Layer*> layersMap;
 
+		Color defaultColor;
 		float nextTextureDepth;
 		Texture onePixelTexture;
 

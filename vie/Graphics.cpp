@@ -22,7 +22,8 @@ namespace vie
 		nextTextureDepth(0.0f),
 		rotateAngleInRadians(0.0f),
 		currentLayerName(""),
-		currentLayer(nullptr)
+		currentLayer(nullptr),
+		defaultColor(COLOR::WHITE)
 	{
 	}
 
@@ -149,6 +150,11 @@ namespace vie
 		sortType = newSortType;
 	}
 
+	void Graphics::setColor(const Color& color)
+	{
+		defaultColor = color;
+	}
+
 	void Graphics::setBackgroundColor(const Color& color)
 	{
 		currentLayer->setBackgroundColor(color);
@@ -220,24 +226,24 @@ namespace vie
 		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth + 0.1f, color);
 	}	
 
-	void Graphics::fillRect(const glm::vec2& position, const glm::vec2& size, const Color& color)
+	void Graphics::fillRect(const glm::vec2& position, const glm::vec2& size)
 	{
-		drawTexture(onePixelTexture, position, size, color);
+		drawTexture(onePixelTexture, position, size, defaultColor);
 	}
 
-	void Graphics::drawRect(const glm::vec2& position, const glm::vec2& size, float weight, const Color& color)
+	void Graphics::drawRect(const glm::vec2& position, const glm::vec2& size, float weight)
 	{
 		// Top
-		fillRect(glm::vec2(position.x + weight, position.y), glm::vec2(size.x - weight, weight), color);
+		fillRect(glm::vec2(position.x + weight, position.y), glm::vec2(size.x - weight, weight));
 
 		// Bottom
-		fillRect(glm::vec2(position.x + weight, position.y + size.y - weight), glm::vec2(size.x - weight, weight), color);
+		fillRect(glm::vec2(position.x + weight, position.y + size.y - weight), glm::vec2(size.x - weight, weight));
 
 		// Left
-		fillRect(position, glm::vec2(weight, size.y), color);
+		fillRect(position, glm::vec2(weight, size.y));
 
 		// Right
-		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2 * weight), color);
+		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2 * weight));
 	}
 
 	void Graphics::setTranslate(const glm::vec2& newTranslate)
@@ -293,6 +299,11 @@ namespace vie
 	GlyphSortType Graphics::getSortType() const
 	{
 		return sortType;
+	}
+
+	Color Graphics::getDefaultColor() const
+	{
+		return defaultColor;
 	}
 
 }
