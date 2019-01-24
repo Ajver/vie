@@ -7,10 +7,10 @@
 #include "GLSLProgram.h"
 #include "Texture.h"
 #include "Glyph.h"
+#include "Camera2D.h"
 
 namespace vie
 {
-	class Camera2D;
 	class Layer;
 
 	class Graphics
@@ -21,7 +21,7 @@ namespace vie
 
 		void init(Camera2D* mainCamera);
 		void appendLayer(Layer* layer);
-		void createLayer(const std::string& layerName);
+		void createLayer(const std::string& layerName, Camera2D* camera = new Camera2D());
 		void switchLayer(const std::string& layerName);
 		void removeLayer(const std::string& layerName);
 		
@@ -58,6 +58,8 @@ namespace vie
 		float getRotate() const;
 		GlyphSortType getSortType() const;
 		Color getDefaultColor() const;
+		GLuint getVBO() const;
+		GLuint getVAO() const;
 
 		glm::vec2 transformPoint(glm::vec2 point) const;
 

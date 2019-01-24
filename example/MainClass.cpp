@@ -35,17 +35,13 @@ void MainClass::onCreate()
 {
 	Player *player = new Player();
 	player->create(objectsManager);
-	player->setPosition(glm::vec2(0, 0));
-	player->setSize(glm::vec2(256, 256));
 
 	objectsManager->appendObject(player);
 	objectsManager->appendMouseListener(player);
 	objectsManager->appendKeyListener(player);
 
-	graphics->createLayer("ground");
+	graphics->createLayer("ground", mainCamera);
 	graphics->createLayer("axis");
-
-	graphics->getLayerByName("ground")->setCamera(mainCamera);
 }
 
 void MainClass::update(float et)

@@ -28,7 +28,8 @@ void Player::create(vie::ObjectsManager* om)
 	objectsManager = om;
 	texture = vie::FileManager::getTexture("Graphics/Player.png");
 
-	texture = texture.getSubTexture(0, 0, 16, 16);
+	setPosition(glm::vec2(0, 0));
+	setSize(glm::vec2(256, 256));
 }
 
 void Player::update(float et)
@@ -54,6 +55,8 @@ void Player::render(vie::Graphics* g)
 
 	g->setColor(vie::COLOR::RED);
 	g->drawRect(position, size, 6.0f);
+
+	g->drawTexture(texture, position, size);
 }
 
 void Player::onMouseEnter()

@@ -89,12 +89,12 @@ namespace vie
 	{
 		layers.push_back(layer);
 	}
-	void Graphics::createLayer(const std::string& layerName)
+	void Graphics::createLayer(const std::string& layerName, Camera2D* camera)
 	{
 		if (containsLayer(layerName))
 			fatalError("Error: Cannot create layer with name: " + layerName + " (Layer exist)");
 		else
-			layers.push_back(new Layer(layerName, vbo, vao, new Camera2D()));
+			layers.push_back(new Layer(layerName, vbo, vao, camera));
 	}
 	void Graphics::switchLayer(const std::string& layerName)
 	{
@@ -330,6 +330,15 @@ namespace vie
 	Color Graphics::getDefaultColor() const
 	{
 		return defaultColor;
+	}
+
+	GLuint Graphics::getVBO() const
+	{
+		return vbo;
+	}
+	GLuint Graphics::getVAO() const
+	{
+		return vao;
 	}
 
 }
