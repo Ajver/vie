@@ -74,8 +74,8 @@ namespace vie
 
 		void mainLoop();
 		void processInput();
-		void manageUpdates(float elapsedTimeFromPreviousFrame);
-		void manageRendering();
+		void processUpdate(float elapsedTimeFromPreviousFrame);
+		void processRender();
 		void limitFPS(unsigned int elapsedMillis);
 
 		void destroyEngine();

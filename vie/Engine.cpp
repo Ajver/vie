@@ -93,8 +93,8 @@ namespace vie
 			fpsCount++;
 
 			processInput();
-			manageUpdates(elapsedTimeFromPreviousFrame);
-			manageRendering();
+			processUpdate(elapsedTimeFromPreviousFrame);
+			processRender();
 
 			stopTicks = SDL_GetTicks();
 			limitFPS(stopTicks - startTicks);
@@ -114,7 +114,7 @@ namespace vie
 		}
 	}
 
-	void Engine::manageUpdates(float elapsedTimeFromPreviousFrame)
+	void Engine::processUpdate(float elapsedTimeFromPreviousFrame)
 	{
 		objectsManager->update(elapsedTimeFromPreviousFrame);
 		update(elapsedTimeFromPreviousFrame);
@@ -170,7 +170,7 @@ namespace vie
 		}
 	}
 
-	void Engine::manageRendering()
+	void Engine::processRender()
 	{
 		graphics->begin();
 
