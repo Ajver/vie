@@ -20,17 +20,15 @@ namespace vie
 		~Graphics();
 
 		void init(Camera2D* mainCamera);
+		void appendLayer(Layer* layer);
 		void createLayer(const std::string& layerName);
-		bool hasLayer(const std::string& layerName);
 		void switchLayer(const std::string& layerName);
 		void removeLayer(const std::string& layerName);
-
+		
+		bool containsLayer(const std::string& layerName) const;
 		Layer* getCurrentLayer() const;
-		std::string getCurrentLayerName() const;
+		Layer* getLayerByName(const std::string& layerName) const;
 
-		// Controll the rendering
-		void begin();
-		void end();
 		void render();
 
 		void setSortType(GlyphSortType newSortType);
@@ -40,14 +38,11 @@ namespace vie
 		// Add new sprite to the batch
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color = COLOR::WHITE);
 		
-		// Sipmly draw texture on Position with original texture size
 		void drawTexture(const Texture& texture, const glm::vec2& position, const Color& color = COLOR::WHITE);
-
-		// Drawp texture on Position by scaling it to Size
 		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color = COLOR::WHITE);
 
 		void fillRect(const glm::vec2& position, const glm::vec2& size);
-		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight);
+		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight = 1.0f);
 
 		void setTranslate(const glm::vec2& newTranslate);
 		void setScale(float newScale);
@@ -71,9 +66,8 @@ namespace vie
 		GLuint vao;
 		GlyphSortType sortType;
 
-		std::string currentLayerName;
 		Layer* currentLayer;
-		std::map<std::string, Layer*> layersMap;
+		std::vector<Layer*> layers;
 
 		Color defaultColor;
 		float nextTextureDepth;
@@ -86,6 +80,9 @@ namespace vie
 		void enableAlphaBlending();
 		void createOnePixelTexture();
 		void createVertexArray();
+
+		void clearScreen();
+		void renderLayers();
 
 		void setGlyphAttributes(Glyph* glyph, GLuint id, float depth, const glm::vec4& uvRect, const Color& color);
 		void setGlyphUV(Glyph* glyph, const glm::vec4& uvRect);

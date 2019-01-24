@@ -63,7 +63,7 @@ namespace vie
 		for (int i = 0; i < objects.size(); i++)
 		{
 			Object* ob = objects[i];
-			if (ob->is(label))
+			if (ob->isLabeled(label))
 				return ob;
 		}
 
@@ -74,7 +74,7 @@ namespace vie
 		for (int i = 0; i < mouseListeners.size(); i++)
 		{
 			Object* ob = mouseListeners[i];
-			if (ob->is(label))
+			if (ob->isLabeled(label))
 				return ob;
 		}
 
@@ -85,7 +85,7 @@ namespace vie
 		for (int i = 0; i < keyListeners.size(); i++)
 		{
 			Object* ob = keyListeners[i];
-			if (ob->is(label))
+			if (ob->isLabeled(label))
 				return ob;
 		}
 

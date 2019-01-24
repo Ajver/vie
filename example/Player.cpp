@@ -4,6 +4,7 @@
 #include <vie/Input.h>
 #include <vie/Window.h>
 #include <vie/ObjectsManager.h>
+#include <vie/Color.h>
 
 #include <iostream>
 
@@ -47,16 +48,12 @@ void Player::update(float et)
 
 void Player::render(vie::Graphics* g)
 {
-	//g->setSortType(vie::GlyphSortType::FRONT_TO_BACK);
-	//g->setScale(3.0f);
-	//g->translate(-size * 0.5f);
-	//g->drawTexture(texture, position - size*0.5f, size);
-	//g->translate(size * 0.5f);
+	g->switchLayer("ground");
+	g->setColor(vie::COLOR::PINK);
+	g->fillRect(position, size);
 
-	//g->translate(glm::vec2(-450, -300));
-	//g->fillRect(glm::vec2(0, 0) , glm::vec2(200, 200), vie::PINK);
-	//g->drawRect(position, size, vie::Color(255, 255, 255, 100));
-	//g->translate(glm::vec2(450, 300));
+	g->setColor(vie::COLOR::RED);
+	g->drawRect(position, size, 6.0f);
 }
 
 void Player::onMouseEnter()

@@ -2,37 +2,53 @@
 
 #include<vie/Graphics.h>
 #include<vie/Camera2D.h>
+#include<vie/Layer.h>
 
 void drawSomething(vie::Graphics* g);
 vie::Graphics* getInitedGraphics();
 
+
+TEST(GraphicsTest, Should_AppendLayer)
+{
+	vie::Graphics g = *getInitedGraphics();
+	g.appendLayer(new vie::Layer("test_layer", 1, 1, new vie::Camera2D()));
+	EXPECT_TRUE(g.containsLayer("test_layer"));
+}
+
+TEST(GraphicsTest, Should_GetLayerByName)
+{
+	vie::Graphics g = *getInitedGraphics();
+	g.appendLayer(new vie::Layer("test_layer", 1, 1, new vie::Camera2D()));
+	EXPECT_FALSE(nullptr == g.getLayerByName("test_layer"));
+}
+
 TEST(GraphicsTest, Should_CreateLayer)
 {
 	vie::Graphics g;
-	EXPECT_FALSE(g.hasLayer("test_layer"));
+	EXPECT_FALSE(g.containsLayer("test_layer"));
 
 	g.createLayer("test_layer");
-	EXPECT_TRUE(g.hasLayer("test_layer"));
+	EXPECT_TRUE(g.containsLayer("test_layer"));
 }
 
 TEST(GraphicsTest, Should_SwitchLayer)
 {
-	vie::Graphics g;
+	vie::Graphics g = *getInitedGraphics();
 	g.createLayer("test_layer");
-	EXPECT_FALSE("test_layer" == g.getCurrentLayerName());
+	EXPECT_FALSE("test_layer" == g.getCurrentLayer()->getName());
 	
 	g.switchLayer("test_layer");
-	EXPECT_EQ("test_layer", g.getCurrentLayerName());
+	EXPECT_EQ("test_layer", g.getCurrentLayer()->getName());
 }
 
 TEST(GraphicsTest, Should_RemoveLayer)
 {
 	vie::Graphics g;
 	g.createLayer("test_layer");
-	EXPECT_TRUE(g.hasLayer("test_layer"));
-
+	EXPECT_TRUE(g.containsLayer("test_layer"));
+	
 	g.removeLayer("test_layer");
-	EXPECT_FALSE(g.hasLayer("test_layer"));
+	EXPECT_FALSE(g.containsLayer("test_layer"));
 }
 
 TEST(GraphicsTest, ShouldSet_Translate)

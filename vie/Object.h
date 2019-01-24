@@ -37,7 +37,7 @@ namespace vie
 		std::string getLabel() const;
 
 		bool isPointInside(const glm::vec2& point) const;
-		bool is(const std::string& lab) const;
+		bool isLabeled(const std::string& lab) const;
 
 	protected:
 		glm::vec2 position;

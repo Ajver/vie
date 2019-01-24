@@ -8,6 +8,8 @@
 #include <vie/Input.h>
 #include <vie/ObjectsManager.h>
 #include <vie/Camera2D.h>
+#include <vie/Window.h>
+#include <vie/Layer.h>
 
 /*
 Link those libs:
@@ -39,19 +41,16 @@ void MainClass::onCreate()
 	objectsManager->appendObject(player);
 	objectsManager->appendMouseListener(player);
 	objectsManager->appendKeyListener(player);
+
+	graphics->createLayer("ground");
+	graphics->createLayer("axis");
+
+	graphics->getLayerByName("ground")->setCamera(mainCamera);
 }
 
 void MainClass::update(float et)
 {
-	//mainCamera->scaleUp(1.01f);
-	//std::cout << ".";
-}
-
-void MainClass::render(vie::Graphics* g)
-{
-	g->setBackgroundColor(vie::COLOR::DARK_GRAY);
-
-	float speed = 8.0f / g->getScale();
+	float speed = 8.0f / graphics->getScale();
 	float scaleSpeed = 1.02f;
 	float rotateSpeed = 0.01f;
 
@@ -74,45 +73,50 @@ void MainClass::render(vie::Graphics* g)
 		mainCamera->rotate(-rotateSpeed);
 	if (vie::Input::isKeyPressed(SDLK_x))
 		mainCamera->rotate(rotateSpeed);
+}
+
+void MainClass::render(vie::Graphics* g)
+{
+	g->switchLayer("main");
+	g->setBackgroundColor(vie::COLOR::DARK_GRAY);
 
 	static vie::Texture chessBoard("Graphics/HugeSquare.png");
-
 	g->drawTexture(chessBoard, 0.5f * glm::vec2(-(float)chessBoard.getWidth(), -(float)chessBoard.getHeight()));
+
+	g->switchLayer("axis");
+	float screenHeight = vie::Window::getScreenHeight();
+	float screenWidth = vie::Window::getScreenWidth();
+	g->setColor(vie::Color(0, 200, 100, 200));
+	g->fillRect(glm::vec2(-1, -screenHeight*0.5f), glm::vec2(2, screenHeight));
+	g->fillRect(glm::vec2(-screenWidth*0.5f, -1), glm::vec2(screenWidth, 2));
 }
 
 void MainClass::onKeyPress()
 {
-	//std::cout << "Key press: " << keyID << std::endl;
-
 	if (vie::Input::getLastKey() == SDLK_ESCAPE)
 		destroy();
 }
 
 void MainClass::onKeyRelease()
 {
-	//std::cout << "Key release: " << keyID << std::endl;
 }
 
 
 /*
 void MainClass::onMousePress()
 {
-	std::cout << "Mouse press: " << keyID << " xy: " << mousePos.x << " | " << mousePos.y << std::endl;
 }
 
 void MainClass::onMouseRelease()
 {
-	std::cout << "Mouse release: " << keyID << " xy: " << mousePos.x << " | " << mousePos.y << std::endl;
 }
 
 void MainClass::onMouseMove()
 {
-	std::cout << "Mouse move xy: " << mousePos.x << " | " << mousePos.y << std::endl;
 }
 
 void MainClass::onMouseDrag()
 {
-	std::cout << "Mouse drag xy: " << mousePos.x << " | " << mousePos.y << std::endl;
 }
 */
 

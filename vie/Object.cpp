@@ -75,7 +75,7 @@ namespace vie
 			point.y < position.y + size.y;
 	}
 
-	bool Object::is(const std::string& lab) const
+	bool Object::isLabeled(const std::string& lab) const
 	{
 		return label == lab;
 	}

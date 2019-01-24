@@ -21,7 +21,6 @@ namespace vie
 		translateVec(glm::vec2(0, 0)),
 		nextTextureDepth(0.0f),
 		rotateAngleInRadians(0.0f),
-		currentLayerName(""),
 		currentLayer(nullptr),
 		defaultColor(COLOR::WHITE)
 	{
@@ -36,9 +35,9 @@ namespace vie
 		enableAlphaBlending();
 		createOnePixelTexture();
 		createVertexArray();
-		currentLayerName = "main_layer";
-		currentLayer = new Layer(vbo, vao, mainCamera);
-		layersMap[currentLayerName] = currentLayer;
+
+		currentLayer = new Layer("main", vbo, vao, mainCamera);
+		layers.push_back(currentLayer);
 	}
 
 	void Graphics::enableAlphaBlending()
@@ -86,63 +85,90 @@ namespace vie
 		glBindVertexArray(0);
 	}
 
+	void Graphics::appendLayer(Layer* layer)
+	{
+		layers.push_back(layer);
+	}
 	void Graphics::createLayer(const std::string& layerName)
 	{
-		if (hasLayer(layerName))
+		if (containsLayer(layerName))
 			fatalError("Error: Cannot create layer with name: " + layerName + " (Layer exist)");
 		else
-			layersMap[layerName] = new Layer(vbo, vao, new Camera2D());
+			layers.push_back(new Layer(layerName, vbo, vao, new Camera2D()));
 	}
-
-	bool Graphics::hasLayer(const std::string& layerName)
-	{
-		return layersMap.find(layerName) != layersMap.end();
-	}
-
 	void Graphics::switchLayer(const std::string& layerName)
 	{
-		auto layer = layersMap.find(layerName);
-		if (layer != layersMap.end())
+		for (int i = 0; i < layers.size(); i++)
 		{
-			currentLayerName = layerName;
-			currentLayer = layer->second;
+			Layer* layer = layers[i];
+			if (layer->isNamed(layerName))
+			{
+				currentLayer = layer;
+				return;
+			}
+					
 		}
-		else
-			fatalError("Error: Cannot switch to layer with name: " + layerName + " (Layer not found)");
+		fatalError("Error: Cannot switch to layer with name: " + layerName + " (Layer not found)");
 	}
-
 	void Graphics::removeLayer(const std::string& layerName)
 	{
-		if (hasLayer(layerName))
-			layersMap.erase(layerName);
-		else
-			fatalError("Error: Cannot remove layer with name: " + layerName + " (Layer not found)");
-	}
+		if (layerName == "main")
+			fatalError("Error: Cannot remove main layer!");
+		else 
+			for(int i=0; i<layers.size();i++)
+				if (layers[i]->isNamed(layerName))
+				{
+					layers.erase(layers.begin() + i);
+					return;
+				}
 
+		fatalError("Error: Cannot remove layer with name: " + layerName + " (Layer not found)");
+	}
+	bool Graphics::containsLayer(const std::string& layerName) const
+	{
+		for (int i = 0; i < layers.size(); i++)
+			if (layers[i]->isNamed(layerName))
+				return true;
+
+		return false;
+	}
 	Layer* Graphics::getCurrentLayer() const
 	{
 		return currentLayer;
 	}
-	std::string Graphics::getCurrentLayerName() const
+	Layer* Graphics::getLayerByName(const std::string& layerName) const
 	{
-		return currentLayerName;
-	}
-
-	void Graphics::begin()
-	{
-		nextTextureDepth = 0.0f;
-		currentLayer->begin();
-	}
-
-	void Graphics::end()
-	{
-		currentLayer->end();
-		currentLayer->sortGlyphsBy(sortType);
+		for (int i = 0; i < layers.size(); i++)
+		{
+			Layer* layer = layers[i];
+			if (layer->isNamed(layerName))
+				return layer;
+		}
+		fatalError("Error: Cannot get layer with name: " + layerName + " (Layer not found)");
+		return nullptr;
 	}
 
 	void Graphics::render()
 	{
-		currentLayer->render();
+		clearScreen();
+		renderLayers();
+		nextTextureDepth = 0.0f;
+	}
+
+	void Graphics::clearScreen()
+	{
+		glClearDepth(1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Graphics::renderLayers()
+	{
+		for (int i = 0; i < layers.size(); i++)
+		{
+			Layer* layer = layers[i];
+			layer->sortGlyphsBy(sortType);
+			layer->render();
+		}
 	}
 
 	void Graphics::setSortType(GlyphSortType newSortType)

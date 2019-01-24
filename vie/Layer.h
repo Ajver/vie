@@ -13,24 +13,25 @@ namespace vie
 	class Layer
 	{
 	public:
-		explicit Layer(GLuint vbo, GLuint vao, Camera2D* camera);
+		explicit Layer(const std::string& n, GLuint vbo, GLuint vao, Camera2D* camera);
 		~Layer();
 
 		void appendGlyph(Glyph* glyph);
-		void sortGlyphsBy(GlyphSortType sortType);
 
 		void setBackgroundColor(const Color& color);
 
-		void begin();
-		void end();
 		void render();
+		void sortGlyphsBy(GlyphSortType sortType);
 
 		void setCamera(Camera2D* ncamera);
 		Camera2D* getCamera() const;
 
+		bool isNamed(const std::string& n) const;
+		std::string getName() const;
 		std::vector<Glyph*> getGlyphsVector() const;
 
 	private:
+		std::string name;
 		GLuint vbo;
 		GLuint vao;
 		Camera2D* camera;
@@ -39,8 +40,11 @@ namespace vie
 		std::vector<Glyph*> glyphs;
 		std::vector<RenderBatch> renderBatches;
 
-		void clearGL();
+		void prepareShadersAndGL();
 		void resetSamplerInShader();
+
+		void renderGlyphs();
+		void prepareGlyphs();
 		void setCameraMatrix();
 		void transformGlyphsByCamera();
 		void translateGlyphsByCamera();

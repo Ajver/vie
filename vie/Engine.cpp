@@ -172,12 +172,8 @@ namespace vie
 
 	void Engine::processRender()
 	{
-		graphics->begin();
-
 		objectsManager->render(graphics);
 		render(graphics);
-
-		graphics->end();
 		graphics->render();
 		Window::swapSDLWindowBuffer();
 	}

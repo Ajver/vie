@@ -82,7 +82,7 @@ TEST(LayerTest, Should_RemoveGlyphsAfterRender)
 
 vie::Layer* getInitedLayer()
 {
-	return new vie::Layer(1, 1, new vie::Camera2D());
+	return new vie::Layer("test_layer", 1, 1, new vie::Camera2D());
 }
 
 vie::Layer* getLayerWithSomeGlyphs()

@@ -11,7 +11,8 @@
 namespace vie
 {
 
-	Layer::Layer(GLuint vbo, GLuint vao, Camera2D* ncamera) :
+	Layer::Layer(const std::string& n, GLuint vbo, GLuint vao, Camera2D* ncamera) :
+		name(n),
 		vbo(vbo),
 		vao(vao),
 		camera(ncamera)
@@ -27,6 +28,38 @@ namespace vie
 	void Layer::appendGlyph(Glyph* glyph)
 	{
 		glyphs.push_back(glyph);
+	}
+
+	void Layer::render()
+	{	
+		prepareShadersAndGL();
+		renderGlyphs();
+		removeAllGlyphsAndRenderBatches();
+		colorProgram.unuse();
+	}
+
+	void Layer::prepareShadersAndGL()
+	{
+		colorProgram.use();
+		resetSamplerInShader();
+	}
+
+	void Layer::resetSamplerInShader()
+	{
+		GLint textureLocation = colorProgram.getUnitformLocation("mySampler");
+		glUniform1i(textureLocation, 0);
+	}
+
+	void Layer::renderGlyphs()
+	{
+		prepareGlyphs();
+		renderBatch();
+	}
+
+	void Layer::prepareGlyphs()
+	{
+		transformGlyphsByCamera();
+		createRenderBatches();
 	}
 
 	void Layer::sortGlyphsBy(GlyphSortType sortType)
@@ -45,37 +78,11 @@ namespace vie
 		}
 	}
 
-	void Layer::begin()
-	{
-		clearGL();
-		colorProgram.use();
-		resetSamplerInShader();
-	}
-
-	void Layer::clearGL()
-	{
-		glClearDepth(1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-
-	void Layer::resetSamplerInShader()
-	{
-		GLint textureLocation = colorProgram.getUnitformLocation("mySampler");
-		glUniform1i(textureLocation, 0);
-	}
-
-	void Layer::end()
+	void Layer::transformGlyphsByCamera()
 	{
 		setCameraMatrix();
-		transformGlyphsByCamera();
-	}
-
-	void Layer::render()
-	{
-		createRenderBatches();
-		renderBatch();
-		removeAllGlyphsAndRenderBatches();
-		colorProgram.unuse();
+		translateGlyphsByCamera();
+		rotateGlyphsByCamera();
 	}
 
 	void Layer::setCameraMatrix()
@@ -88,12 +95,6 @@ namespace vie
 
 		GLint screeenHeightLocation = colorProgram.getUnitformLocation("screenHeight");
 		glUniform1f(screeenHeightLocation, (float)Window::getScreenHeight());
-	}
-
-	void Layer::transformGlyphsByCamera()
-	{
-		translateGlyphsByCamera();
-		rotateGlyphsByCamera();
 	}
 
 	void Layer::translateGlyphsByCamera()
@@ -189,6 +190,16 @@ namespace vie
 	Camera2D* Layer::getCamera() const
 	{
 		return camera;
+	}
+
+	bool Layer::isNamed(const std::string& n) const
+	{
+		return name == n;
+	}
+
+	std::string Layer::getName() const
+	{
+		return name;
 	}
 
 	std::vector<Glyph*> Layer::getGlyphsVector() const
