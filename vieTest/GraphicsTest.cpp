@@ -31,6 +31,16 @@ TEST(GraphicsTest, Should_CreateLayer)
 	EXPECT_TRUE(g.containsLayer("test_layer"));
 }
 
+TEST(GraphicsTest, Should_CreateLayerWithSpecificCamera)
+{
+	vie::Graphics g;
+	vie::Camera2D* cam = new vie::Camera2D();
+	EXPECT_FALSE(g.containsLayer("test_layer"));
+
+	g.createLayer("test_layer", cam);
+	EXPECT_EQ(cam, g.getLayerByName("test_layer")->getCamera());
+}
+
 TEST(GraphicsTest, Should_SwitchLayer)
 {
 	vie::Graphics g = *getInitedGraphics();
