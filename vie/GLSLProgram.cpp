@@ -79,6 +79,7 @@ namespace vie
 	{
 		std::string shaderText = "";
 
+		shaderText += "#version 130 \n";
 		shaderText += "in vec2 vertexPosition;";
 		shaderText += "in vec4 vertexColor;";
 		shaderText += "in vec2 vertexUV;";
@@ -103,6 +104,7 @@ namespace vie
 	{
 		std::string shaderText = "";
 
+		shaderText += "#version 130 \n";
 		shaderText += "in vec2 fragmentPosition;";
 		shaderText += "in vec4 fragmentColor;";
 		shaderText += "in vec2 fragmentUV;";
