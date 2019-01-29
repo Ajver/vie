@@ -29,8 +29,6 @@ namespace vie
 		Layer* getCurrentLayer() const;
 		Layer* getLayerByName(const std::string& layerName) const;
 
-		void render();
-
 		void setSortTypeForCurrentLayer(GlyphSortType newSortType);
 		void setColor(const Color& color);
 		void setBackgroundColor(const Color& color);
@@ -52,6 +50,8 @@ namespace vie
 		void scaleUp(float scaleMod);
 		void scaleDown(float scaleMod);
 		void rotate(float angle);
+
+		void render();
 
 		glm::vec2 getTranslate() const;
 		float getScale() const;
