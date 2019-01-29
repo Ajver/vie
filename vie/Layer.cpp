@@ -2,6 +2,9 @@
 
 #include <algorithm>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
+
 #include "Glyph.h"
 #include "Camera2D.h"
 #include "Window.h"
@@ -80,9 +83,9 @@ namespace vie
 
 	void Layer::transformGlyphsByCamera()
 	{
-		setCameraMatrix();
-		translateGlyphsByCamera();
 		rotateGlyphsByCamera();
+		translateGlyphsByCamera();
+		setCameraMatrix();
 	}
 
 	void Layer::setCameraMatrix()
@@ -99,7 +102,7 @@ namespace vie
 
 	void Layer::translateGlyphsByCamera()
 	{
-		glm::vec2 cameraPosition = camera->getPosition();
+		glm::vec2 cameraPosition = glm::rotate(camera->getPosition(), camera->getRotate());
 		cameraPosition.x *= -1.0f;
 
 		for (int i = 0; i < glyphs.size(); i++)
