@@ -18,6 +18,9 @@ namespace vie
 
 		char* getOpenGLVersion();
 
+		// Get FPS count from previous frame (updated after each second)
+		unsigned int getFpsCount();
+
 	protected:
 		ObjectsManager* objectsManager;
 
@@ -36,6 +39,7 @@ namespace vie
 		// Render all stuff (graphics object for displaying everything)
 		virtual void render(Graphics* g) abstract;
 
+		// Runs once before all systems destroy
 		virtual void onDestroy();
 
 		// Init all systems and run the vEngine (title, screen width, screen height, window type)
@@ -44,8 +48,9 @@ namespace vie
 			unsigned int sh = 480, 
 			WindowFlags windowFlags = WindowFlags::DEFAULT);
 
-		// Get FPS count from previous frame (updated after each second)
-		unsigned int getFpsCount();
+		// If nMaxFps < 0 then no limits!
+		// (Default 60)
+		void setFPSLimit(unsigned int nMaxFps);
 
 		virtual void onKeyPress();
 		virtual void onKeyRelease();
@@ -54,15 +59,17 @@ namespace vie
 		virtual void onMouseMove();
 		virtual void onMouseDrag();
 
+		// Stop main loop and destroy engine
 		void destroyEngine();
 
 	private:
+		// Is main loop running?
 		bool isRunning;
 
 		// Frames per second
 		unsigned int FPS;
 
-		// Maximum Frames per second
+		// Maximum Frames per second (default 60)
 		unsigned int maxFPS;
 
 		// Init all systems (title, screen width, screen height, window type)

@@ -7,14 +7,14 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 Car::Car() :
-	MAX_SPEED(300.0f),
-	ACCELERATION(50.0f),
-	TURN_ACCELERATION(0.01f),
-	MAX_TURN_SPEED(0.02f)
+	MAX_SPEED(1100.0f),
+	ACCELERATION(200.0f),
+	TURN_ACCELERATION(0.5f),
+	MAX_TURN_SPEED(1.5f)
 {
 	texture = vie::FileManager::getTexture("Graphics/car.png");
 	position = glm::vec2(0, 0);
-	size = glm::vec2(texture.getWidth(), texture.getHeight()) * 5.0f;
+	size = glm::vec2(texture.getWidth(), texture.getHeight()) * 3.0f;
 }
 
 
@@ -33,14 +33,14 @@ void Car::update(float et)
 
 void Car::processMoving(float et)
 {
-	speed *= 0.99f;
+	speed *= 1.0f - et;
 
 	if (vie::Input::isKeyPressed(SDLK_w))
 	{
 		speed += getSpeedAcc(et);
 		
-		if(speed > 0)
-			speed *= 1.05f;
+		if (speed > 0)
+			speed *= 1.0f + et;
 
 		wasSpeedIncreased = true;
 	}
@@ -49,7 +49,7 @@ void Car::processMoving(float et)
 		speed -= getSpeedAcc(et);
 
 		if (speed < 0)
-			speed *= 1.05f;
+			speed *= 1.0f + et;
 
 		wasSpeedIncreased = true;
 	}
@@ -57,7 +57,7 @@ void Car::processMoving(float et)
 		wasSpeedIncreased = false;
 
 	if (vie::Input::isKeyPressed(SDLK_SPACE))
-		speed *= 0.92f;
+		speed *= 1.0f - et * 2.0f;
 
 	if (speed > MAX_SPEED)
 		speed = MAX_SPEED;
@@ -78,24 +78,28 @@ void Car::calculateVelocity()
 
 void Car::processTurning(float et)
 {
-	turnSpeed *= 0.9f;
+	bool wasTurning = false;
 
 	if (vie::Input::isKeyPressed(SDLK_a))
 	{
 		turnSpeed -= getTurnAcc(et);
 
-		speed *= 0.999f;
+		speed *= 1.0f - et;
+
+		wasTurning = true;
 	}
 
 	if (vie::Input::isKeyPressed(SDLK_d))
 	{
 		turnSpeed += getTurnAcc(et);
 
-		speed *= 0.999f;
+		speed *= 1.0f - et;
+
+		wasTurning = true;
 	}
 
-	if(!wasSpeedIncreased)
-		turnSpeed *= 0.1f;
+	if(!wasSpeedIncreased || !wasTurning)
+		turnSpeed *= (1.0f - et) * 0.1f;
 
 	if (turnSpeed > MAX_TURN_SPEED)
 		turnSpeed = MAX_TURN_SPEED;
@@ -116,7 +120,7 @@ void Car::updatePosition(float et)
 
 void Car::updateRotate(float et)
 {
-	rotate += turnSpeed;
+	rotate += turnSpeed * et;
 }
 
 void Car::render(vie::Graphics* g)

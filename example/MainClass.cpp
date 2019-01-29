@@ -29,7 +29,7 @@ glew32.lib
 MainClass::MainClass() :
 	map(nullptr),
 	carFollower(nullptr),
-	someTimer(15000)
+	someTimer(1000)
 {
 	runEngine("Example Engine Application", 1280, 728, vie::WindowFlags::DEFAULT);
 }
@@ -102,9 +102,7 @@ void MainClass::render(vie::Graphics* g)
 {
 	renderChessboard(g);
 	objectsManager->render(g);
-	renderAxis(g);
-	g->setColor(vie::COLOR::GREEN);
-	g->fillRect(glm::vec2((someTimer.getEaseProgress() - 0.5f) * (vie::Window::getScreenWidth()), 0), glm::vec2(100, 100));
+	//renderAxis(g);
 }
 
 void MainClass::renderChessboard(vie::Graphics* g)

@@ -169,6 +169,9 @@ namespace vie
 
 	void Engine::limitFPS(unsigned int elapsedMillis)
 	{
+		if (maxFPS < 0)
+			return;
+
 		float maxET = 1000.0f / maxFPS;
 		if (maxET > elapsedMillis) 
 			SDL_Delay(maxET - elapsedMillis);
@@ -196,6 +199,11 @@ namespace vie
 	char* Engine::getOpenGLVersion()
 	{
 		return (char*)glGetString(GL_VERSION);
+	}
+
+	void Engine::setFPSLimit(unsigned int nMaxFps)
+	{
+		maxFPS = nMaxFps;
 	}
 
 	// Default bodies (it's not necessary to use them)
