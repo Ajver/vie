@@ -52,6 +52,7 @@ namespace vie
 	{
 		screenPosition -= glm::vec2(Window::getScreenWidth() * 0.5f, Window::getScreenHeight() * 0.5f);
 		screenPosition /= scale;
+		screenPosition = glm::rotate(screenPosition, -rotateAngleInRadians);
 		screenPosition += position;
 
 		return screenPosition;
@@ -59,7 +60,7 @@ namespace vie
 
 	void Camera2D::move(const glm::vec2& translateVector)
 	{
-		position += glm::rotate(translateVector, -rotateAngleInRadians);
+		position += translateVector; 
 		needsMatrixUpdate = true;
 	}
 
@@ -83,7 +84,7 @@ namespace vie
 
 	void Camera2D::setPosition(const glm::vec2& npos)
 	{
-		position = glm::rotate(npos, -rotateAngleInRadians);
+		position = npos;
 		needsMatrixUpdate = true;
 	}
 

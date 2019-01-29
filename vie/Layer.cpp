@@ -83,8 +83,8 @@ namespace vie
 
 	void Layer::transformGlyphsByCamera()
 	{
-		rotateGlyphsByCamera();
 		translateGlyphsByCamera();
+		rotateGlyphsByCamera();
 		setCameraMatrix();
 	}
 
@@ -102,8 +102,7 @@ namespace vie
 
 	void Layer::translateGlyphsByCamera()
 	{
-		glm::vec2 cameraPosition = glm::rotate(camera->getPosition(), camera->getRotate());
-		cameraPosition.x *= -1.0f;
+		glm::vec2 cameraPosition = -camera->getPosition();
 
 		for (int i = 0; i < glyphs.size(); i++)
 			glyphs[i]->translateByVec2(cameraPosition);

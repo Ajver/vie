@@ -116,7 +116,6 @@ namespace vie
 
 	void Engine::processUpdate(float elapsedTimeFromPreviousFrame)
 	{
-		objectsManager->update(elapsedTimeFromPreviousFrame);
 		update(elapsedTimeFromPreviousFrame);
 		Window::updateScreenSizeFromSDL();
 	}
@@ -172,7 +171,6 @@ namespace vie
 
 	void Engine::processRender()
 	{
-		objectsManager->render(graphics);
 		render(graphics);
 		graphics->render();
 		Window::swapSDLWindowBuffer();
