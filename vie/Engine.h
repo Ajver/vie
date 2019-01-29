@@ -16,7 +16,7 @@ namespace vie
 		Engine();
 		~Engine();
 
-		void printOpenGLVersion();
+		char* getOpenGLVersion();
 
 	protected:
 		ObjectsManager* objectsManager;

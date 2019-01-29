@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 
 #include <string>
-#include <iostream>
 
 #include "Window.h"
 #include "Errors.h"
@@ -53,8 +52,6 @@ namespace vie
 		Window::create(title, sw, sh, windowFlags);
 
 		createGlewContextAndCatchErrors();
-
-		printOpenGLVersion();
 		
 		mainCamera = new Camera2D();
 		mainCamera->init();
@@ -64,9 +61,6 @@ namespace vie
 
 		objectsManager = new ObjectsManager();
 	}
-
-	void Engine::printOpenGLVersion()
-	{ printf("*** OpenGL Version: %s ***\n", glGetString(GL_VERSION)); }
 
 	void Engine::createGlewContextAndCatchErrors()
 	{
@@ -107,9 +101,6 @@ namespace vie
 				timer += 1000;
 				FPS = fpsCount;
 				fpsCount = 0;
-
-				printf("FPS: %d\n", FPS);
-				printf("ET: %f\n\n", elapsedTimeFromPreviousFrame);
 			}
 		}
 	}
@@ -198,7 +189,14 @@ namespace vie
 	}
 
 	unsigned int Engine::getFpsCount() 
-	{ return FPS; }
+	{ 
+		return FPS; 
+	}
+
+	char* Engine::getOpenGLVersion()
+	{
+		return (char*)glGetString(GL_VERSION);
+	}
 
 	// Default bodies (it's not necessary to use them)
 	void Engine::onCreate() {}
