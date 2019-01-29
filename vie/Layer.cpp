@@ -61,11 +61,12 @@ namespace vie
 
 	void Layer::prepareGlyphs()
 	{
+		sortGlyphs();
 		transformGlyphsByCamera();
 		createRenderBatches();
 	}
 
-	void Layer::sortGlyphsBy(GlyphSortType sortType)
+	void Layer::sortGlyphs()
 	{
 		switch (sortType)
 		{
@@ -179,14 +180,14 @@ namespace vie
 		glyphs.clear();
 	}
 
-	void Layer::setBackgroundColor(const Color& color)
-	{
-		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
-	}
-
 	void Layer::setCamera(Camera2D* ncamera)
 	{
 		camera = ncamera;
+	}
+
+	void Layer::setSortType(GlyphSortType newSortType)
+	{
+		sortType = newSortType;
 	}
 
 	Camera2D* Layer::getCamera() const

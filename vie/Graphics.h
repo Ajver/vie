@@ -31,7 +31,7 @@ namespace vie
 
 		void render();
 
-		void setSortType(GlyphSortType newSortType);
+		void setSortTypeForCurrentLayer(GlyphSortType newSortType);
 		void setColor(const Color& color);
 		void setBackgroundColor(const Color& color);
 

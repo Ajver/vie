@@ -18,10 +18,8 @@ namespace vie
 
 		void appendGlyph(Glyph* glyph);
 
-		void setBackgroundColor(const Color& color);
-
 		void render();
-		void sortGlyphsBy(GlyphSortType sortType);
+		void setSortType(GlyphSortType newSortType);
 
 		void setCamera(Camera2D* ncamera);
 		Camera2D* getCamera() const;
@@ -39,12 +37,14 @@ namespace vie
 
 		std::vector<Glyph*> glyphs;
 		std::vector<RenderBatch> renderBatches;
+		GlyphSortType sortType;
 
 		void prepareShadersAndGL();
 		void resetSamplerInShader();
 
 		void renderGlyphs();
 		void prepareGlyphs();
+		void sortGlyphs();
 		void setCameraMatrix();
 		void transformGlyphsByCamera();
 		void translateGlyphsByCamera();

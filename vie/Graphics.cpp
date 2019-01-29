@@ -166,14 +166,13 @@ namespace vie
 		for (int i = 0; i < layers.size(); i++)
 		{
 			Layer* layer = layers[i];
-			layer->sortGlyphsBy(sortType);
 			layer->render();
 		}
 	}
 
-	void Graphics::setSortType(GlyphSortType newSortType)
+	void Graphics::setSortTypeForCurrentLayer(GlyphSortType newSortType)
 	{
-		sortType = newSortType;
+		currentLayer->setSortType(newSortType);
 	}
 
 	void Graphics::setColor(const Color& color)
@@ -183,7 +182,7 @@ namespace vie
 
 	void Graphics::setBackgroundColor(const Color& color)
 	{
-		currentLayer->setBackgroundColor(color);
+		glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
 	}
 
 	void Graphics::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint textureID, float depth, const Color& color)
