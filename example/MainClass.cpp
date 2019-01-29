@@ -91,21 +91,26 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
+	renderChessboard(g);
+	objectsManager->render(g);
+	renderAxis(g);
+}
+
+void MainClass::renderChessboard(vie::Graphics* g)
+{
 	g->switchLayer("main");
 	g->setBackgroundColor(vie::COLOR::DARK_GRAY);
 
 	static vie::Texture chessBoard("Graphics/HugeSquare.png");
 	g->drawTexture(chessBoard, 0.5f * glm::vec2(-(float)chessBoard.getWidth(), -(float)chessBoard.getHeight()));
+}
 
-	objectsManager->render(g);
-
+void MainClass::renderAxis(vie::Graphics* g)
+{
 	g->switchLayer("axis");
 	float screenHeight = vie::Window::getScreenHeight();
 	float screenWidth = vie::Window::getScreenWidth();
 	g->setColor(vie::Color(0, 200, 100, 200));
 	g->fillRect(glm::vec2(-1, -screenHeight * 0.5f), glm::vec2(2, screenHeight));
 	g->fillRect(glm::vec2(-screenWidth * 0.5f, -1), glm::vec2(screenWidth, 2));
-
-
 }
-

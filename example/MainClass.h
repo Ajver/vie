@@ -20,4 +20,7 @@ public:
 private:
 	Map* map;
 	CarFollower* carFollower;
+
+	void renderChessboard(vie::Graphics* g);
+	void renderAxis(vie::Graphics* g);
 };

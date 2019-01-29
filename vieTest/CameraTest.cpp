@@ -32,15 +32,6 @@ TEST(CameraTest, ShouldSet_Position)
 	EXPECT_TRUE(camera.getNeedsMatrixUpdate());
 }
 
-TEST(CameraTest, ShouldSet_Position_ByRotatedVector)
-{
-	vie::Camera2D camera = getUpdatedCamera();
-	camera.setRotate(1.0f);
-	camera.setPosition(glm::vec2(10.0f, 5.0f));
-	glm::vec2 point(10.0f, 5.0f);
-	EXPECT_EQ(glm::rotate(point, -1.0f), camera.getPosition());
-}
-
 TEST(CameraTest, ShouldSet_Scale)
 {
 	vie::Camera2D camera = getUpdatedCamera();
@@ -67,15 +58,6 @@ TEST(CameraTest, Should_Move)
 	EXPECT_EQ(glm::vec2(-25.0f, -25.0f), camera.getPosition());
 
 	EXPECT_TRUE(camera.getNeedsMatrixUpdate());
-}
-
-TEST(CameraTest, Should_Move_ByRotatedVector)
-{
-	vie::Camera2D camera = getUpdatedCamera();
-	camera.setRotate(1.0f);
-	camera.move(glm::vec2(10.0f, 5.0f));
-	glm::vec2 point(10.0f, 5.0f);
-	EXPECT_EQ(glm::rotate(point, -1.0f), camera.getPosition());
 }
 
 TEST(CameraTest, Should_ScaleUp)

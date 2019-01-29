@@ -25,12 +25,10 @@ void CarFollower::updateCameraPosition(float et)
 {
 	glm::vec2 currPos = camera->getPosition();
 	glm::vec2 destPos = car->getPosition();
-	//destPos.x *= -1.0f;
-
 	glm::vec2 velocity = destPos - currPos;
 	velocity *= et * FOLLOW_SPEED;
 
-	camera->setPosition(destPos);
+	camera->move(velocity);
 }
 
 void CarFollower::updateCameraRotate(float et)
@@ -40,5 +38,5 @@ void CarFollower::updateCameraRotate(float et)
 	float rotateVel = destRot - currRot;
 	rotateVel *= et * ROTATE_SPEED;
 
-	camera->setRotate(destRot);
+	camera->rotate(rotateVel);
 }
