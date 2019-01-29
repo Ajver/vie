@@ -18,7 +18,8 @@ namespace vie
 		name(n),
 		vbo(vbo),
 		vao(vao),
-		camera(ncamera)
+		camera(ncamera),
+		sortType(GlyphSortType::NONE)
 	{
 		colorProgram.init();
 	}
@@ -208,6 +209,11 @@ namespace vie
 	std::vector<Glyph*> Layer::getGlyphsVector() const
 	{
 		return glyphs;
+	}
+
+	GlyphSortType Layer::getSortType() const
+	{
+		return sortType;
 	}
 
 	bool Layer::compareForward(Glyph* a, Glyph* b)

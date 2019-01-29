@@ -32,7 +32,7 @@ namespace vie
 	{
 		if (isRunning)
 		{
-			printf("Error: The Engine is running");
+			printf("Error: The Engine is running\n");
 			return;
 		}
 

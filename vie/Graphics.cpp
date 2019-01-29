@@ -170,11 +170,6 @@ namespace vie
 		}
 	}
 
-	void Graphics::setSortTypeForCurrentLayer(GlyphSortType newSortType)
-	{
-		currentLayer->setSortType(newSortType);
-	}
-
 	void Graphics::setColor(const Color& color)
 	{
 		defaultColor = color;
@@ -319,11 +314,6 @@ namespace vie
 	float Graphics::getRotate() const
 	{
 		return rotateAngleInRadians;
-	}
-
-	GlyphSortType Graphics::getSortType() const
-	{
-		return sortType;
 	}
 
 	Color Graphics::getDefaultColor() const

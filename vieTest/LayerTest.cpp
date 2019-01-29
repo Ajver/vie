@@ -37,37 +37,48 @@ TEST(LayerTest, Should_Not_SortGlyphs)
 {
 	vie::Layer* layer = getLayerWithSomeGlyphs();
 	std::vector<vie::Glyph*> glyphsBeforeSort = layer->getGlyphsVector();
-	layer->sortGlyphsBy(vie::GlyphSortType::NONE);
+	layer->setSortType(vie::GlyphSortType::NONE);
+	layer->sortGlyphs();
 	std::vector<vie::Glyph*> glyphsAfterSort = layer->getGlyphsVector();
 	bool areNOTSorted = areGlyphsVectorTheSame(glyphsBeforeSort, glyphsAfterSort);
 	EXPECT_TRUE(areNOTSorted);
+	EXPECT_EQ(glyphsBeforeSort.size(), glyphsAfterSort.size());
 }
 
 TEST(LayerTest, Should_SortGlyphs_FORWARD)
 {
 	vie::Layer* layer = getLayerWithSomeGlyphs();
-	layer->sortGlyphsBy(vie::GlyphSortType::FORWARD);
-	std::vector<vie::Glyph*> glyphs = layer->getGlyphsVector();
-	bool areSorted = areSorted_FORWARD(glyphs);
+	std::vector<vie::Glyph*> glyphsBeforeSort = layer->getGlyphsVector();
+	layer->setSortType(vie::GlyphSortType::FORWARD);
+	layer->sortGlyphs();
+	std::vector<vie::Glyph*> glyphsAfterSort = layer->getGlyphsVector();
+	bool areSorted = areSorted_FORWARD(glyphsAfterSort);
 	EXPECT_TRUE(areSorted);
+	EXPECT_EQ(glyphsBeforeSort.size(), glyphsAfterSort.size());
 }
 
 TEST(LayerTest, Should_SortGlyphs_BACKWARD)
 {
 	vie::Layer* layer = getLayerWithSomeGlyphs();
-	layer->sortGlyphsBy(vie::GlyphSortType::BACKWARD);
-	std::vector<vie::Glyph*> glyphs = layer->getGlyphsVector();
-	bool areSorted = areSorted_BACKWARD(glyphs);
+	std::vector<vie::Glyph*> glyphsBeforeSort = layer->getGlyphsVector();
+	layer->setSortType(vie::GlyphSortType::BACKWARD);
+	layer->sortGlyphs();
+	std::vector<vie::Glyph*> glyphsAfterSort = layer->getGlyphsVector();
+	bool areSorted = areSorted_BACKWARD(glyphsAfterSort);
 	EXPECT_TRUE(areSorted);
+	EXPECT_EQ(glyphsBeforeSort.size(), glyphsAfterSort.size());
 }
 
 TEST(LayerTest, Should_SortGlyphs_TEXTURE)
 {
 	vie::Layer* layer = getLayerWithSomeGlyphs();
-	layer->sortGlyphsBy(vie::GlyphSortType::TEXTURE);
-	std::vector<vie::Glyph*> glyphs = layer->getGlyphsVector();
-	bool areSorted = areSorted_TEXTURE(glyphs);
+	std::vector<vie::Glyph*> glyphsBeforeSort = layer->getGlyphsVector();
+	layer->setSortType(vie::GlyphSortType::TEXTURE);
+	layer->sortGlyphs();
+	std::vector<vie::Glyph*> glyphsAfterSort = layer->getGlyphsVector();
+	bool areSorted = areSorted_TEXTURE(glyphsAfterSort);
 	EXPECT_TRUE(areSorted);
+	EXPECT_EQ(glyphsBeforeSort.size(), glyphsAfterSort.size());
 }
 
 TEST(LayerTest, Should_RemoveGlyphsAfterRender)

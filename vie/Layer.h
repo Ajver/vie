@@ -20,6 +20,7 @@ namespace vie
 
 		void render();
 		void setSortType(GlyphSortType newSortType);
+		void sortGlyphs();
 
 		void setCamera(Camera2D* ncamera);
 		Camera2D* getCamera() const;
@@ -27,6 +28,7 @@ namespace vie
 		bool isNamed(const std::string& n) const;
 		std::string getName() const;
 		std::vector<Glyph*> getGlyphsVector() const;
+		GlyphSortType getSortType() const;
 
 	private:
 		std::string name;
@@ -44,7 +46,6 @@ namespace vie
 
 		void renderGlyphs();
 		void prepareGlyphs();
-		void sortGlyphs();
 		void setCameraMatrix();
 		void transformGlyphsByCamera();
 		void translateGlyphsByCamera();

@@ -123,13 +123,6 @@ TEST(GraphicsTest, Should_IncreaseRotateAngle)
 	EXPECT_EQ(-2.0f, g.getRotate());
 }
 
-TEST(GraphicsTest, ShouldSet_SortType)
-{
-	vie::Graphics g;
-	g.setSortType(vie::GlyphSortType::TEXTURE);
-	EXPECT_EQ(vie::GlyphSortType::TEXTURE, g.getSortType());
-}
-
 TEST(GraphicsTest, Should_TransformPoint)
 {
 	vie::Graphics g;

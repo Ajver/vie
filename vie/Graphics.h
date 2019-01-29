@@ -29,7 +29,6 @@ namespace vie
 		Layer* getCurrentLayer() const;
 		Layer* getLayerByName(const std::string& layerName) const;
 
-		void setSortTypeForCurrentLayer(GlyphSortType newSortType);
 		void setColor(const Color& color);
 		void setBackgroundColor(const Color& color);
 
@@ -56,7 +55,6 @@ namespace vie
 		glm::vec2 getTranslate() const;
 		float getScale() const;
 		float getRotate() const;
-		GlyphSortType getSortType() const;
 		Color getDefaultColor() const;
 		GLuint getVBO() const;
 		GLuint getVAO() const;
