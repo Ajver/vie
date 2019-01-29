@@ -28,7 +28,8 @@ glew32.lib
 
 MainClass::MainClass() :
 	map(nullptr),
-	carFollower(nullptr)
+	carFollower(nullptr),
+	someTimer(15000)
 {
 	runEngine("Example Engine Application", 1280, 728, vie::WindowFlags::DEFAULT);
 }
@@ -87,6 +88,14 @@ void MainClass::update(float et)
 
 	objectsManager->update(et);
 	carFollower->update(et);
+
+	//std::cout << "-> " << someTimer.getProgress() << std::endl;
+	if (someTimer.tick())
+	{
+		someTimer.restart();
+		std::cout << "FPS: " << getFpsCount() << std::endl;
+	}
+
 }
 
 void MainClass::render(vie::Graphics* g)
@@ -94,6 +103,8 @@ void MainClass::render(vie::Graphics* g)
 	renderChessboard(g);
 	objectsManager->render(g);
 	renderAxis(g);
+	g->setColor(vie::COLOR::GREEN);
+	g->fillRect(glm::vec2((someTimer.getEaseProgress() - 0.5f) * (vie::Window::getScreenWidth()), 0), glm::vec2(100, 100));
 }
 
 void MainClass::renderChessboard(vie::Graphics* g)
@@ -113,4 +124,24 @@ void MainClass::renderAxis(vie::Graphics* g)
 	g->setColor(vie::Color(0, 200, 100, 200));
 	g->fillRect(glm::vec2(-1, -screenHeight * 0.5f), glm::vec2(2, screenHeight));
 	g->fillRect(glm::vec2(-screenWidth * 0.5f, -1), glm::vec2(screenWidth, 2));
+}
+
+void MainClass::onKeyPress()
+{
+}
+
+void MainClass::onKeyRelease()
+{
+	switch (vie::Input::getLastKey())
+	{
+	case SDLK_SPACE:
+		if (someTimer.getIsRunning())
+			someTimer.pause();
+		else
+			someTimer.start();
+		break;
+	case SDLK_r:
+		someTimer.restart();
+		break;
+	}
 }
