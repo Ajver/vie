@@ -28,6 +28,10 @@ namespace vie
 
 	Graphics::~Graphics()
 	{
+		for (int i = 0; i < layers.size(); i++)
+			delete layers[i];
+
+		layers.clear();
 	}
 
 	void Graphics::init(Camera2D* mainCamera)

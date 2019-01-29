@@ -44,6 +44,7 @@ void MainClass::onCreate()
 {
 	Car* playerCar = new Car();
 	objectsManager->appendObject(playerCar);
+	objectsManager->appendKeyListener(playerCar);
 
 	map = new Map();
 	carFollower = new CarFollower(mainCamera, playerCar);

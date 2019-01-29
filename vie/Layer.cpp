@@ -27,6 +27,7 @@ namespace vie
 
 	Layer::~Layer()
 	{
+		removeAllGlyphsAndRenderBatches();
 	}
 
 	void Layer::appendGlyph(Glyph* glyph)

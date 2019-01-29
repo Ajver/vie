@@ -26,6 +26,9 @@ namespace vie
 
 	Engine::~Engine()
 	{
+		delete objectsManager;
+		delete graphics;
+		delete mainCamera;
 	}
 
 	void Engine::runEngine(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags)
