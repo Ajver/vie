@@ -30,6 +30,27 @@ namespace vie
 		return mit->second;
 	}
 
+	Texture FileManager::reloadTexture(const std::string& texturePath)
+	{
+		// Lookup the texture and see if its in the map
+		auto mit = texturesMap.find(texturePath);
+
+		// If it's not in the map
+		if (mit == texturesMap.end()) {
+			// Load the texture
+			Texture newTexture = loadPNG(texturePath);
+
+			// Add new texture to the map for future
+			texturesMap.insert(make_pair(texturePath, newTexture));
+
+			return newTexture;
+		}
+		else
+		{
+			return mit->second = loadPNG(texturePath);
+		}
+	}
+
 	Texture FileManager::loadPNG(const std::string& filePath)
 	{
 		std::vector<unsigned char> in;

@@ -11,7 +11,8 @@ namespace vie
 	class FileManager
 	{
 	public:
-		static Texture getTexture(const std::string& filePath);
+		static Texture getTexture(const std::string& texturePath);
+		static Texture reloadTexture(const std::string& texturePath);
 
 	private:
 		static std::map<std::string, Texture> texturesMap;
