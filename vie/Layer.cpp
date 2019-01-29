@@ -50,7 +50,7 @@ namespace vie
 
 	void Layer::resetSamplerInShader()
 	{
-		GLint textureLocation = colorProgram.getUnitformLocation("mySampler");
+		GLint textureLocation = colorProgram.getUnitformLocation("sampler");
 		glUniform1i(textureLocation, 0);
 	}
 
@@ -87,6 +87,7 @@ namespace vie
 	{
 		translateGlyphsByCamera();
 		rotateGlyphsByCamera();
+		invertGlyphsInYAxis();
 		setCameraMatrix();
 	}
 
@@ -97,9 +98,6 @@ namespace vie
 		GLint pLocation = colorProgram.getUnitformLocation("P");
 		glm::mat4 cameraMatrix = camera->getCameraMatrix();
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-
-		GLint screeenHeightLocation = colorProgram.getUnitformLocation("screenHeight");
-		glUniform1f(screeenHeightLocation, (float)Window::getScreenHeight());
 	}
 
 	void Layer::translateGlyphsByCamera()
@@ -116,6 +114,14 @@ namespace vie
 
 		for (int i = 0; i < glyphs.size(); i++)
 			glyphs[i]->rotateByAngle(angle);
+	}
+
+	void Layer::invertGlyphsInYAxis()
+	{
+		float screenHeight = Window::getScreenHeight();
+
+		for (int i = 0; i < glyphs.size(); i++)
+			glyphs[i]->invertInYAxis(screenHeight);
 	}
 
 	void Layer::createRenderBatches()

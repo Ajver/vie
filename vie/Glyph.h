@@ -17,21 +17,9 @@ namespace vie
 		Vertex bottomLeft;
 		Vertex bottomRight;
 
-		void rotateByAngle(float angle)
-		{
-			topLeft.rotate(angle);
-			topRight.rotate(angle);
-			bottomLeft.rotate(angle);
-			bottomRight.rotate(angle);
-		}
-
-		void translateByVec2(const glm::vec2& vec)
-		{
-			topLeft.translate(vec.x, vec.y);
-			topRight.translate(vec.x, vec.y);
-			bottomLeft.translate(vec.x, vec.y);
-			bottomRight.translate(vec.x, vec.y);
-		}
+		void rotateByAngle(float angle);
+		void translateByVec2(const glm::vec2& vec);
+		void invertInYAxis(float screenHeight);
 	};
 
 	enum class GlyphSortType
