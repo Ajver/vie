@@ -159,13 +159,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CarFollower.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Car.h" />
+    <ClInclude Include="CarFollower.h" />
     <ClInclude Include="MainClass.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
