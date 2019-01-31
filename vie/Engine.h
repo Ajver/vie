@@ -3,10 +3,10 @@
 #include "glm/glm.hpp"
 
 #include "WindowFlags.h"
+#include "Graphics.h"
 
 namespace vie
 {
-	class Graphics;
 	class ObjectsManager;
 	class Camera2D;
 

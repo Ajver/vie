@@ -4,7 +4,6 @@
 
 #include <vie/FileManager.h>
 #include <vie/Texture.h>
-#include <vie/Graphics.h>
 #include <vie/Input.h>
 #include <vie/ObjectsManager.h>
 #include <vie/Camera2D.h>
