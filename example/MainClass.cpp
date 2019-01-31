@@ -42,6 +42,8 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
+	setFPSLimit(-1);
+
 	Car* playerCar = new Car();
 	objectsManager->appendObject(playerCar);
 	objectsManager->appendKeyListener(playerCar);
@@ -131,6 +133,7 @@ void MainClass::onKeyPress()
 
 void MainClass::onKeyRelease()
 {
+	return;
 	switch (vie::Input::getLastKey())
 	{
 	case SDLK_SPACE:

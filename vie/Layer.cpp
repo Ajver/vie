@@ -143,9 +143,7 @@ namespace vie
 					renderBatches.back().numVertices += 6;
 			}
 			else
-			{
 				renderBatches.emplace_back(0, 6, glyphs[0]->textureID);
-			}
 
 			vertices[curVertex++] = glyphs[curGlyph]->topLeft;
 			vertices[curVertex++] = glyphs[curGlyph]->bottomLeft;
