@@ -14,7 +14,7 @@ Car::Car() :
 {
 	texture = vie::FileManager::getTexture("Graphics/car.png");
 	position = glm::vec2(0, 0);
-	size = glm::vec2(texture.getWidth(), texture.getHeight()) * 3.0f;
+	size = texture.getSize() * 3.0f;
 }
 
 

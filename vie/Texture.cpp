@@ -7,8 +7,7 @@ namespace vie
 
 	Texture::Texture() :
 		id(0),
-		width(0),
-		height(0),
+		size(0, 0),
 		pixels(nullptr)
 	{
 	}
@@ -18,10 +17,9 @@ namespace vie
 		*this = FileManager::getTexture(texturePath);
 	}
 
-	Texture::Texture(GLuint nid, GLuint w, GLuint h, unsigned char* npixels) :
+	Texture::Texture(GLuint nid, float w, float h, unsigned char* npixels) :
 		id(nid),
-		width(w),
-		height(h),
+		size(w, h),
 		pixels(npixels)
 	{
 	}
@@ -35,13 +33,9 @@ namespace vie
 		return id;
 	}
 
-	unsigned int Texture::getWidth() const
+	glm::vec2 Texture::getSize() const
 	{
-		return width;
-	}
-	unsigned int Texture::getHeight() const
-	{
-		return height;
+		return size;
 	}
 
 	unsigned char* Texture::getPixelsArray() const
@@ -54,7 +48,7 @@ namespace vie
 		y *= 4;
 		x *= 4;
 
-		GLuint idx = y * width + x;
+		GLuint idx = y * size.x + x;
 		Color color;
 		color.r = pixels[idx++];
 		color.g = pixels[idx++];
@@ -69,7 +63,7 @@ namespace vie
 		y *= 4;
 		x *= 4;
 
-		GLuint idx = y * width + x;
+		GLuint idx = y * size.x + x;
 
 		pixels[idx++] = color.r;
 		pixels[idx++] = color.g;
@@ -80,7 +74,7 @@ namespace vie
 	void Texture::refreshGLBuffer() const
 	{
 		glBindTexture(GL_TEXTURE_2D, id);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

@@ -241,14 +241,21 @@ namespace vie
 	
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const Color& color)
 	{
-		glm::vec2 size(texture.getWidth(), texture.getHeight());
-		drawTexture(texture, position, size, color);
+		drawTexture(texture, position, texture.getSize(), color);
 	}
 
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color)
 	{
-		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), nextTextureDepth + 0.1f, color);
+		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.getID(), getNextTextureDepth(), color);
 	}	
+	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const glm::vec2& uv, const Color& color)
+	{
+		draw(glm::vec4(position.x, position.y, size.x, size.y), glm::vec4(0.0f, 0.0f, uv.x, uv.y), texture.getID(), getNextTextureDepth(), color);
+	}
+	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const glm::vec4& uv, const Color& color)
+	{
+		draw(glm::vec4(position.x, position.y, size.x, size.y), uv, texture.getID(), getNextTextureDepth(), color);
+	}
 
 	void Graphics::fillRect(const glm::vec2& position, const glm::vec2& size)
 	{
@@ -332,6 +339,11 @@ namespace vie
 	GLuint Graphics::getVAO() const
 	{
 		return vao;
+	}
+
+	float Graphics::getNextTextureDepth() const
+	{
+		return nextTextureDepth + 0.1f;
 	}
 
 }

@@ -9,6 +9,7 @@
 #include "Glyph.h"
 #include "Camera2D.h"
 
+
 namespace vie
 {
 	class Layer;
@@ -37,6 +38,8 @@ namespace vie
 		
 		void drawTexture(const Texture& texture, const glm::vec2& position, const Color& color = COLOR::WHITE);
 		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const Color& color = COLOR::WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const glm::vec2& uv, const Color& color = COLOR::WHITE);
+		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const glm::vec4& uv, const Color& color = COLOR::WHITE);
 
 		void fillRect(const glm::vec2& position, const glm::vec2& size);
 		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight = 1.0f);
@@ -58,6 +61,7 @@ namespace vie
 		Color getDefaultColor() const;
 		GLuint getVBO() const;
 		GLuint getVAO() const;
+		float getNextTextureDepth() const;
 
 		glm::vec2 transformPoint(glm::vec2 point) const;
 

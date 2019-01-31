@@ -18,14 +18,8 @@ public:
 	void update(float et) override;
 	void render(vie::Graphics* g) override;
 
-	void onKeyPress() override;
-	void onKeyRelease() override;
-
 private:
-	Map* map;
+	Map* mainMap;
 	CarFollower* carFollower;
-	vie::Timer someTimer;
-
-	void renderChessboard(vie::Graphics* g);
-	void renderAxis(vie::Graphics* g);
+	vie::Timer fpsPrintTimer;
 };

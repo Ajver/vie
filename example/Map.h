@@ -12,5 +12,6 @@ public:
 
 private:
 	const float TILE_SIZE;
+	glm::vec2 size;
 };
 

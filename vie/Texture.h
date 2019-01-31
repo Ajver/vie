@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <vector>
+#include <glm/glm.hpp>
 
 #include "Color.h"
 
@@ -13,12 +14,11 @@ namespace vie
 	public:
 		Texture();
 		explicit Texture(const std::string& texturePath);
-		Texture(GLuint nid, GLuint w, GLuint h, unsigned char* npixels);
+		Texture(GLuint nid, float w, float h, unsigned char* npixels);
 		~Texture();
 
 		GLuint getID() const;
-		GLuint getWidth() const;
-		GLuint getHeight() const;
+		glm::vec2 getSize() const;
 		unsigned char* getPixelsArray() const;
 
 		Color getPixelColor(GLuint x, GLuint y) const;
@@ -31,8 +31,7 @@ namespace vie
 
 	private:
 		GLuint id;
-		GLuint width;
-		GLuint height;
+		glm::vec2 size;
 		unsigned char* pixels;
 	};
 
