@@ -28,8 +28,8 @@ namespace vie
 
 	Graphics::~Graphics()
 	{
-		for (int i = 0; i < layers.size(); i++)
-			delete layers[i];
+		for (auto& currLayer : layers)
+			delete currLayer;
 
 		layers.clear();
 	}
@@ -102,15 +102,13 @@ namespace vie
 	}
 	void Graphics::switchLayer(const std::string& layerName)
 	{
-		for (int i = 0; i < layers.size(); i++)
+		for (auto& currLayer : layers)
 		{
-			Layer* layer = layers[i];
-			if (layer->isNamed(layerName))
+			if (currLayer->isNamed(layerName))
 			{
-				currentLayer = layer;
+				currentLayer = currLayer;
 				return;
-			}
-					
+			}			
 		}
 		fatalError("Error: Cannot switch to layer with name: " + layerName + " (Layer not found)");
 	}
@@ -130,8 +128,8 @@ namespace vie
 	}
 	bool Graphics::containsLayer(const std::string& layerName) const
 	{
-		for (int i = 0; i < layers.size(); i++)
-			if (layers[i]->isNamed(layerName))
+		for (auto& currLayer : layers)
+			if (currLayer->isNamed(layerName))
 				return true;
 
 		return false;
@@ -142,11 +140,10 @@ namespace vie
 	}
 	Layer* Graphics::getLayerByName(const std::string& layerName) const
 	{
-		for (int i = 0; i < layers.size(); i++)
+		for (auto& currLayer : layers)
 		{
-			Layer* layer = layers[i];
-			if (layer->isNamed(layerName))
-				return layer;
+			if (currLayer->isNamed(layerName))
+				return currLayer;
 		}
 		fatalError("Error: Cannot get layer with name: " + layerName + " (Layer not found)");
 		return nullptr;
@@ -167,11 +164,8 @@ namespace vie
 
 	void Graphics::renderLayers()
 	{
-		for (int i = 0; i < layers.size(); i++)
-		{
-			Layer* layer = layers[i];
-			layer->render();
-		}
+		for (auto& currLayer : layers)
+			currLayer->render();
 	}
 
 	void Graphics::setColor(const Color& color)

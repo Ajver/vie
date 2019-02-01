@@ -23,13 +23,13 @@ namespace vie
 
 	void ObjectsManager::update(float et)
 	{
-		for (int i = 0; i < objects.size(); i++)
-			objects[i]->update(et);
+		for (auto& ob : objects)
+			ob->update(et);
 	}
 	void ObjectsManager::render(Graphics* g)
 	{
-		for (int i = 0; i < objects.size(); i++)
-			objects[i]->render(g);
+		for (auto& ob : objects)
+			ob->render(g);
 	}
 
 	void ObjectsManager::appendObject(Object* ob)
@@ -60,34 +60,25 @@ namespace vie
 
 	Object* ObjectsManager::getObjectByLabel(const std::string& label) const
 	{
-		for (int i = 0; i < objects.size(); i++)
-		{
-			Object* ob = objects[i];
+		for (auto& ob : objects)
 			if (ob->isLabeled(label))
 				return ob;
-		}
 
 		return nullptr;
 	}
 	Object* ObjectsManager::getMouseListenerByLabel(const std::string& label) const
 	{
-		for (int i = 0; i < mouseListeners.size(); i++)
-		{
-			Object* ob = mouseListeners[i];
+		for (auto& ob : mouseListeners)
 			if (ob->isLabeled(label))
 				return ob;
-		}
 
 		return nullptr;
 	}
 	Object* ObjectsManager::getKeyListenerByLabel(const std::string& label) const
 	{
-		for (int i = 0; i < keyListeners.size(); i++)
-		{
-			Object* ob = keyListeners[i];
+		for (auto& ob : keyListeners)
 			if (ob->isLabeled(label))
 				return ob;
-		}
 
 		return nullptr;
 	}
@@ -148,23 +139,20 @@ namespace vie
 
 	void ObjectsManager::onKeyPress()
 	{
-		forAllObjectsRunFunction(keyListeners, [](Object* ob) {
+		for (auto& ob : keyListeners)
 			ob->onKeyPress();
-		});
 	}
 	void ObjectsManager::onKeyRelease()
 	{
-		forAllObjectsRunFunction(keyListeners, [](Object* ob) {
+		for (auto& ob : keyListeners)
 			ob->onKeyRelease();
-		});
 	}
 
 	void ObjectsManager::onMousePress()
 	{
-		forAllObjectsRunFunction(mouseListeners, [](ObjectsManager* m, Object* ob) {
+		for (auto& ob : mouseListeners)
 			if (ob->isPointInside(Input::getMousePosition()))
-				m->mouseClickedObject(ob);
-		});
+				mouseClickedObject(ob);
 	}
 	void ObjectsManager::mouseClickedObject(Object* ob)
 	{
@@ -201,12 +189,11 @@ namespace vie
 
 	void ObjectsManager::onMouseMove() 
 	{
-		forAllObjectsRunFunction(mouseListeners, [](ObjectsManager* m, Object* ob) {
+		for(auto& ob : mouseListeners)
 			if (ob->isPointInside(Input::getMousePosition()))
-				m->mouseIsInsideObject(ob);
+				mouseIsInsideObject(ob);
 			else
-				m->mouseIsOutsideObject(ob);
-		});
+				mouseIsOutsideObject(ob);
 	}
 
 	void ObjectsManager::mouseIsInsideObject(Object* ob)
@@ -241,18 +228,6 @@ namespace vie
 			return;
 
 		clickedObject->onMouseDrag();
-	}
-
-	void ObjectsManager::forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*))
-	{
-		for (int i = 0; i < vtr.size(); i++)
-			fnc(this, vtr[i]);
-	}
-
-	void ObjectsManager::forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*))
-	{
-		for (int i = 0; i < vtr.size(); i++)
-			fnc(vtr[i]);
 	}
 
 	std::vector<Object*> ObjectsManager::getObjectsVector() const
