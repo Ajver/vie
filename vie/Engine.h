@@ -44,8 +44,11 @@ namespace vie
 
 		// Init all systems and run the vEngine (title, screen width, screen height, window type)
 		void runEngine(const char* title = "vie Engine", 
-			unsigned int sw = 640, 
+			unsigned int sw = 728, 
 			unsigned int sh = 480, 
+			WindowFlags windowFlags = WindowFlags::DEFAULT);
+
+		void runEngine(const char* title = "vie Engine",
 			WindowFlags windowFlags = WindowFlags::DEFAULT);
 
 		// If nMaxFps < 0 then no limits!

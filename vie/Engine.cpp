@@ -31,6 +31,11 @@ namespace vie
 		delete mainCamera;
 	}
 
+	void Engine::runEngine(const char* title, WindowFlags windowFlags)
+	{
+		runEngine(title, 728, 480, windowFlags);
+	}
+
 	void Engine::runEngine(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags)
 	{
 		if (isRunning)
