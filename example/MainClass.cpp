@@ -61,10 +61,6 @@ void MainClass::update(float et)
 		destroyEngine();
 		return;
 	}
-
-	float speed = 8.0f / graphics->getScale();
-	float scaleSpeed = 1.02f;
-	float rotateSpeed = 0.01f;
 	
 	objectsManager->update(et);
 	carFollower->update(et);
