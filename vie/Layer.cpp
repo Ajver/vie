@@ -86,10 +86,18 @@ namespace vie
 
 	void Layer::transformGlyphsByCamera()
 	{
-		translateGlyphsByCamera();
-		rotateGlyphsByCamera();
-		invertGlyphsInYAxis();
 		setCameraMatrix();
+
+		glm::vec2 cameraPosition = -camera->getPosition();
+		float angle = -camera->getRotate();
+		float screenHeight = Window::getScreenHeight();
+
+		for (auto& currGlyph : glyphs)
+		{
+			currGlyph->translateByVec2(cameraPosition);
+			currGlyph->rotateByAngle(angle);
+			currGlyph->invertInYAxis(screenHeight);
+		}
 	}
 
 	void Layer::setCameraMatrix()
@@ -101,30 +109,6 @@ namespace vie
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	}
 
-	void Layer::translateGlyphsByCamera()
-	{
-		glm::vec2 cameraPosition = -camera->getPosition();
-
-		for (int i = 0; i < glyphs.size(); i++)
-			glyphs[i]->translateByVec2(cameraPosition);
-	}
-
-	void Layer::rotateGlyphsByCamera()
-	{
-		float angle = -camera->getRotate();
-
-		for (int i = 0; i < glyphs.size(); i++)
-			glyphs[i]->rotateByAngle(angle);
-	}
-
-	void Layer::invertGlyphsInYAxis()
-	{
-		float screenHeight = Window::getScreenHeight();
-
-		for (int i = 0; i < glyphs.size(); i++)
-			glyphs[i]->invertInYAxis(screenHeight);
-	}
-
 	void Layer::createRenderBatches()
 	{
 		if (glyphs.empty())
@@ -133,26 +117,32 @@ namespace vie
 		std::vector<Vertex> vertices;
 		vertices.resize(glyphs.size() * 6);
 
-		for (int curGlyph = 0, curVertex = 0, offset = 0; curGlyph < glyphs.size(); curGlyph++)
+		int currVertex = 0, offset = 0;
+		Glyph* prevGlyp = nullptr;
+
+		for (auto& currGlyph : glyphs)
 		{
-			if (curGlyph > 0)
+			if (prevGlyp != nullptr)
 			{
-				if (glyphs[curGlyph]->textureID != glyphs[curGlyph - 1]->textureID)
-					renderBatches.emplace_back(offset, 6, glyphs[curGlyph]->textureID);
+				if (currGlyph->textureID != prevGlyp->textureID)
+					renderBatches.emplace_back(offset, 6, currGlyph->textureID);
 				else
 					renderBatches.back().numVertices += 6;
 			}
 			else
+			{
+				prevGlyp = currGlyph;
 				renderBatches.emplace_back(0, 6, glyphs[0]->textureID);
+			}
 
-			vertices[curVertex++] = glyphs[curGlyph]->topLeft;
-			vertices[curVertex++] = glyphs[curGlyph]->bottomLeft;
-			vertices[curVertex++] = glyphs[curGlyph]->bottomRight;
-			vertices[curVertex++] = glyphs[curGlyph]->bottomRight;
-			vertices[curVertex++] = glyphs[curGlyph]->topRight;
-			vertices[curVertex++] = glyphs[curGlyph]->topLeft;
+			vertices[currVertex++] = currGlyph->topLeft;
+			vertices[currVertex++] = currGlyph->bottomLeft;
+			vertices[currVertex++] = currGlyph->bottomRight;
+			vertices[currVertex++] = currGlyph->bottomRight;
+			vertices[currVertex++] = currGlyph->topRight;
+			vertices[currVertex++] = currGlyph->topLeft;
 			offset += 6;
-		}
+		}		
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
@@ -164,10 +154,10 @@ namespace vie
 	{
 		glBindVertexArray(vao);
 
-		for (int i = 0; i < renderBatches.size(); i++)
+		for (auto& currRenderBatch : renderBatches)
 		{
-			glBindTexture(GL_TEXTURE_2D, renderBatches[i].textureID);
-			glDrawArrays(GL_TRIANGLES, renderBatches[i].offset, renderBatches[i].numVertices);
+			glBindTexture(GL_TEXTURE_2D, currRenderBatch.textureID);
+			glDrawArrays(GL_TRIANGLES, currRenderBatch.offset, currRenderBatch.numVertices);
 		}
 
 		glBindVertexArray(0);
@@ -180,8 +170,8 @@ namespace vie
 	{
 		renderBatches.clear();
 
-		for (int i = 0; i < glyphs.size(); i++)
-			delete glyphs[i];
+		for (auto& currGlyph : glyphs)
+			delete currGlyph;
 
 		glyphs.clear();
 	}

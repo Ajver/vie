@@ -48,9 +48,6 @@ namespace vie
 		void prepareGlyphs();
 		void setCameraMatrix();
 		void transformGlyphsByCamera();
-		void translateGlyphsByCamera();
-		void rotateGlyphsByCamera();
-		void invertGlyphsInYAxis();
 		void createRenderBatches();
 		void renderBatch() const;
 		void removeAllGlyphsAndRenderBatches();
