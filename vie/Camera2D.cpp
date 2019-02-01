@@ -44,7 +44,6 @@ namespace vie
 			glm::vec3 scaleVec(scale * 0.5f, scale * 0.5f, 0.0f);
 			cameraMatrix = glm::scale(glm::mat4(1.0f), scaleVec) * cameraMatrix;
 
-
 			needsMatrixUpdate = false;
 		}
 	}
