@@ -60,13 +60,7 @@ void MainClass::onCreate()
 }
 
 void MainClass::update(float et)
-{
-	if (vie::Input::isKeyPressed(SDLK_ESCAPE))
-	{
-		destroyEngine();
-		return;
-	}
-	
+{	
 	objectsManager->update(et);
 	carFollower->update(et);
 
@@ -95,14 +89,8 @@ void MainClass::onKeyRelease()
 {
 	switch (vie::Input::getLastKey())
 	{
-	case SDLK_p:
-		if (swordSound.getIsRunning())
-			swordSound.pause();
-		else
-			swordSound.play();
-		break;
-	case SDLK_o:
-		swordSound.replay();
+	case SDLK_ESCAPE:
+		destroyEngine();
 		break;
 	}
 }

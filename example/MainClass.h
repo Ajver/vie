@@ -24,5 +24,4 @@ private:
 	Map* mainMap;
 	CarFollower* carFollower;
 	vie::Timer fpsPrintTimer;
-	vie::Sound swordSound;
 };
