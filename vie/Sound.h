@@ -17,10 +17,10 @@ namespace vie
 		void load(const std::string& soundPath);
 
 		// Load new sound from file and play it
-		bool play(const std::string& soundPath);
+		void play(const std::string& soundPath);
 
 		// Play the sound where pause previously (or from begin)
-		bool play();
+		void play();
 
 		// Pause the sound and stay where are
 		void pause();
@@ -29,7 +29,7 @@ namespace vie
 		void reset();
 
 		// Reset and play the sound again
-		bool restart();
+		void replay();
 
 		bool getIsRunning() const;
 
@@ -39,6 +39,8 @@ namespace vie
 		Uint32 length;
 		Uint8 *buffer;
 		bool isRunning;
+	
+		void freeMemory();
 	};
 
 }

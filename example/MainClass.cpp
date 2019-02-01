@@ -52,6 +52,8 @@ void MainClass::onCreate()
 
 	graphics->createLayer("ground", mainCamera);
 	graphics->createLayer("car", mainCamera);
+
+	swordSound.play("Sounds/some_long_sound.wav");
 }
 
 void MainClass::update(float et)
@@ -79,4 +81,20 @@ void MainClass::render(vie::Graphics* g)
 
 	g->switchLayer("car");
 	objectsManager->render(g);
+}
+
+void MainClass::onKeyRelease()
+{
+	switch (vie::Input::getLastKey())
+	{
+	case SDLK_p:
+		if (swordSound.getIsRunning())
+			swordSound.pause();
+		else
+			swordSound.play();
+		break;
+	case SDLK_o:
+		swordSound.replay();
+		break;
+	}
 }

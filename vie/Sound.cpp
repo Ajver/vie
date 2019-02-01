@@ -1,16 +1,22 @@
 #include "Sound.h"
-
+#include "Errors.h"
 
 namespace vie
 {
 
 	Sound::Sound() :
-		isRunning(false)
+		isRunning(false),
+		deviceId(0),
+		length(0),
+		buffer(nullptr)
 	{
 	}
 
 	Sound::Sound(const std::string& soundPath) :
-		isRunning(false)
+		isRunning(false),
+		deviceId(0),
+		length(0),
+		buffer(nullptr)
 	{
 		load(soundPath);
 	}
@@ -18,32 +24,45 @@ namespace vie
 	Sound::~Sound()
 	{
 		SDL_CloseAudioDevice(deviceId);
-		SDL_FreeWAV(buffer);
-		delete buffer;
+		freeMemory();
+	}
+
+	void Sound::freeMemory()
+	{
+		if (buffer != nullptr)
+		{
+			SDL_FreeWAV(buffer);
+			delete buffer;
+		}
 	}
 
 	void Sound::load(const std::string& soundPath)
 	{
-		SDL_LoadWAV(soundPath.c_str(), &spec, &buffer, &length);
+		freeMemory();
 
-		// TODO - maybe it is not need to override it all time 
-		deviceId = SDL_OpenAudioDevice(NULL, 0, &spec, NULL, 0);
+		if (SDL_LoadWAV(soundPath.c_str(), &spec, &buffer, &length) == NULL)
+		{
+			std::string errorMsg = "Error: Could not load wav sound from path: " + soundPath + "\n";
+			errorMsg += "Check if the file exist in right directory\n";
+			errorMsg += "then check if the file has valid type (wav)\n";
+			errorMsg += "SDL error: ";
+			errorMsg += SDL_GetError();
+			fatalError(errorMsg);
+		}
+
+		reset();
 	}
 
-	bool Sound::play(const std::string& soundPath)
+	void Sound::play(const std::string& soundPath)
 	{
 		load(soundPath);
 		return play();
 	}
 
-	bool Sound::play()
+	void Sound::play()
 	{
 		isRunning = true;
-
-		int success = SDL_QueueAudio(deviceId, buffer, length);
 		SDL_PauseAudioDevice(deviceId, 0);
-
-		return success;
 	}
 
 	void Sound::pause()
@@ -54,13 +73,16 @@ namespace vie
 
 	void Sound::reset()
 	{
-
+		isRunning = false;
+		SDL_CloseAudioDevice(deviceId);
+		deviceId = SDL_OpenAudioDevice(NULL, 0, &spec, NULL, 0);
+		SDL_QueueAudio(deviceId, buffer, length);
 	}
 
-	bool Sound::restart()
+	void Sound::replay()
 	{
 		reset();
-		return play();
+		play();
 	}
 
 	bool Sound::getIsRunning() const
