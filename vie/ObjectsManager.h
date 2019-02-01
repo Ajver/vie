@@ -67,9 +67,6 @@ namespace vie
 		void mouseEnteredObject(vie::Object* ob);
 		void mouseIsOutsideObject(vie::Object* ob);
 		void mouseLeavedObject(vie::Object* ob);
-
-		void forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(ObjectsManager*, Object*));
-		void forAllObjectsRunFunction(const std::vector<Object*>& vtr, void(*fnc)(Object*));
 	};
 
 }
