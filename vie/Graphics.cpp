@@ -197,7 +197,13 @@ namespace vie
 
 		setGlyphAttributes(newGlyph, textureID, depth, uvRect, color);
 
-		currentLayer->appendGlyph(newGlyph);
+		if (currentLayer->getCamera()->isPointInView(topLeft) ||
+			currentLayer->getCamera()->isPointInView(topRight) ||
+			currentLayer->getCamera()->isPointInView(bottomLeft) ||
+			currentLayer->getCamera()->isPointInView(bottomRight))
+			currentLayer->appendGlyph(newGlyph);
+		else
+			delete newGlyph;
 	}
 
 	glm::vec2 Graphics::transformPoint(glm::vec2 point) const

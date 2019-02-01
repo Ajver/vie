@@ -23,7 +23,9 @@ namespace vie
 		void setScale(float nscale);
 		void setRotate(float angle);
 
+		bool isPointInView(glm::vec2 point) const;
 		glm::vec2 screenToWorldPos(glm::vec2 screenPosition) const;
+		glm::vec2 worldToScreenPos(glm::vec2 worldPosition) const;
 
 		glm::vec2 getPosition() const;
 		float getScale() const;

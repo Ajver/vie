@@ -115,6 +115,11 @@ namespace vie
 		return screenHeight; 
 	}
 
+	glm::vec2 Window::getScreenSize()
+	{
+		return glm::vec2(screenWidth, screenHeight);
+	}
+
 	void Window::updateScreenSizeFromSDL()
 	{ SDL_GetWindowSize(sdlWindow, (int*)&screenWidth, (int*)&screenHeight); }
 

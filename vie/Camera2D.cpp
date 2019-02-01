@@ -41,6 +41,7 @@ namespace vie
 
 			// Camera scale
 			glm::vec3 scaleVec(scale, scale, 0.0f);
+			//glm::vec3 scaleVec(scale * 0.5f, scale * 0.5f, 0.0f);
 			cameraMatrix = glm::scale(glm::mat4(1.0f), scaleVec) * cameraMatrix;
 
 
@@ -48,14 +49,35 @@ namespace vie
 		}
 	}
 
+	bool Camera2D::isPointInView(glm::vec2 point) const
+	{
+		float sw = Window::getScreenWidth() / scale;
+		float sh = Window::getScreenHeight() / scale;
+		point = worldToScreenPos(point);
+		return point.x >= 0 &&
+			point.x < sw &&
+			point.y >= 0 &&
+			point.y < sh;
+	}
+
 	glm::vec2 Camera2D::screenToWorldPos(glm::vec2 screenPosition) const
 	{
-		screenPosition -= glm::vec2(Window::getScreenWidth() * 0.5f, Window::getScreenHeight() * 0.5f);
+		screenPosition -= Window::getScreenSize() * 0.5f;
 		screenPosition /= scale;
 		screenPosition = glm::rotate(screenPosition, -rotateAngleInRadians);
 		screenPosition += position;
 
 		return screenPosition;
+	}
+
+	glm::vec2 Camera2D::worldToScreenPos(glm::vec2 worldPosition) const
+	{
+		worldPosition -= position;
+		worldPosition = glm::rotate(worldPosition, -rotateAngleInRadians);
+		worldPosition *= scale;
+		worldPosition += Window::getScreenSize() * 0.5f;
+
+		return worldPosition;
 	}
 
 	void Camera2D::move(const glm::vec2& translateVector)

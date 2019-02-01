@@ -2,6 +2,7 @@
 
 #include "WindowFlags.h"
 
+#include <glm/glm.hpp>
 #include <SDL/SDL.h>
 
 namespace vie
@@ -19,6 +20,7 @@ namespace vie
 		static void swapSDLWindowBuffer();
 		static void destroySDLWindow();
 
+		static glm::vec2 getScreenSize();
 		static int getScreenWidth();
 		static int getScreenHeight();
 

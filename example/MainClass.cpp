@@ -52,8 +52,11 @@ void MainClass::onCreate()
 
 	graphics->createLayer("ground", mainCamera);
 	graphics->createLayer("car", mainCamera);
+	graphics->createLayer("border");
 
-	swordSound.play("Sounds/some_long_sound.wav");
+	mainCamera->setScale(0.5f);
+
+	graphics->getLayerByName("border")->getCamera()->setPosition(vie::Window::getScreenSize() * 0.5f);
 }
 
 void MainClass::update(float et)
@@ -76,11 +79,16 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
+	g->switchLayer("main");
 	g->setBackgroundColor(vie::Color(30, 30, 30));
 	mainMap->render(g);
 
 	g->switchLayer("car");
 	objectsManager->render(g);
+
+	g->switchLayer("border");
+	g->setColor(vie::COLOR::PINK);
+	g->drawRect(glm::vec2(0), vie::Window::getScreenSize(), 4);
 }
 
 void MainClass::onKeyRelease()
