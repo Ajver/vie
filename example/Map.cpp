@@ -17,7 +17,6 @@ Map::~Map()
 
 void Map::render(vie::Graphics* g)
 {
-	g->switchLayer("ground");
 	g->translate(-size * 0.5f);
 
 	g->setColor(vie::COLOR::DARK_GRAY);

@@ -19,7 +19,8 @@ namespace vie
 		vbo(vbo),
 		vao(vao),
 		camera(ncamera),
-		sortType(GlyphSortType::NONE)
+		sortType(GlyphSortType::NONE),
+		isRemovingGlyphs(true)
 	{
 		colorProgram.init();
 	}
@@ -27,7 +28,6 @@ namespace vie
 
 	Layer::~Layer()
 	{
-		removeAllGlyphsAndRenderBatches();
 	}
 
 	void Layer::appendGlyph(Glyph* glyph)
@@ -36,11 +36,10 @@ namespace vie
 	}
 
 	void Layer::render()
-	{	
+	{
 		prepareShadersAndGL();
 		renderGlyphs();
-		removeAllGlyphsAndRenderBatches();
-		colorProgram.unuse();
+		clearAfterRender();
 	}
 
 	void Layer::prepareShadersAndGL()
@@ -94,9 +93,11 @@ namespace vie
 
 		for (auto& currGlyph : glyphs)
 		{
-			currGlyph->translateByVec2(cameraPosition);
-			currGlyph->rotateByAngle(angle);
-			currGlyph->invertInYAxis(screenHeight);
+			Glyph* trGlyph = new Glyph(*currGlyph);
+			trGlyph->translateByVec2(cameraPosition);
+			trGlyph->rotateByAngle(angle);
+			trGlyph->invertInYAxis(screenHeight);
+			transformedGlyphs.push_back(trGlyph);
 		}
 	}
 
@@ -111,16 +112,16 @@ namespace vie
 
 	void Layer::createRenderBatches()
 	{
-		if (glyphs.empty())
+		if (transformedGlyphs.empty())
 			return;
 
 		std::vector<Vertex> vertices;
-		vertices.resize(glyphs.size() * 6);
+		vertices.resize(transformedGlyphs.size() * 6);
 
 		int currVertex = 0, offset = 0;
 		Glyph* prevGlyp = nullptr;
 
-		for (auto& currGlyph : glyphs)
+		for (auto& currGlyph : transformedGlyphs)
 		{
 			if (prevGlyp != nullptr)
 			{
@@ -142,7 +143,9 @@ namespace vie
 			vertices[currVertex++] = currGlyph->topRight;
 			vertices[currVertex++] = currGlyph->topLeft;
 			offset += 6;
-		}		
+		}
+
+		removeGlyphs();
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
@@ -166,9 +169,34 @@ namespace vie
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Layer::removeAllGlyphsAndRenderBatches()
+	void Layer::clearAfterRender()
+	{
+		removeRenderBatches();
+		colorProgram.unuse();
+	}
+
+	void Layer::removeRenderBatches()
 	{
 		renderBatches.clear();
+	}
+
+	void Layer::removeGlyphs()
+	{
+		removeTransformedGlyphs();
+		removeOriginalGlyphs();
+	}
+
+	void Layer::removeTransformedGlyphs()
+	{
+		for (auto& currGlyph : transformedGlyphs)
+			delete currGlyph;
+
+		transformedGlyphs.clear();
+	}
+
+	void Layer::removeOriginalGlyphs()
+	{
+		if (!isRemovingGlyphs) return;
 
 		for (auto& currGlyph : glyphs)
 			delete currGlyph;
@@ -179,6 +207,11 @@ namespace vie
 	void Layer::setCamera(Camera2D* ncamera)
 	{
 		camera = ncamera;
+	}
+
+	void Layer::setIsRemovingGlyphs(bool flag)
+	{
+		isRemovingGlyphs = flag;
 	}
 
 	void Layer::setSortType(GlyphSortType newSortType)
@@ -209,6 +242,11 @@ namespace vie
 	GlyphSortType Layer::getSortType() const
 	{
 		return sortType;
+	}
+
+	bool Layer::getIsRemovingGlyphs() const
+	{
+		return isRemovingGlyphs;
 	}
 
 	bool Layer::compareForward(Glyph* a, Glyph* b)

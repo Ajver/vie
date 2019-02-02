@@ -23,12 +23,14 @@ namespace vie
 		void sortGlyphs();
 
 		void setCamera(Camera2D* ncamera);
-		Camera2D* getCamera() const;
+		void setIsRemovingGlyphs(bool flag);
 
 		bool isNamed(const std::string& n) const;
+		Camera2D* getCamera() const;
 		std::string getName() const;
 		std::vector<Glyph*> getGlyphsVector() const;
 		GlyphSortType getSortType() const;
+		bool getIsRemovingGlyphs() const;
 
 	private:
 		std::string name;
@@ -36,8 +38,10 @@ namespace vie
 		GLuint vao;
 		Camera2D* camera;
 		GLSLProgram colorProgram;
+		bool isRemovingGlyphs;
 
 		std::vector<Glyph*> glyphs;
+		std::vector<Glyph*> transformedGlyphs;
 		std::vector<RenderBatch> renderBatches;
 		GlyphSortType sortType;
 
@@ -50,7 +54,11 @@ namespace vie
 		void transformGlyphsByCamera();
 		void createRenderBatches();
 		void renderBatch() const;
-		void removeAllGlyphsAndRenderBatches();
+		void clearAfterRender();
+		void removeRenderBatches();
+		void removeGlyphs();
+		void removeTransformedGlyphs();
+		void removeOriginalGlyphs();
 		
 		static bool compareForward(Glyph* a, Glyph* b);
 		static bool compareBackward(Glyph* a, Glyph* b);

@@ -50,8 +50,14 @@ void MainClass::onCreate()
 	mainMap = new Map();
 	carFollower = new CarFollower(mainCamera, playerCar);
 
+	graphics->setBackgroundColor(vie::Color(10, 30, 20));
+
 	graphics->createLayer("ground", mainCamera);
 	graphics->createLayer("car", mainCamera);
+
+	graphics->switchLayer("ground");
+	graphics->getCurrentLayer()->setIsRemovingGlyphs(false);
+	mainMap->render(graphics);
 }
 
 void MainClass::update(float et)
@@ -68,11 +74,7 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
-	g->switchLayer("main");
-	g->setBackgroundColor(vie::Color(30, 30, 30));
-	mainMap->render(g);
-
-	g->switchLayer("car");
+	graphics->switchLayer("car");
 	objectsManager->render(g);
 }
 

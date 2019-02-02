@@ -5,6 +5,20 @@
 namespace vie
 {
 
+	Glyph::Glyph()
+	{
+	}
+
+	Glyph::Glyph(const Glyph& other) :
+		topLeft(other.topLeft),
+		topRight(other.topRight),
+		bottomLeft(other.bottomLeft),
+		bottomRight(other.bottomRight),
+		textureID(other.textureID),
+		depth(other.depth)
+	{
+	}
+
 	void Glyph::rotateByAngle(float angle)
 	{
 		topLeft.rotate(angle);

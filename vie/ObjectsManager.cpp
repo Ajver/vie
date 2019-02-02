@@ -85,30 +85,39 @@ namespace vie
 
 	void ObjectsManager::removeObject(Object* ob)
 	{
-		for (int i = 0; i < objects.size(); i++)
-			if (objects[i] == ob)
+		int i = 0;
+		for (auto& cob : objects)
+			if (cob == ob)
 			{
 				objects.erase(objects.begin() + i);
 				return;
 			}
+			else
+				i++;
 	}
 	void ObjectsManager::removeMouseListener(Object* ob)
 	{
-		for (int i = 0; i < mouseListeners.size(); i++)
-			if (mouseListeners[i] == ob)
+		int i = 0;
+		for (auto& cob : mouseListeners)
+			if (cob == ob)
 			{
 				mouseListeners.erase(mouseListeners.begin() + i);
 				return;
 			}
+			else
+				i++;
 	}
 	void ObjectsManager::removeKeyListener(Object* ob)
 	{
-		for (int i = 0; i < keyListeners.size(); i++)
-			if (keyListeners[i] == ob)
+		int i = 0;
+		for (auto& cob : keyListeners)
+			if (cob == ob)
 			{
 				keyListeners.erase(keyListeners.begin() + i);
 				return;
 			}
+			else
+				i++;
 	}
 
 	bool ObjectsManager::containsObject(Object* ob) const

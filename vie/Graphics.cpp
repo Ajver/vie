@@ -116,13 +116,18 @@ namespace vie
 	{
 		if (layerName == "main")
 			fatalError("Error: Cannot remove main layer!");
-		else 
-			for(int i=0; i<layers.size();i++)
-				if (layers[i]->isNamed(layerName))
+		else
+		{
+			int i = 0;
+			for (auto& currLaer : layers)
+				if (currLaer->isNamed(layerName))
 				{
 					layers.erase(layers.begin() + i);
 					return;
 				}
+				else
+					i++;
+		}
 
 		fatalError("Error: Cannot remove layer with name: " + layerName + " (Layer not found)");
 	}

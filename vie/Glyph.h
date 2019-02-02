@@ -7,8 +7,12 @@
 namespace vie
 {
 
-	struct Glyph
+	class Glyph
 	{
+	public:
+		Glyph();
+		Glyph(const Glyph& other);
+
 		GLuint textureID;
 		float depth;
 
