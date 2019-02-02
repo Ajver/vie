@@ -8,8 +8,8 @@ TEST(TextureTest, Should_CreateTextureWithParameters)
 	testPixelsArray[0] = 123;
 	vie::Texture texture(0, 100, 50, testPixelsArray);
 	EXPECT_EQ(0, texture.getID());
-	EXPECT_EQ(100, texture.getWidth());
-	EXPECT_EQ(50, texture.getHeight());
+	EXPECT_EQ(100, texture.getSize().x);
+	EXPECT_EQ(50, texture.getSize().y);
 	EXPECT_EQ(testPixelsArray, texture.getPixelsArray());
 }
 
@@ -38,8 +38,8 @@ TEST(TextureTest, Should_CreateSubTexture)
 	vie::Texture texture(0, 2, 1, testPixelsArray);
 	vie::Texture subTexture = texture.getSubTexture(1, 0, 1, 1);
 	EXPECT_FALSE(texture.getID() == subTexture.getID());
-	EXPECT_EQ(1, subTexture.getWidth());
-	EXPECT_EQ(1, subTexture.getHeight());
+	EXPECT_EQ(1, subTexture.getSize().x);
+	EXPECT_EQ(1, subTexture.getSize().y);
 	EXPECT_EQ(vie::Color(50, 60, 70, 80), subTexture.getPixelColor(0, 0));
 }
 

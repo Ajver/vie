@@ -52,18 +52,10 @@ void MainClass::onCreate()
 
 	graphics->createLayer("ground", mainCamera);
 	graphics->createLayer("car", mainCamera);
-
-	swordSound.play("Sounds/some_long_sound.wav");
 }
 
 void MainClass::update(float et)
-{
-	if (vie::Input::isKeyPressed(SDLK_ESCAPE))
-	{
-		destroyEngine();
-		return;
-	}
-	
+{	
 	objectsManager->update(et);
 	carFollower->update(et);
 
@@ -76,6 +68,7 @@ void MainClass::update(float et)
 
 void MainClass::render(vie::Graphics* g)
 {
+	g->switchLayer("main");
 	g->setBackgroundColor(vie::Color(30, 30, 30));
 	mainMap->render(g);
 
@@ -87,14 +80,8 @@ void MainClass::onKeyRelease()
 {
 	switch (vie::Input::getLastKey())
 	{
-	case SDLK_p:
-		if (swordSound.getIsRunning())
-			swordSound.pause();
-		else
-			swordSound.play();
-		break;
-	case SDLK_o:
-		swordSound.replay();
+	case SDLK_ESCAPE:
+		destroyEngine();
 		break;
 	}
 }
