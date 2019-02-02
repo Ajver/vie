@@ -11,8 +11,8 @@ namespace vie
 		Camera2D();
 		~Camera2D();
 
-		void init();
 		void update();
+		void beginFrame();
 
 		void move(const glm::vec2& translateVector);
 		void scaleUp(float scaleM);
@@ -30,13 +30,15 @@ namespace vie
 		glm::vec2 getPosition() const;
 		float getScale() const;
 		float getRotate() const;
+		glm::mat4 getCameraMatrix() const;
 
 		bool getNeedsMatrixUpdate() const;
+		bool getWasUpdatedThisFrame() const;
 
-		glm::mat4 getCameraMatrix() const;
 
 	private:
 		bool needsMatrixUpdate;
+		bool wasUpdatedThisFrame;
 
 		glm::vec2 position;
 		glm::mat4 cameraMatrix;
@@ -44,6 +46,8 @@ namespace vie
 
 		float scale;
 		float rotateAngleInRadians;
+
+		void init();
 	};
 
 }

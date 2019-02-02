@@ -17,6 +17,7 @@ private:
 	vie::Texture texture;
 	float speed;
 	bool wasSpeedIncreased;
+	bool wasUpdated;
 
 	float rotate;
 	float turnSpeed;

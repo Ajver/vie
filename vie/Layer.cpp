@@ -62,9 +62,13 @@ namespace vie
 
 	void Layer::prepareGlyphs()
 	{
-		sortGlyphs();
-		transformGlyphsByCamera();
-		createRenderBatches();
+		if (camera->getWasUpdatedThisFrame())
+		{
+			sortGlyphs();
+			transformGlyphsByCamera();
+			createRenderBatches();
+		}
+		removeOriginalGlyphs();
 	}
 
 	void Layer::sortGlyphs()
@@ -85,8 +89,10 @@ namespace vie
 
 	void Layer::transformGlyphsByCamera()
 	{
-		setCameraMatrix();
+		removeTransformedGlyphs();
+		removeRenderBatches();
 
+		setCameraMatrix();
 		glm::vec2 cameraPosition = -camera->getPosition();
 		float angle = -camera->getRotate();
 		float screenHeight = Window::getScreenHeight();
@@ -145,8 +151,6 @@ namespace vie
 			offset += 6;
 		}
 
-		removeGlyphs();
-
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
@@ -171,19 +175,12 @@ namespace vie
 
 	void Layer::clearAfterRender()
 	{
-		removeRenderBatches();
 		colorProgram.unuse();
 	}
 
 	void Layer::removeRenderBatches()
 	{
 		renderBatches.clear();
-	}
-
-	void Layer::removeGlyphs()
-	{
-		removeTransformedGlyphs();
-		removeOriginalGlyphs();
 	}
 
 	void Layer::removeTransformedGlyphs()
@@ -200,7 +197,7 @@ namespace vie
 
 		for (auto& currGlyph : glyphs)
 			delete currGlyph;
-
+		
 		glyphs.clear();
 	}
 

@@ -56,7 +56,6 @@ namespace vie
 		void renderBatch() const;
 		void clearAfterRender();
 		void removeRenderBatches();
-		void removeGlyphs();
 		void removeTransformedGlyphs();
 		void removeOriginalGlyphs();
 		

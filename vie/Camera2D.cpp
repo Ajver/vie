@@ -15,6 +15,7 @@ namespace vie
 		cameraMatrix(1.0f),
 		scale(1.0f),
 		needsMatrixUpdate(true),
+		wasUpdatedThisFrame(true),
 		orthoMatrix(1.0f),
 		rotateAngleInRadians(0.0f)
 	{
@@ -24,9 +25,9 @@ namespace vie
 	{
 	}
 
-	void Camera2D::init()
+	void Camera2D::beginFrame()
 	{
-		orthoMatrix = glm::ortho(0.0f, (float)Window::getScreenWidth(), 0.0f, (float)Window::getScreenHeight());
+		wasUpdatedThisFrame = false;
 	}
 
 	void Camera2D::update()
@@ -34,7 +35,7 @@ namespace vie
 		if (needsMatrixUpdate)
 		{
 			init();
-			
+
 			// Camera translation
 			glm::vec3 translateVec(Window::getScreenWidth() * 0.5f, -Window::getScreenHeight() * 0.5f, 0.0f);
 			cameraMatrix = glm::translate(orthoMatrix, translateVec);
@@ -44,7 +45,13 @@ namespace vie
 			cameraMatrix = glm::scale(glm::mat4(1.0f), scaleVec) * cameraMatrix;
 
 			needsMatrixUpdate = false;
+			wasUpdatedThisFrame = true;
 		}
+	}
+
+	void Camera2D::init()
+	{
+		orthoMatrix = glm::ortho(0.0f, (float)Window::getScreenWidth(), 0.0f, (float)Window::getScreenHeight());
 	}
 
 	bool Camera2D::isPointInView(glm::vec2 point) const
@@ -80,7 +87,7 @@ namespace vie
 
 	void Camera2D::move(const glm::vec2& translateVector)
 	{
-		position += translateVector; 
+		position += translateVector;
 		needsMatrixUpdate = true;
 	}
 
@@ -143,6 +150,11 @@ namespace vie
 	bool  Camera2D::getNeedsMatrixUpdate() const
 	{
 		return needsMatrixUpdate;
+	}
+
+	bool Camera2D::getWasUpdatedThisFrame() const
+	{
+		return wasUpdatedThisFrame;
 	}
 
 }
