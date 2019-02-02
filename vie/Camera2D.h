@@ -11,6 +11,7 @@ namespace vie
 		Camera2D();
 		~Camera2D();
 
+		void init();
 		void update();
 		void beginFrame();
 
@@ -46,8 +47,6 @@ namespace vie
 
 		float scale;
 		float rotateAngleInRadians;
-
-		void init();
 	};
 
 }

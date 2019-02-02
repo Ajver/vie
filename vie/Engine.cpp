@@ -62,6 +62,7 @@ namespace vie
 		createGlewContextAndCatchErrors();
 		
 		mainCamera = new Camera2D();
+		mainCamera->init();
 
 		graphics = new Graphics();
 		graphics->init(mainCamera);

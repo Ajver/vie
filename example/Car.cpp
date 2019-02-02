@@ -10,8 +10,7 @@ Car::Car() :
 	MAX_SPEED(1100.0f),
 	ACCELERATION(200.0f),
 	TURN_ACCELERATION(0.5f),
-	MAX_TURN_SPEED(1.5f),
-	wasUpdated(true)
+	MAX_TURN_SPEED(1.5f)
 {
 	texture = vie::FileManager::getTexture("Graphics/car.png");
 	position = glm::vec2(0, 0);

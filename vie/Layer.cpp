@@ -62,12 +62,9 @@ namespace vie
 
 	void Layer::prepareGlyphs()
 	{
-		if (camera->getWasUpdatedThisFrame())
-		{
-			sortGlyphs();
-			transformGlyphsByCamera();
-			createRenderBatches();
-		}
+		sortGlyphs();
+		transformGlyphsByCamera();
+		createRenderBatches();
 		removeOriginalGlyphs();
 	}
 
