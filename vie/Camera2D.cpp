@@ -40,8 +40,7 @@ namespace vie
 			cameraMatrix = glm::translate(orthoMatrix, translateVec);
 
 			// Camera scale
-			//glm::vec3 scaleVec(scale, scale, 0.0f);
-			glm::vec3 scaleVec(scale * 0.5f, scale * 0.5f, 0.0f);
+			glm::vec3 scaleVec(scale, scale, 0.0f);
 			cameraMatrix = glm::scale(glm::mat4(1.0f), scaleVec) * cameraMatrix;
 
 			needsMatrixUpdate = false;
