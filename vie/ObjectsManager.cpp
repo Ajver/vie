@@ -23,8 +23,7 @@ namespace vie
 
 	void ObjectsManager::update(float et)
 	{
-		int osize = objects.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = objects.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&objects[0] + i);
 			ob->update(et);
@@ -68,8 +67,7 @@ namespace vie
 
 	Object* ObjectsManager::getObjectByLabel(const std::string& label) const
 	{
-		int osize = objects.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = objects.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&objects[0] + i);
 			if (ob->isLabeled(label))
@@ -80,8 +78,7 @@ namespace vie
 	}
 	Object* ObjectsManager::getMouseListenerByLabel(const std::string& label) const
 	{
-		int osize = mouseListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&mouseListeners[0] + i);
 			if (ob->isLabeled(label))
@@ -92,8 +89,7 @@ namespace vie
 	}
 	Object* ObjectsManager::getKeyListenerByLabel(const std::string& label) const
 	{
-		int osize = keyListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = keyListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&keyListeners[0] + i);
 			if (ob->isLabeled(label))
@@ -105,8 +101,7 @@ namespace vie
 
 	void ObjectsManager::removeObject(Object* rob)
 	{
-		int osize = objects.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = objects.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&objects[0] + i);
 			if (ob == rob)
@@ -118,8 +113,7 @@ namespace vie
 	}
 	void ObjectsManager::removeMouseListener(Object* rob)
 	{
-		int osize = mouseListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&mouseListeners[0] + i);
 			if (ob == rob)
@@ -131,8 +125,7 @@ namespace vie
 	}
 	void ObjectsManager::removeKeyListener(Object* rob)
 	{
-		int osize = keyListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = keyListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&keyListeners[0] + i);
 			if (ob == rob)
@@ -171,8 +164,7 @@ namespace vie
 
 	void ObjectsManager::onKeyPress()
 	{
-		int osize = keyListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = keyListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&keyListeners[0] + i);
 			ob->onKeyPress();
@@ -180,8 +172,7 @@ namespace vie
 	}
 	void ObjectsManager::onKeyRelease()
 	{
-		int osize = keyListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = keyListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&keyListeners[0] + i);
 			ob->onKeyRelease();
@@ -190,8 +181,7 @@ namespace vie
 
 	void ObjectsManager::onMousePress()
 	{
-		int osize = mouseListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&mouseListeners[0] + i);
 			if (ob->isPointInside(Input::getMousePosition()))
@@ -233,8 +223,7 @@ namespace vie
 
 	void ObjectsManager::onMouseMove() 
 	{
-		int osize = mouseListeners.size();
-		for (int i = 0; i < osize; i++)
+		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
 			Object* ob = *(&mouseListeners[0] + i);
 			if (ob->isPointInside(Input::getMousePosition()))
