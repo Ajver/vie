@@ -25,8 +25,11 @@ namespace vie
 	{
 		for (int i = objects.size() - 1; i >= 0; i--)
 		{
-			Object* ob = *(&objects[0] + i);
-			ob->update(et);
+			if (i < objects.size())
+			{
+				Object* ob = *(&objects[0] + i);
+				ob->update(et);
+			}
 		}
 	}
 	void ObjectsManager::render(Graphics* g)
@@ -166,16 +169,22 @@ namespace vie
 	{
 		for (int i = keyListeners.size() - 1; i >= 0; i--)
 		{
-			Object* ob = *(&keyListeners[0] + i);
-			ob->onKeyPress();
+			if (i < keyListeners.size())
+			{
+				Object* ob = *(&keyListeners[0] + i);
+				ob->onKeyPress();
+			}
 		}
 	}
 	void ObjectsManager::onKeyRelease()
 	{
 		for (int i = keyListeners.size() - 1; i >= 0; i--)
 		{
-			Object* ob = *(&keyListeners[0] + i);
-			ob->onKeyRelease();
+			if (i < keyListeners.size())
+			{
+				Object* ob = *(&keyListeners[0] + i);
+				ob->onKeyRelease();
+			}
 		}
 	}
 
@@ -183,9 +192,12 @@ namespace vie
 	{
 		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
-			Object* ob = *(&mouseListeners[0] + i);
-			if (ob->isPointInside(Input::getMousePosition()))
-				mouseClickedObject(ob);
+			if (i < mouseListeners.size())
+			{
+				Object* ob = *(&mouseListeners[0] + i);
+				if (ob->isPointInside(Input::getMousePosition()))
+					mouseClickedObject(ob);
+			}
 		}
 	}
 	void ObjectsManager::mouseClickedObject(Object* ob)
@@ -225,11 +237,14 @@ namespace vie
 	{
 		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
-			Object* ob = *(&mouseListeners[0] + i);
-			if (ob->isPointInside(Input::getMousePosition()))
-				mouseIsInsideObject(ob);
-			else
-				mouseIsOutsideObject(ob);
+			if (i < mouseListeners.size())
+			{
+				Object* ob = *(&mouseListeners[0] + i);
+				if (ob->isPointInside(Input::getMousePosition()))
+					mouseIsInsideObject(ob);
+				else
+					mouseIsOutsideObject(ob);
+			}
 		}
 	}
 
