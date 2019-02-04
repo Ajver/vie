@@ -20,7 +20,18 @@ Car::Car(vie::ObjectsManager* nom) :
 	position = glm::vec2(0, 0);
 	size = texture.getSize() * 3.0f;
 
-	createDefaultCollisionBody();
+	glm::vec2 halfSize = size * 0.5f;
+	collisionBody = new vie::CollisionBody(this, 
+		{
+			-halfSize,
+			{ 0.0f, -halfSize.y-2.0f },
+			{ halfSize.x, -halfSize.y },
+			{ halfSize.x+2.0f, 0.0f},
+			halfSize,
+			{ 0.0f, halfSize.y+2.0f },
+			{ -halfSize.x, halfSize.y },
+			{ -halfSize.x-2.0f, 0.0f}
+		});
 }
 
 Car::~Car()
