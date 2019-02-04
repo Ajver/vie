@@ -62,6 +62,7 @@ TEST(CollisionBodyTest, Should_CreateWithSpecificPoints)
 	EXPECT_EQ(glm::vec2(10, 10), cb->getPoint(0));
 	EXPECT_EQ(glm::vec2(20, 20), cb->getPoint(1));
 	EXPECT_EQ(glm::vec2(30, 30), cb->getPoint(2));
+	EXPECT_FALSE(cb->getIsStatic());
 }
 
 TEST(CollisionBody, Should_ReturnRotatedPoint)
@@ -73,4 +74,18 @@ TEST(CollisionBody, Should_ReturnRotatedPoint)
 
 	glm::vec2 rotatedPoint = glm::rotate(glm::vec2(10, 15), 3.14f);
 	EXPECT_EQ(rotatedPoint, cb->getPoint(0));
+}
+
+TEST(CollisionBody, Should_Not_BeStaticAsDefault)
+{
+	vie::CollisionBody* cb = new vie::CollisionBody(new vie::Object(), {});
+
+	EXPECT_FALSE(cb->getIsStatic());
+}
+
+TEST(CollisionBody, Should_SetIsStatic)
+{
+	vie::CollisionBody* cb = new vie::CollisionBody(new vie::Object(), {});
+	cb->setIsStatic(true);
+	EXPECT_TRUE(cb->getIsStatic());
 }

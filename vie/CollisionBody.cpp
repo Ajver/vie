@@ -10,7 +10,8 @@ namespace vie
 
 	CollisionBody::CollisionBody(vie::Object* nob, std::vector<glm::vec2> npoints) :
 		ob(nob),
-		points(npoints)
+		points(npoints),
+		isStatic(false)
 	{
 	}
 
@@ -43,6 +44,11 @@ namespace vie
 		points[i] = np;
 	}
 
+	void CollisionBody::setIsStatic(bool flag)
+	{
+		isStatic = flag;
+	}
+
 	glm::vec2 CollisionBody::getPosition() const
 	{
 		return ob->getPosition();
@@ -61,6 +67,11 @@ namespace vie
 	int CollisionBody::getPointsSize() const
 	{
 		return points.size();
+	}
+
+	bool CollisionBody::getIsStatic() const
+	{
+		return isStatic;
 	}
 
 }
