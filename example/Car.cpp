@@ -31,6 +31,16 @@ void Car::update(float et)
 {
 	processMoving(et);
 	processTurning(et);
+	//float speed = 200.0f;
+	//if (vie::Input::isKeyPressed(SDLK_w))
+	//	position.y -= speed * et;
+	//if (vie::Input::isKeyPressed(SDLK_s))
+	//	position.y += speed * et;
+	//
+	//if (vie::Input::isKeyPressed(SDLK_a))
+	//	position.x -= speed * et;
+	//if (vie::Input::isKeyPressed(SDLK_d))
+	//	position.x += speed * et;
 
 	updatePosition(et);
 	updateRotate(et);
@@ -161,6 +171,6 @@ void Car::processCollision()
 
 void Car::processCollision(vie::Object* other)
 {
-	if (collisionBody->isColliding(other->getCollisionBody()))
+	if (collisionBody->bound(other->getCollisionBody()))
 		color = vie::COLOR::GREEN;
 }

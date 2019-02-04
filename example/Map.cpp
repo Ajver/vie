@@ -14,7 +14,7 @@ Map::Map(vie::ObjectsManager* om) :
 	for (int i = 0; i < size.y; i += TILE_SIZE * 2.0f)
 		for (int j = 0; j < size.x; j += TILE_SIZE * 2.0f)
 		{
-			vie::Object* o = new Block(glm::vec2(j, i) - haflSize, { TILE_SIZE, TILE_SIZE });
+			vie::Object* o = new Block(glm::vec2(j, i) - haflSize + glm::vec2(TILE_SIZE, TILE_SIZE) * 0.5f, { TILE_SIZE, TILE_SIZE });
 			om->appendObject(o);
 		}
 }

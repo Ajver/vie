@@ -1,6 +1,6 @@
 #include "Block.h"
 
-
+#include <vie/CollisionBody.h>
 
 Block::Block(const glm::vec2& npos, const glm::vec2& nsize)
 {
@@ -8,6 +8,7 @@ Block::Block(const glm::vec2& npos, const glm::vec2& nsize)
 	size = nsize;
 
 	createDefaultCollisionBody();
+	collisionBody->setIsStatic(true);
 }
 
 Block::~Block()

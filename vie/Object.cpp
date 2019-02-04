@@ -23,6 +23,11 @@ namespace vie
 		delete collisionBody;
 	}
 
+	void Object::moveBy(const glm::vec2& moveVec)
+	{
+		position += moveVec;
+	}
+
 	void Object::setPosition(const glm::vec2& npos)
 	{
 		position = npos;
@@ -42,6 +47,11 @@ namespace vie
 	{
 		// TODO - Should update size of collision body too
 		size = nsize;
+	}
+
+	void Object::rotateBy(float rotateMod)
+	{
+		rotate += rotateMod;
 	}
 
 	void Object::setRotate(float nrotate)

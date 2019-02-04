@@ -26,10 +26,12 @@ namespace vie
 		virtual void onMousePress();
 		virtual void onMouseRelease();
 
+		void moveBy(const glm::vec2& moveVec);
 		void setPosition(const glm::vec2& npos);
 		void setVelocity(const glm::vec2& nvel);
 		void setAcceleration(const glm::vec2& nvel);
 		void setSize(const glm::vec2& nsize);
+		void rotateBy(float rotateMod);
 		void setRotate(float nrotate);
 		void setRotateVel(float nrotateVel);
 		void setRotateAcc(float nrotateAcc);

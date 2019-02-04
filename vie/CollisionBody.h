@@ -13,10 +13,12 @@ namespace vie
 		CollisionBody(vie::Object* nob, std::vector<glm::vec2> npoints);
 		~CollisionBody();
 
-		bool isColliding(CollisionBody* other) const;
-		static bool areColliding(const CollisionBody* one, const CollisionBody* two);
+		bool isColliding(CollisionBody* other);
+		bool bound(CollisionBody* other);
 
 		static CollisionBody* createDefault(vie::Object* nob);
+
+		void moveObject(const glm::vec2& moveVec);
 
 		void setPoint(int i, glm::vec2 np);
 		void setIsStatic(bool flag);
@@ -27,6 +29,7 @@ namespace vie
 		glm::vec2 getPoint(int i) const;
 		int getPointsSize() const;
 		bool getIsStatic() const;
+		float getRadius() const;
 
 	private:
 		CollisionBody();
@@ -36,7 +39,9 @@ namespace vie
 
 		bool isStatic;
 
+		bool mayBeCollision(CollisionBody* other) const;
 
+		bool checkCollisionAndBoundIfWant(CollisionBody* other, bool wantBound);
 
 	};
 

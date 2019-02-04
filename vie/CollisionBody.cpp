@@ -19,48 +19,88 @@ namespace vie
 	{
 	}
 
-	bool CollisionBody::isColliding(CollisionBody* other) const
+	bool CollisionBody::isColliding(CollisionBody* other)
 	{
-		return areColliding(this, other);
+		if (mayBeCollision(other))
+			return checkCollisionAndBoundIfWant(other, false);
+		else
+			return false;
 	}
 
-	bool CollisionBody::areColliding(const CollisionBody* one, const CollisionBody* two)
+	bool CollisionBody::mayBeCollision(CollisionBody* other) const
 	{
+		float minDist = getRadius() + other->getRadius();
+		return glm::distance(ob->getPosition(), other->getPosition()) < minDist;
+	}
+
+	bool CollisionBody::bound(CollisionBody* other)
+	{
+		if (mayBeCollision(other))
+			return checkCollisionAndBoundIfWant(other, true);
+		else
+			return false;
+	}
+
+	bool CollisionBody::checkCollisionAndBoundIfWant(CollisionBody* other, bool wantBound)
+	{
+		/*
+			Algorithm comes from Javidx9: https://www.youtube.com/watch?v=7Ik2vowGcU0
+		*/
+
+		CollisionBody* shape1 = this;
+		CollisionBody* shape2 = other;
+
 		for (int shape = 0; shape < 2; shape++)
 		{
 			if (shape == 1)
 			{
-				const CollisionBody* temp = one;
-				one = two;
-				two = temp;
+				shape1 = other;
+				shape2 = this;
 			}
 
-			glm::vec2 pos = one->getPosition();
-
-			int onePSize = one->getPointsSize();
-			for (int diag = 0; diag < onePSize; diag++)
+			// Check diagonals of polygon...
+			const int poly1size = shape1->getPointsSize();
+			for (int diag = 0; diag < poly1size; diag++)
 			{
-				glm::vec2 r(one->getPoint(diag) - pos);
+				glm::vec2 pos = shape1->getPosition();
+				glm::vec2 p1 = shape1->getPoint(diag);
 
-				const int opSize = two->getPointsSize();
-				for (int i = 0; i < opSize; i++)
+				glm::vec2 displacement(0, 0);
+
+				// ...against edges of the other
+				const int poly2size = shape2->getPointsSize();
+				for (int q = 0; q < poly2size; q++)
 				{
-					glm::vec2 op1(two->getPoint(i));
-					glm::vec2 op2(two->getPoint((i + 1) % opSize));
-					glm::vec2 a(op2 - op1);
+					glm::vec2 s2first = shape2->getPoint(q);
+					glm::vec2 s2second = shape2->getPoint((q + 1) % poly2size);
 
-					glm::vec2 u(pos - op1);
-
-					float h = a.x * r.y - r.x * a.y;
-
-					float t1 = a.y * u.x + a.x * u.y;
-					float t2 = r.y * u.x + r.x * u.y;
-					t1 /= h;
-					t2 /= h;
+					// Standard "off the shelf" line segment intersection
+					float h = (s2second.x - s2first.x) * (pos.y - p1.y) - (pos.x - p1.x) * (s2second.y - s2first.y);
+					float t1 = ((s2first.y - s2second.y) * (pos.x - s2first.x) + (s2second.x - s2first.x) * (pos.y - s2first.y)) / h;
+					float t2 = ((pos.y - p1.y) * (pos.x - s2first.x) + (p1.x - pos.x) * (pos.y - s2first.y)) / h;
 
 					if (t1 >= 0.0f && t1 < 1.0f && t2 >= 0.0f && t2 < 1.0f)
-						return true;
+						if (wantBound)
+						{
+							// TODO - It is not working fine...
+							displacement.x += (1.0f - t1) * (p1.x - pos.x);
+							displacement.y += (1.0f - t1) * (p1.y - pos.y);
+						}
+						else
+							return true;
 				}
+
+				if (wantBound)
+					if (!isStatic)
+						if (!other->getIsStatic())
+						{
+							 this->moveObject(displacement * -0.5f);
+							other->moveObject(displacement * 0.5f);
+						}
+						else
+							moveObject(-displacement);
+					else if (!other->getIsStatic())
+						other->moveObject(displacement);
 			}
 		}
 
@@ -85,6 +125,11 @@ namespace vie
 				// Bottom-left point
 				{ -halfSize.x, halfSize.y }
 			});
+	}
+
+	void CollisionBody::moveObject(const glm::vec2& moveVec)
+	{
+		ob->moveBy(moveVec);
 	}
 
 	void CollisionBody::setPoint(int i, glm::vec2 np)
@@ -120,6 +165,23 @@ namespace vie
 	bool CollisionBody::getIsStatic() const
 	{
 		return isStatic;
+	}
+
+	float CollisionBody::getRadius() const
+	{
+		if (points.size() == 0)
+			return 0;
+
+		float topRadius = glm::length(points[0]);
+
+		for (auto& p : points)
+		{
+			float rad = glm::length(p);
+			if (rad > topRadius)
+				topRadius = rad;
+		}
+		
+		return topRadius;
 	}
 
 }
