@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraTest.cpp" />
+    <ClCompile Include="CollisionBodyTest.cpp" />
     <ClCompile Include="ColorTest.cpp" />
     <ClCompile Include="GraphicsTest.cpp" />
     <ClCompile Include="LayerTest.cpp" />

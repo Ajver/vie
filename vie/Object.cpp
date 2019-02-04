@@ -2,16 +2,21 @@
 
 #include <string>
 
+#include "CollisionBody.h"
+
 namespace vie
 {
 
 	Object::Object() :
-		position(glm::vec2(0, 0)),
-		size(glm::vec2(0, 0)),
-		velocity(glm::vec2(0, 0))
+		position(0, 0),
+		velocity(0, 0),
+		acceleration(0, 0),
+		size(0, 0),
+		rotate(0),
+		rotateVel(0),
+		rotateAcc(0)
 	{
 	}
-
 
 	Object::~Object()
 	{
@@ -22,14 +27,35 @@ namespace vie
 		position = npos;
 	}
 
-	void Object::setSize(const glm::vec2& nsize)
-	{
-		size = nsize;
-	}
-
 	void Object::setVelocity(const glm::vec2& nvel)
 	{
 		velocity = nvel;
+	}
+
+	void Object::setAcceleration(const glm::vec2& nacc)
+	{
+		acceleration = nacc;
+	}
+
+	void Object::setSize(const glm::vec2& nsize)
+	{
+		// TODO - Should update size of collision body too
+		size = nsize;
+	}
+
+	void Object::setRotate(float nrotate)
+	{
+		rotate = nrotate;
+	}
+
+	void Object::setRotateVel(float nrotateVel)
+	{
+		rotateVel = nrotateVel;
+	}
+
+	void Object::setRotateAcc(float nrotateAcc)
+	{
+		rotateAcc = nrotateAcc;
 	}
 
 	void Object::setIsMouseHover(bool flag)
@@ -42,9 +68,29 @@ namespace vie
 		label = nlabel;
 	}
 
+	void Object::setCollisionBody(CollisionBody* ncollisionBody)
+	{
+		collisionBody = ncollisionBody;
+	}
+
+	void Object::createDefaultCollisionBody()
+	{
+		collisionBody = CollisionBody::createDefault(this);
+	}
+
 	glm::vec2 Object::getPosition() const
 	{
 		return position;
+	}
+
+	glm::vec2 Object::getVelocity() const
+	{
+		return velocity;
+	}
+
+	glm::vec2 Object::getAcceleration() const
+	{
+		return acceleration;
 	}
 
 	glm::vec2 Object::getSize() const
@@ -52,9 +98,29 @@ namespace vie
 		return size;
 	}
 
-	glm::vec2 Object::getVelocity() const
+	float Object::getRotate() const
 	{
-		return velocity;
+		return rotate;
+	}
+
+	float Object::getRotateVel() const
+	{
+		return rotateVel;
+	}
+
+	float Object::getRotateAcc() const
+	{
+		return rotateAcc;
+	}
+
+	bool Object::hasCollisionBody() const
+	{
+		return collisionBody != nullptr;
+	}
+
+	CollisionBody* Object::getCollisionBody() const
+	{
+		return collisionBody;
 	}
 
 	bool Object::getIsMouseHover() const

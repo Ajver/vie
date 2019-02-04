@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="CollisionBody.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Errors.h" />
@@ -42,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="CollisionBody.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
