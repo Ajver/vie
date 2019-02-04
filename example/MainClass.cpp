@@ -47,7 +47,7 @@ void MainClass::onCreate()
 	objectsManager->appendObject(playerCar);
 	objectsManager->appendKeyListener(playerCar);
 
-	mainMap = new Map();
+	mainMap = new Map(objectsManager);
 	carFollower = new CarFollower(mainCamera, playerCar);
 
 	graphics->setBackgroundColor(vie::Color(10, 30, 20));

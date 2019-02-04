@@ -2,13 +2,20 @@
 
 #include <vie/Window.h>
 #include <vie/Graphics.h>
+#include <vie/ObjectsManager.h>
 
-
-Map::Map() : 
-	TILE_SIZE(200.0f)
+Map::Map(vie::ObjectsManager* om) : 
+	TILE_SIZE(200.0f),
+	size(vie::Window::getScreenSize() * 6.0f)
 {
-	size.x = vie::Window::getScreenWidth() * 6.0f;
-	size.y = vie::Window::getScreenHeight() * 6.0f;
+	for (int i = 0; i < size.y; i += TILE_SIZE * 2.0f)
+		for (int j = 0; j < size.x; j += TILE_SIZE * 2.0f)
+		{
+			vie::Object* o = new vie::Object();
+			o->setPosition({ j, i });
+			o->setSize({ TILE_SIZE, TILE_SIZE });
+			om->appendObject(o);
+		}
 }
 
 Map::~Map()

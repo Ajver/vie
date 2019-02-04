@@ -20,6 +20,7 @@ namespace vie
 
 	Object::~Object()
 	{
+		delete collisionBody;
 	}
 
 	void Object::setPosition(const glm::vec2& npos)

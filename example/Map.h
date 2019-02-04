@@ -2,10 +2,15 @@
 
 #include <vie/Graphics.h>
 
+namespace vie
+{
+	class ObjectsManager;
+}
+
 class Map
 {
 public:
-	Map();
+	Map(vie::ObjectsManager* om);
 	~Map();
 
 	void render(vie::Graphics* g);

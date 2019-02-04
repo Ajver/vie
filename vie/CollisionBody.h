@@ -13,6 +13,9 @@ namespace vie
 		CollisionBody(vie::Object* nob, std::vector<glm::vec2> npoints);
 		~CollisionBody();
 
+		bool isColliding(CollisionBody* other) const;
+		static bool areColliding(const CollisionBody* one, const CollisionBody* two);
+
 		static CollisionBody* createDefault(vie::Object* nob);
 
 		void setPoint(int i, glm::vec2 np);
@@ -32,6 +35,8 @@ namespace vie
 		std::vector<glm::vec2> points;
 
 		bool isStatic;
+
+
 
 	};
 

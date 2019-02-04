@@ -3,6 +3,8 @@
 #include <vie/CollisionBody.h>
 #include <vie/Object.h>
 
+vie::Object* createObjectWithDefaultCB(const glm::vec2& pos, const glm::vec2& size);
+
 TEST(CollisionBodyTest, Should_CreateDefaultCollisionBody)
 {
 	vie::Object* o = new vie::Object();
@@ -65,7 +67,7 @@ TEST(CollisionBodyTest, Should_CreateWithSpecificPoints)
 	EXPECT_FALSE(cb->getIsStatic());
 }
 
-TEST(CollisionBody, Should_ReturnRotatedPoint)
+TEST(CollisionBodyTest, Should_ReturnRotatedPoint)
 {
 	vie::Object* o = new vie::Object();
 	o->setRotate(3.14f);
@@ -76,16 +78,51 @@ TEST(CollisionBody, Should_ReturnRotatedPoint)
 	EXPECT_EQ(rotatedPoint, cb->getPoint(0));
 }
 
-TEST(CollisionBody, Should_Not_BeStaticAsDefault)
+TEST(CollisionBodyTest, Should_Not_BeStaticAsDefault)
 {
 	vie::CollisionBody* cb = new vie::CollisionBody(new vie::Object(), {});
 
 	EXPECT_FALSE(cb->getIsStatic());
 }
 
-TEST(CollisionBody, Should_SetIsStatic)
+TEST(CollisionBodyTest, Should_SetIsStatic)
 {
 	vie::CollisionBody* cb = new vie::CollisionBody(new vie::Object(), {});
 	cb->setIsStatic(true);
 	EXPECT_TRUE(cb->getIsStatic());
+}
+
+TEST(CollisionBodyTest, Should_Collide)
+{
+	vie::Object* o1 = createObjectWithDefaultCB({ 0, 0 }, { 64, 96 });
+
+	// This object is a little lower that previous
+	vie::Object* o2 = createObjectWithDefaultCB({ 16, 16 }, { 64, 96 });
+
+	vie::CollisionBody* o1_cb = o1->getCollisionBody();
+	vie::CollisionBody* o2_cb = o2->getCollisionBody();
+	EXPECT_TRUE(o1_cb->isColliding(o2_cb));
+}
+
+TEST(CollisionBodyTest, Should_Not_Collide)
+{
+	vie::Object* o1 = createObjectWithDefaultCB({ 0, 0 }, { 64, 96 });
+
+	// This object is a much lower that previous
+	vie::Object* o2 = createObjectWithDefaultCB({ 256, 512 }, { 64, 96 });
+
+	vie::CollisionBody* o1_cb = o1->getCollisionBody();
+	vie::CollisionBody* o2_cb = o2->getCollisionBody();
+	EXPECT_FALSE(o1_cb->isColliding(o2_cb));
+}
+
+
+vie::Object* createObjectWithDefaultCB(const glm::vec2& pos, const glm::vec2& size)
+{
+	vie::Object* o = new vie::Object();
+	o->setPosition(pos);
+	o->setSize(size);
+	o->createDefaultCollisionBody();
+
+	return o;
 }
