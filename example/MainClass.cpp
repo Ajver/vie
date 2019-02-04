@@ -43,7 +43,7 @@ void MainClass::onCreate()
 {
 	setFPSLimit(-1);
 
-	Car* playerCar = new Car();
+	Car* playerCar = new Car(objectsManager);
 	objectsManager->appendObject(playerCar);
 	objectsManager->appendKeyListener(playerCar);
 

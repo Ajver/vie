@@ -16,5 +16,6 @@ Block::~Block()
 
 void Block::render(vie::Graphics* g)
 {
-	g->fillRect(position, size);
+	//g->setColor(vie::COLOR::DARK_GRAY);
+	//g->fillRect(position, size);
 }

@@ -109,7 +109,7 @@ namespace vie
 
 	glm::vec2 CollisionBody::getPoint(int i) const
 	{
-		return glm::rotate(points[i], ob->getRotate());
+		return glm::rotate(points[i], ob->getRotate()) + ob->getPosition();
 	}
 
 	int CollisionBody::getPointsSize() const

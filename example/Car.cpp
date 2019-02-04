@@ -2,21 +2,26 @@
 
 #include <vie/FileManager.h>
 #include <vie/Input.h>
+#include <vie/ObjectsManager.h>
+#include <vie/CollisionBody.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
 
-Car::Car() :
+Car::Car(vie::ObjectsManager* nom) :
 	MAX_SPEED(1100.0f),
 	ACCELERATION(200.0f),
 	TURN_ACCELERATION(0.5f),
-	MAX_TURN_SPEED(1.5f)
+	MAX_TURN_SPEED(1.5f),
+	om(nom),
+	color(vie::COLOR::WHITE)
 {
 	texture = vie::FileManager::getTexture("Graphics/car.png");
 	position = glm::vec2(0, 0);
 	size = texture.getSize() * 3.0f;
-}
 
+	createDefaultCollisionBody();
+}
 
 Car::~Car()
 {
@@ -29,6 +34,9 @@ void Car::update(float et)
 
 	updatePosition(et);
 	updateRotate(et);
+
+	color = vie::COLOR::WHITE;
+	processCollision();
 }
 
 void Car::processMoving(float et)
@@ -127,7 +135,7 @@ void Car::render(vie::Graphics* g)
 {
 	g->rotate(rotate);
 	g->translate(position);
-	g->drawTexture(texture, -size * 0.5f, size);
+	g->drawTexture(texture, -size * 0.5f, size, color);
 	g->translate(-position);
 	g->rotate(-rotate);
 }
@@ -135,4 +143,24 @@ void Car::render(vie::Graphics* g)
 float Car::getRotate() const
 {
 	return rotate;
+}
+
+void Car::processCollision()
+{
+	for (auto& other : om->getObjectsVector())
+	{
+		if (other != this)
+		{
+			if (other->hasCollisionBody())
+			{
+				processCollision(other);
+			}
+		}
+	}
+}
+
+void Car::processCollision(vie::Object* other)
+{
+	if (collisionBody->isColliding(other->getCollisionBody()))
+		color = vie::COLOR::GREEN;
 }

@@ -2,10 +2,15 @@
 
 #include <vie/Object.h>
 
+namespace vie
+{
+	class ObjectsManager;
+}
+
 class Car : public vie::Object
 {
 public:
-	Car();
+	Car(vie::ObjectsManager* nom);
 	~Car();
 
 	void update(float et) override;
@@ -14,17 +19,19 @@ public:
 	float getRotate() const;
 
 private:
+	vie::ObjectsManager* om;
 	vie::Texture texture;
 	float speed;
 	bool wasSpeedIncreased;
 
-	float rotate;
 	float turnSpeed;
 
 	const float MAX_SPEED;
 	const float ACCELERATION;
 	const float TURN_ACCELERATION;
 	const float MAX_TURN_SPEED;
+
+	vie::Color color;
 
 	void processMoving(float et);
 	float getSpeedAcc(float et);
@@ -35,5 +42,8 @@ private:
 
 	void updatePosition(float et);
 	void updateRotate(float et);
+
+	void processCollision();
+	void processCollision(vie::Object* other);
 };
 
