@@ -71,7 +71,7 @@ namespace vie
 
 		objectsManager = new ObjectsManager();
 
-		//b2World *world = new b2World({ 0.0f, 0.0f });
+		//b2World *world;  = new b2World({ 0.0f, 0.0f });
 		createWorld();
 	}
 
@@ -221,7 +221,7 @@ namespace vie
 
 	void Engine::createWorld(const glm::vec2& gravity)
 	{
-		//b_world = new b2World(b2Vec2(0.0f, 0.0f));
+		b_world = new b2World(b2Vec2(0.0f, 0.0f));
 	}
 
 	// Default bodies (it's not necessary to use them)

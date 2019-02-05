@@ -61,10 +61,7 @@ void MainClass::onCreate()
 	graphics->getCurrentLayer()->setIsRemovingGlyphs(false);
 	mainMap->render(graphics);
 
-
-	b2World *world = new b2World({0.0f, 0.0f});
-
-	//createWorld();
+	createWorld();
 }
 
 void MainClass::update(float et)
