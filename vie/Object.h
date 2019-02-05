@@ -4,6 +4,9 @@
 
 #include "Graphics.h"
 
+class b2Body;
+class b2Fixture;
+
 namespace vie
 {
 
@@ -40,17 +43,16 @@ namespace vie
 		glm::vec2 getPosition() const;
 		glm::vec2 getVelocity() const;
 		glm::vec2 getAcceleration() const;
-
 		glm::vec2 getSize() const;
-
 		float getRotate() const;
 		float getRotateVel() const;
 		float getRotateAcc() const;
 
+		b2Body* getB_Body() const;
+		b2Fixture* getB_Fixture() const;
+
 		bool getIsMouseHover() const;
 		bool isPointInside(const glm::vec2& point) const;
-
-		bool hasCollisionBody() const;
 
 		bool isLabeled(const std::string& lab) const;
 		std::string getLabel() const;
@@ -59,16 +61,16 @@ namespace vie
 		glm::vec2 position;
 		glm::vec2 velocity;
 		glm::vec2 acceleration;
-
 		glm::vec2 size;
-		
 		float rotate;
 		float rotateVel;
 		float rotateAcc;
 
 		bool isMouseHover;
-
 		std::string label;
+
+		b2Body* b_body;
+		b2Fixture* b_fixture;
 	};
 
 }

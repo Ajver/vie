@@ -1,7 +1,7 @@
 #include "Object.h"
 
 #include <string>
-
+#include <Box2D/Box2D.h>
 
 namespace vie
 {
@@ -13,7 +13,9 @@ namespace vie
 		size(0, 0),
 		rotate(0),
 		rotateVel(0),
-		rotateAcc(0)
+		rotateAcc(0),
+		b_body(nullptr),
+		b_fixture(nullptr)
 	{
 	}
 
@@ -43,7 +45,6 @@ namespace vie
 
 	void Object::setSize(const glm::vec2& nsize)
 	{
-		// TODO - Should update size of collision body too
 		size = nsize;
 	}
 
@@ -110,6 +111,16 @@ namespace vie
 	float Object::getRotateAcc() const
 	{
 		return rotateAcc;
+	}
+
+	b2Body* Object::getB_Body() const
+	{
+		return b_body;
+	}
+
+	b2Fixture* Object::getB_Fixture() const
+	{
+		return b_fixture;
 	}
 
 	bool Object::getIsMouseHover() const
