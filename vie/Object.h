@@ -6,7 +6,6 @@
 
 namespace vie
 {
-	class CollisionBody;
 
 	class Object
 	{
@@ -37,9 +36,6 @@ namespace vie
 		void setRotateAcc(float nrotateAcc);
 		void setIsMouseHover(bool flag);
 		void setLabel(const std::string& nlabel);
-		void setCollisionBody(CollisionBody* ncollisionBody);
-
-		void createDefaultCollisionBody();
 
 		glm::vec2 getPosition() const;
 		glm::vec2 getVelocity() const;
@@ -55,7 +51,6 @@ namespace vie
 		bool isPointInside(const glm::vec2& point) const;
 
 		bool hasCollisionBody() const;
-		CollisionBody* getCollisionBody() const;
 
 		bool isLabeled(const std::string& lab) const;
 		std::string getLabel() const;
@@ -70,8 +65,6 @@ namespace vie
 		float rotate;
 		float rotateVel;
 		float rotateAcc;
-
-		CollisionBody* collisionBody;
 
 		bool isMouseHover;
 

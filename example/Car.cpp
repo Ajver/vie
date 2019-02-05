@@ -3,7 +3,6 @@
 #include <vie/FileManager.h>
 #include <vie/Input.h>
 #include <vie/ObjectsManager.h>
-#include <vie/CollisionBody.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
@@ -19,19 +18,6 @@ Car::Car(vie::ObjectsManager* nom) :
 	texture = vie::FileManager::getTexture("Graphics/car.png");
 	position = glm::vec2(0, 0);
 	size = texture.getSize() * 3.0f;
-
-	glm::vec2 halfSize = size * 0.5f;
-	collisionBody = new vie::CollisionBody(this, 
-		{
-			-halfSize,
-			{ 0.0f, -halfSize.y-2.0f },
-			{ halfSize.x, -halfSize.y },
-			{ halfSize.x+2.0f, 0.0f},
-			halfSize,
-			{ 0.0f, halfSize.y+2.0f },
-			{ -halfSize.x, halfSize.y },
-			{ -halfSize.x-2.0f, 0.0f}
-		});
 }
 
 Car::~Car()
@@ -168,20 +154,8 @@ float Car::getRotate() const
 
 void Car::processCollision()
 {
-	for (auto& other : om->getObjectsVector())
-	{
-		if (other != this)
-		{
-			if (other->hasCollisionBody())
-			{
-				processCollision(other);
-			}
-		}
-	}
 }
 
 void Car::processCollision(vie::Object* other)
 {
-	if (collisionBody->bound(other->getCollisionBody()))
-		color = vie::COLOR::GREEN;
 }

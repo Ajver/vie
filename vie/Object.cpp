@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "CollisionBody.h"
 
 namespace vie
 {
@@ -20,7 +19,6 @@ namespace vie
 
 	Object::~Object()
 	{
-		delete collisionBody;
 	}
 
 	void Object::moveBy(const glm::vec2& moveVec)
@@ -79,16 +77,6 @@ namespace vie
 		label = nlabel;
 	}
 
-	void Object::setCollisionBody(CollisionBody* ncollisionBody)
-	{
-		collisionBody = ncollisionBody;
-	}
-
-	void Object::createDefaultCollisionBody()
-	{
-		collisionBody = CollisionBody::createDefault(this);
-	}
-
 	glm::vec2 Object::getPosition() const
 	{
 		return position;
@@ -122,16 +110,6 @@ namespace vie
 	float Object::getRotateAcc() const
 	{
 		return rotateAcc;
-	}
-
-	bool Object::hasCollisionBody() const
-	{
-		return collisionBody != nullptr;
-	}
-
-	CollisionBody* Object::getCollisionBody() const
-	{
-		return collisionBody;
 	}
 
 	bool Object::getIsMouseHover() const
