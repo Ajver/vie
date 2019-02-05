@@ -2,6 +2,7 @@
 
 #include <SDL/SDL.h>
 #include <GL/glew.h>
+#include <Box2D/Box2D.h>
 
 #include <string>
 
@@ -20,7 +21,8 @@ namespace vie
 		FPS(0),
 		maxFPS(60),
 		graphics(nullptr),
-		mainCamera(nullptr)
+		mainCamera(nullptr),
+		b_world(nullptr)
 	{
 	}
 
@@ -68,6 +70,9 @@ namespace vie
 		graphics->init(mainCamera);
 
 		objectsManager = new ObjectsManager();
+
+		//b2World *world = new b2World({ 0.0f, 0.0f });
+		createWorld();
 	}
 
 	void Engine::createGlewContextAndCatchErrors()
@@ -212,6 +217,11 @@ namespace vie
 	void Engine::setFPSLimit(unsigned int nMaxFps)
 	{
 		maxFPS = nMaxFps;
+	}
+
+	void Engine::createWorld(const glm::vec2& gravity)
+	{
+		//b_world = new b2World(b2Vec2(0.0f, 0.0f));
 	}
 
 	// Default bodies (it's not necessary to use them)

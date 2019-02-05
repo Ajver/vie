@@ -113,9 +113,10 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)deps/lib/Debug/;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)deps/lib/Debug_v/;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)deps/include/;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)deps/lib/</OutDir>
+    <OutDir>$(SolutionDir)deps/lib/Debug_v/</OutDir>
+    <TargetName>vie</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -123,8 +124,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)deps/include/;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)deps/lib/Release/;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)deps/lib/</OutDir>
+    <LibraryPath>$(SolutionDir)deps/lib/Release_v/;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)deps/lib/Release_v/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

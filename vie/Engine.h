@@ -1,9 +1,12 @@
 #pragma once
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include "WindowFlags.h"
 #include "Graphics.h"
+
+
+class b2World;
 
 namespace vie
 {
@@ -27,6 +30,10 @@ namespace vie
 		// Draw all stuff with this
 		Graphics* graphics;
 		Camera2D* mainCamera;
+
+		// Physics world from Box2D lib. 
+		// It is NOT automaticly created!
+		b2World* b_world;
 
 		// Runs once after all systems init
 		virtual void onCreate();
@@ -54,6 +61,9 @@ namespace vie
 		// If nMaxFps < 0 then no limits!
 		// (Default 60)
 		void setFPSLimit(unsigned int nMaxFps);
+
+		// Create world with specific gravity (default - no gravity)
+		void createWorld(const glm::vec2& gravity = { 0.0f, 0.0f });
 
 		virtual void onKeyPress();
 		virtual void onKeyRelease();

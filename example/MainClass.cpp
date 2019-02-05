@@ -14,6 +14,8 @@
 #include "Map.h"
 #include "CarFollower.h"
 
+#include <Box2D/Box2D.h>
+
 /*
 Link those libs:
 
@@ -58,6 +60,11 @@ void MainClass::onCreate()
 	graphics->switchLayer("ground");
 	graphics->getCurrentLayer()->setIsRemovingGlyphs(false);
 	mainMap->render(graphics);
+
+
+	b2World *world = new b2World({0.0f, 0.0f});
+
+	//createWorld();
 }
 
 void MainClass::update(float et)
