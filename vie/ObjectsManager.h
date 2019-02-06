@@ -5,8 +5,6 @@
 #include "Graphics.h"
 #include "Object.h"
 
-class b2World;
-
 namespace vie
 {
 
@@ -58,8 +56,6 @@ namespace vie
 		std::vector<Object*> keyListeners;
 
 		Object* clickedObject;
-
-		b2World* b_world;
 
 		void mouseClickedObject(vie::Object* ob);
 

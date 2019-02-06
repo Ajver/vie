@@ -70,9 +70,6 @@ namespace vie
 		graphics->init(mainCamera);
 
 		objectsManager = new ObjectsManager();
-
-		//b2World *world;  = new b2World({ 0.0f, 0.0f });
-		createWorld();
 	}
 
 	void Engine::createGlewContextAndCatchErrors()
