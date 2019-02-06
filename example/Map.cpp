@@ -14,7 +14,7 @@ Map::Map(vie::ObjectsManager* om, b2World* b_world) :
 	for (int i = 0; i < size.y; i += TILE_SIZE * 2.0f)
 		for (int j = 0; j < size.x; j += TILE_SIZE * 2.0f)
 		{
-			vie::Object* o = new Block(glm::vec2(j, i) - haflSize + glm::vec2(TILE_SIZE, TILE_SIZE) * 0.5f, { TILE_SIZE, TILE_SIZE }, b_world);
+			vie::Object* o = new Block(glm::vec2(j, i) - haflSize, { TILE_SIZE, TILE_SIZE }, b_world);
 			om->appendObject(o);
 		}
 }
@@ -28,9 +28,9 @@ void Map::render(vie::Graphics* g)
 	g->translate(-size * 0.5f);
 
 	g->setColor(vie::COLOR::DARK_GRAY);
-	for (int i = 0; i < size.y; i += TILE_SIZE * 2.0f)
-		for (int j = 0; j < size.x; j += TILE_SIZE * 2.0f)
-			g->fillRect(glm::vec2(j, i), glm::vec2(TILE_SIZE, TILE_SIZE));
+	for (int i = -TILE_SIZE * 0.5f; i < size.y; i += TILE_SIZE * 2.0f)
+		for (int j = -TILE_SIZE * 0.5f; j < size.x; j += TILE_SIZE * 2.0f)
+			g->fillRect({ j, i }, { TILE_SIZE, TILE_SIZE });
 			
 	g->translate(size * 0.5f);
 }

@@ -10,10 +10,10 @@
 #include <Box2D/Box2D.h>
 
 Car::Car(vie::ObjectsManager* nom, b2World* b_world) :
-	MAX_SPEED(100.0f),
+	MAX_SPEED(160.0f),
 	ACCELERATION(60.0f),
-	TURN_ACCELERATION(0.5f),
 	MAX_TURN_SPEED(1.5f),
+	TURN_ACCELERATION(0.5f),
 	om(nom),
 	color(vie::COLOR::WHITE)
 {
@@ -79,7 +79,7 @@ void Car::processMoving(float et)
 	{
 		speed *= 1.0f - et * 2.0f;
 
-		runBreak(12.0f);
+		runBreak(14.0f);
 	}
 
 	if (speed > MAX_SPEED)
@@ -87,9 +87,11 @@ void Car::processMoving(float et)
 	else if (speed < -MAX_SPEED)
 		speed = -MAX_SPEED;
 
-	calculateVelocity();
-
-	b_body->ApplyForceToCenter(b_vel, true);
+	if (wasSpeedIncreased)
+	{
+		calculateVelocity();
+		b_body->ApplyForceToCenter(b_vel, true);
+	}
 }
 
 float Car::getSpeedAcc(float et)
@@ -122,8 +124,11 @@ void Car::processTurning(float et)
 		wasTurning = true;
 	}
 
-	if(!wasSpeedIncreased || !wasTurning)
+	if(!wasTurning)
 		turnSpeed *= (1.0f - et) * 0.1f;
+
+	if(!wasSpeedIncreased)
+		turnSpeed *= (1.0f - et) * 0.95f;
 
 	if (turnSpeed > MAX_TURN_SPEED)
 		turnSpeed = MAX_TURN_SPEED;
@@ -132,9 +137,9 @@ void Car::processTurning(float et)
 
 	if (wasTurning)
 	{
-		runBreak(10.0f);
+		runBreak(20.0f);
 		calculateVelocity();
-		b_vel *= 1.0f;
+		b_vel *= 2.0f;
 		b_body->ApplyForceToCenter(b_vel, true);
 	}
 
@@ -143,7 +148,7 @@ void Car::processTurning(float et)
 
 float Car::getTurnAcc(float et)
 {
-	return TURN_ACCELERATION * speed * et;
+	return TURN_ACCELERATION * b_body->GetLinearVelocity().Length() * et;
 }
 
 void Car::render(vie::Graphics* g)
@@ -177,5 +182,8 @@ void Car::processBreaking()
 
 	b2Vec2 diff = targetVel - vel;
 
-	runBreak(diff.Length() * 10.0f);
+	runBreak(diff.Length() * 8.0f);
+
+	calculateVelocity();
+	b_body->ApplyForceToCenter({ b_vel.x * 2.0f, b_vel.y * 2.0f }, true);
 }

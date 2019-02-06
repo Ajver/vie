@@ -22,7 +22,9 @@ namespace vie
 		maxFPS(60),
 		graphics(nullptr),
 		mainCamera(nullptr),
-		b_world(nullptr)
+		b_world(nullptr),
+		velocityIterations(8),
+		positionIterations(3)
 	{
 	}
 
@@ -121,7 +123,10 @@ namespace vie
 		Window::updateScreenSizeFromSDL();
 		update(elapsedTimeFromPreviousFrame);
 		if (b_world != nullptr)
-			b_world->Step(1.0f / 60.0f, 8, 3);
+		{
+			if(getFpsCount() != 0)
+				b_world->Step(1.0f / getFpsCount(), velocityIterations, positionIterations);
+		}
 	}
 
 	void Engine::processInput()

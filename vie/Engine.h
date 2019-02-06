@@ -34,6 +34,8 @@ namespace vie
 		// Physics world from Box2D lib. 
 		// It is NOT automaticly created!
 		b2World* b_world;
+		unsigned int velocityIterations;
+		unsigned int positionIterations;
 
 		// Runs once after all systems init
 		virtual void onCreate();

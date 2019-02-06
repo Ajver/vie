@@ -32,7 +32,7 @@ MainClass::MainClass() :
 	carFollower(nullptr),
 	fpsPrintTimer(1000)
 {
-	runEngine("Example Engine Application", 1024, 728, vie::WindowFlags::DEFAULT);
+	runEngine("Example Engine Application", 1024, 728, vie::WindowFlags::FULLSCREEN);
 }
 
 MainClass::~MainClass()
