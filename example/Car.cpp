@@ -7,17 +7,36 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
 
-Car::Car(vie::ObjectsManager* nom) :
-	MAX_SPEED(1100.0f),
-	ACCELERATION(200.0f),
+#include <Box2D/Box2D.h>
+
+Car::Car(vie::ObjectsManager* nom, b2World* b_world) :
+	MAX_SPEED(100.0f),
+	ACCELERATION(60.0f),
 	TURN_ACCELERATION(0.5f),
 	MAX_TURN_SPEED(1.5f),
 	om(nom),
 	color(vie::COLOR::WHITE)
 {
 	texture = vie::FileManager::getTexture("Graphics/car.png");
-	position = glm::vec2(0, 0);
-	size = texture.getSize() * 3.0f;
+	position = { 0.0f, 0.0f };
+	size.x = 2.0f;
+	size.y = texture.getSize().y / (texture.getSize().x / size.x);
+
+	b2BodyDef bodyDef;
+	bodyDef.position.Set(position.x, position.y);
+	bodyDef.type = b2_dynamicBody;
+
+	b_body = b_world->CreateBody(&bodyDef);
+	
+	b2PolygonShape box;
+	box.SetAsBox(size.x * 0.5f, size.y * 0.5f);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &box;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	b_fixture = b_body->CreateFixture(&fixtureDef);
 }
 
 Car::~Car()
@@ -28,22 +47,7 @@ void Car::update(float et)
 {
 	processMoving(et);
 	processTurning(et);
-	//float speed = 200.0f;
-	//if (vie::Input::isKeyPressed(SDLK_w))
-	//	position.y -= speed * et;
-	//if (vie::Input::isKeyPressed(SDLK_s))
-	//	position.y += speed * et;
-	//
-	//if (vie::Input::isKeyPressed(SDLK_a))
-	//	position.x -= speed * et;
-	//if (vie::Input::isKeyPressed(SDLK_d))
-	//	position.x += speed * et;
-
-	updatePosition(et);
-	updateRotate(et);
-
-	color = vie::COLOR::WHITE;
-	processCollision();
+	processBreaking();
 }
 
 void Car::processMoving(float et)
@@ -53,7 +57,7 @@ void Car::processMoving(float et)
 	if (vie::Input::isKeyPressed(SDLK_w))
 	{
 		speed += getSpeedAcc(et);
-		
+
 		if (speed > 0)
 			speed *= 1.0f + et;
 
@@ -72,12 +76,20 @@ void Car::processMoving(float et)
 		wasSpeedIncreased = false;
 
 	if (vie::Input::isKeyPressed(SDLK_SPACE))
+	{
 		speed *= 1.0f - et * 2.0f;
+
+		runBreak(12.0f);
+	}
 
 	if (speed > MAX_SPEED)
 		speed = MAX_SPEED;
 	else if (speed < -MAX_SPEED)
 		speed = -MAX_SPEED;
+
+	calculateVelocity();
+
+	b_body->ApplyForceToCenter(b_vel, true);
 }
 
 float Car::getSpeedAcc(float et)
@@ -89,6 +101,7 @@ void Car::calculateVelocity()
 {
 	velocity = glm::vec2(0, -speed);
 	velocity = glm::rotate(velocity, rotate);
+	b_vel = { velocity.x, velocity.y };
 }
 
 void Car::processTurning(float et)
@@ -99,16 +112,12 @@ void Car::processTurning(float et)
 	{
 		turnSpeed -= getTurnAcc(et);
 
-		speed *= 1.0f - et;
-
 		wasTurning = true;
 	}
 
 	if (vie::Input::isKeyPressed(SDLK_d))
 	{
 		turnSpeed += getTurnAcc(et);
-
-		speed *= 1.0f - et;
 
 		wasTurning = true;
 	}
@@ -120,6 +129,16 @@ void Car::processTurning(float et)
 		turnSpeed = MAX_TURN_SPEED;
 	else if (turnSpeed < -MAX_TURN_SPEED)
 		turnSpeed = -MAX_TURN_SPEED;
+
+	if (wasTurning)
+	{
+		runBreak(10.0f);
+		calculateVelocity();
+		b_vel *= 1.0f;
+		b_body->ApplyForceToCenter(b_vel, true);
+	}
+
+	b_body->SetAngularVelocity(turnSpeed);
 }
 
 float Car::getTurnAcc(float et)
@@ -127,19 +146,11 @@ float Car::getTurnAcc(float et)
 	return TURN_ACCELERATION * speed * et;
 }
 
-void Car::updatePosition(float et)
-{
-	calculateVelocity();
-	position += velocity * et;
-}
-
-void Car::updateRotate(float et)
-{
-	rotate += turnSpeed * et;
-}
-
 void Car::render(vie::Graphics* g)
 {
+	position = { b_body->GetPosition().x, b_body->GetPosition().y };
+	rotate = b_body->GetAngle();
+
 	g->rotate(rotate);
 	g->translate(position);
 	g->drawTexture(texture, -size * 0.5f, size, color);
@@ -147,15 +158,24 @@ void Car::render(vie::Graphics* g)
 	g->rotate(-rotate);
 }
 
-float Car::getRotate() const
+void Car::runBreak(float breakForce)
 {
-	return rotate;
+	b2Vec2 breakFoce = b_body->GetLinearVelocity();
+	breakFoce.x *= -breakForce;
+	breakFoce.y *= -breakForce;
+
+	b_body->ApplyForceToCenter(breakFoce, true);
 }
 
-void Car::processCollision()
+void Car::processBreaking()
 {
-}
+	b2Vec2 vel = b_body->GetLinearVelocity();
+	vel.Normalize();
 
-void Car::processCollision(vie::Object* other)
-{
+	b2Vec2 targetVel = { cos(b_body->GetAngle()), sin(b_body->GetAngle()) };
+	targetVel.Normalize();
+
+	b2Vec2 diff = targetVel - vel;
+
+	runBreak(diff.Length() * 10.0f);
 }

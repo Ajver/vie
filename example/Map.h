@@ -2,6 +2,7 @@
 
 #include <vie/Graphics.h>
 
+class b2World;
 namespace vie
 {
 	class ObjectsManager;
@@ -10,7 +11,7 @@ namespace vie
 class Map
 {
 public:
-	Map(vie::ObjectsManager* om);
+	Map(vie::ObjectsManager* om, b2World* b_world);
 	~Map();
 
 	void render(vie::Graphics* g);

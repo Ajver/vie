@@ -31,6 +31,7 @@ namespace vie
 		delete objectsManager;
 		delete graphics;
 		delete mainCamera;
+		delete b_world;
 	}
 
 	void Engine::runEngine(const char* title, WindowFlags windowFlags)
@@ -117,8 +118,10 @@ namespace vie
 
 	void Engine::processUpdate(float elapsedTimeFromPreviousFrame)
 	{
-		update(elapsedTimeFromPreviousFrame);
 		Window::updateScreenSizeFromSDL();
+		update(elapsedTimeFromPreviousFrame);
+		if (b_world != nullptr)
+			b_world->Step(1.0f / 60.0f, 8, 3);
 	}
 
 	void Engine::processInput()
@@ -218,7 +221,7 @@ namespace vie
 
 	void Engine::createWorld(const glm::vec2& gravity)
 	{
-		b_world = new b2World(b2Vec2(0.0f, 0.0f));
+		b_world = new b2World(b2Vec2(gravity.x, gravity.y));
 	}
 
 	// Default bodies (it's not necessary to use them)

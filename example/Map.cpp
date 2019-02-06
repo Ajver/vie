@@ -6,15 +6,15 @@
 
 #include "Block.h"
 
-Map::Map(vie::ObjectsManager* om) : 
-	TILE_SIZE(200.0f),
-	size(vie::Window::getScreenSize() * 6.0f)
+Map::Map(vie::ObjectsManager* om, b2World* b_world) :
+	TILE_SIZE(14.0f),
+	size(vie::Window::getScreenSize())
 {
 	glm::vec2 haflSize = size * 0.5f;
 	for (int i = 0; i < size.y; i += TILE_SIZE * 2.0f)
 		for (int j = 0; j < size.x; j += TILE_SIZE * 2.0f)
 		{
-			vie::Object* o = new Block(glm::vec2(j, i) - haflSize + glm::vec2(TILE_SIZE, TILE_SIZE) * 0.5f, { TILE_SIZE, TILE_SIZE });
+			vie::Object* o = new Block(glm::vec2(j, i) - haflSize + glm::vec2(TILE_SIZE, TILE_SIZE) * 0.5f, { TILE_SIZE, TILE_SIZE }, b_world);
 			om->appendObject(o);
 		}
 }
@@ -31,6 +31,6 @@ void Map::render(vie::Graphics* g)
 	for (int i = 0; i < size.y; i += TILE_SIZE * 2.0f)
 		for (int j = 0; j < size.x; j += TILE_SIZE * 2.0f)
 			g->fillRect(glm::vec2(j, i), glm::vec2(TILE_SIZE, TILE_SIZE));
-
+			
 	g->translate(size * 0.5f);
 }

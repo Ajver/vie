@@ -43,13 +43,14 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	setFPSLimit(-1);
+	setFPSLimit(60);
+	createWorld();
 
-	Car* playerCar = new Car(objectsManager);
+	Car* playerCar = new Car(objectsManager, b_world);
 	objectsManager->appendObject(playerCar);
 	objectsManager->appendKeyListener(playerCar);
 
-	mainMap = new Map(objectsManager);
+	mainMap = new Map(objectsManager, b_world);
 	carFollower = new CarFollower(mainCamera, playerCar);
 
 	graphics->setBackgroundColor(vie::Color(10, 30, 20));
@@ -61,7 +62,7 @@ void MainClass::onCreate()
 	graphics->getCurrentLayer()->setIsRemovingGlyphs(false);
 	mainMap->render(graphics);
 
-	createWorld();
+	mainCamera->setScale(24.0f);
 }
 
 void MainClass::update(float et)
