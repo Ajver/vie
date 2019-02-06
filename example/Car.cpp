@@ -54,7 +54,8 @@ void Car::processMoving(float et)
 {
 	speed *= 1.0f - et;
 
-	if (vie::Input::isKeyPressed(SDLK_w))
+	if (vie::Input::isKeyPressed(SDLK_w) ||
+		vie::Input::isKeyPressed(SDLK_UP))
 	{
 		speed += getSpeedAcc(et);
 
@@ -63,7 +64,8 @@ void Car::processMoving(float et)
 
 		wasSpeedIncreased = true;
 	}
-	else if (vie::Input::isKeyPressed(SDLK_s))
+	else if (vie::Input::isKeyPressed(SDLK_s) ||
+		vie::Input::isKeyPressed(SDLK_DOWN))
 	{
 		speed -= getSpeedAcc(et);
 
@@ -110,14 +112,16 @@ void Car::processTurning(float et)
 {
 	bool wasTurning = false;
 
-	if (vie::Input::isKeyPressed(SDLK_a))
+	if (vie::Input::isKeyPressed(SDLK_a) ||
+		vie::Input::isKeyPressed(SDLK_LEFT))
 	{
 		turnSpeed -= getTurnAcc(et);
 
 		wasTurning = true;
 	}
 
-	if (vie::Input::isKeyPressed(SDLK_d))
+	if (vie::Input::isKeyPressed(SDLK_d) ||
+		vie::Input::isKeyPressed(SDLK_RIGHT))
 	{
 		turnSpeed += getTurnAcc(et);
 
@@ -148,7 +152,7 @@ void Car::processTurning(float et)
 
 float Car::getTurnAcc(float et)
 {
-	return TURN_ACCELERATION * b_body->GetLinearVelocity().Length() * et;
+	return TURN_ACCELERATION * b_body->GetLinearVelocity().Length() * et * (speed > 0 ? +1 : -1);
 }
 
 void Car::render(vie::Graphics* g)
