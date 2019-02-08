@@ -34,12 +34,8 @@ namespace vie
 	}
 	void ObjectsManager::render(Graphics* g)
 	{
-		int osize = objects.size();
-		for (int i = 0; i < osize; i++)
-		{
-			Object* ob = *(&objects[0] + i);
+		for (auto& ob : objects)
 			ob->render(g);
-		}
 	}
 
 	void ObjectsManager::appendObject(Object* ob)
@@ -70,73 +66,46 @@ namespace vie
 
 	Object* ObjectsManager::getObjectByLabel(const std::string& label) const
 	{
-		for (int i = objects.size() - 1; i >= 0; i--)
-		{
-			Object* ob = *(&objects[0] + i);
+		for (auto& ob : objects)
 			if (ob->isLabeled(label))
 				return ob;
-		}
 
 		return nullptr;
 	}
 	Object* ObjectsManager::getMouseListenerByLabel(const std::string& label) const
 	{
-		for (int i = mouseListeners.size() - 1; i >= 0; i--)
-		{
-			Object* ob = *(&mouseListeners[0] + i);
+		for (auto& ob : mouseListeners)
 			if (ob->isLabeled(label))
 				return ob;
-		}
 
 		return nullptr;
 	}
 	Object* ObjectsManager::getKeyListenerByLabel(const std::string& label) const
 	{
-		for (int i = keyListeners.size() - 1; i >= 0; i--)
-		{
-			Object* ob = *(&keyListeners[0] + i);
+		for (auto& ob : keyListeners)
 			if (ob->isLabeled(label))
 				return ob;
-		}
 
 		return nullptr;
 	}
 
 	void ObjectsManager::removeObject(Object* rob)
 	{
-		for (int i = objects.size() - 1; i >= 0; i--)
-		{
-			Object* ob = *(&objects[0] + i);
-			if (ob == rob)
-			{
-				objects.erase(objects.begin() + i);
-				return;
-			}
-		}
+		auto it = std::find(objects.begin(), objects.end(), rob);
+		if (it != objects.end())
+			objects.erase(it);
 	}
 	void ObjectsManager::removeMouseListener(Object* rob)
 	{
-		for (int i = mouseListeners.size() - 1; i >= 0; i--)
-		{
-			Object* ob = *(&mouseListeners[0] + i);
-			if (ob == rob)
-			{
-				mouseListeners.erase(mouseListeners.begin() + i);
-				return;
-			}
-		}
+		auto it = std::find(mouseListeners.begin(), mouseListeners.end(), rob);
+		if (it != mouseListeners.end())
+			mouseListeners.erase(it);
 	}
 	void ObjectsManager::removeKeyListener(Object* rob)
 	{
-		for (int i = keyListeners.size() - 1; i >= 0; i--)
-		{
-			Object* ob = *(&keyListeners[0] + i);
-			if (ob == rob)
-			{
-				keyListeners.erase(keyListeners.begin() + i);
-				return;
-			}
-		}
+		auto it = std::find(keyListeners.begin(), keyListeners.end(), rob);
+		if (it != keyListeners.end())
+			keyListeners.erase(it);
 	}
 
 	bool ObjectsManager::containsObject(Object* ob) const
