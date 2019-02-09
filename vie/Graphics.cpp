@@ -279,6 +279,33 @@ namespace vie
 		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2 * weight));
 	}
 
+	void Graphics::fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC)
+	{
+		fillTriangle(posA, posB, posC, getNextTextureDepth());
+	}
+
+	void Graphics::fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float depth)
+	{
+		if (depth > nextTextureDepth)
+			nextTextureDepth = depth;
+
+		Glyph *newGlyph = new Glyph();
+
+		glm::vec2 topLeft = transformPoint(posA);
+		glm::vec2 topRight = transformPoint(posB);
+		glm::vec2 bottomLeft = transformPoint(posC);
+		glm::vec2 bottomRight = transformPoint(posC);
+
+		newGlyph->topLeft.setPosition(topLeft.x, topLeft.y);
+		newGlyph->topRight.setPosition(topRight.x, topRight.y);
+		newGlyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
+		newGlyph->bottomRight.setPosition(bottomRight.x, bottomRight.y);
+
+		setGlyphAttributes(newGlyph, onePixelTexture.getID(), depth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
+
+		currentLayer->appendGlyph(newGlyph);
+	}
+
 	void Graphics::drawString(const std::string& str, const glm::vec2& position, TextJustification just)
 	{
 		if (spriteFont == nullptr)

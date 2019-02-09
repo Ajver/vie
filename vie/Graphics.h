@@ -46,6 +46,9 @@ namespace vie
 		void fillRect(const glm::vec2& position, const glm::vec2& size);
 		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight = 1.0f);
 
+		void fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC);
+		void fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float depth);
+
 		void drawString(const std::string& str, const glm::vec2& position, TextJustification just = TextJustification::LEFT);
 
 		void setFont(SpriteFont* nfont);

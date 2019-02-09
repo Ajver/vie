@@ -87,8 +87,19 @@ void MainClass::render(vie::Graphics* g)
 	objectsManager->render(g);
 
 	g->switchLayer("hud");
+	g->setColor(vie::COLOR::ORANGE);
+
+	glm::vec2 posA(-100.0f, -10.0f);
+	glm::vec2 posB(-150.0f, 60.0f);
+	glm::vec2 posC(30.0f, 70.0f);
+	glm::vec2 smallSize(15.0f);
+
+	g->fillTriangle(posA, posB, posC);
 	
-	g->drawString("Foo!", { 0.0f, 0.0f }, vie::TextJustification::RIGHT);
+	g->setColor(vie::COLOR::RED);
+	g->fillRect(posA - smallSize*0.5f, smallSize);
+	g->fillRect(posB - smallSize * 0.5f, smallSize);
+	g->fillRect(posC - smallSize * 0.5f, smallSize);
 }
 
 void MainClass::onKeyRelease()
