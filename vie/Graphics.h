@@ -44,10 +44,12 @@ namespace vie
 		void drawTexture(const Texture& texture, const glm::vec2& position, const glm::vec2& size, const glm::vec4& uv, const Color& color = COLOR::WHITE);
 
 		void fillRect(const glm::vec2& position, const glm::vec2& size);
-		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight = 1.0f);
+		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight = 2.0f);
 
 		void fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC);
-		void fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float depth);
+		void drawTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float weight = 2.0f);
+
+		void drawLine(const glm::vec2& posA, const glm::vec2& posB, float weight = 2.0f);
 
 		void drawString(const std::string& str, const glm::vec2& position, TextJustification just = TextJustification::LEFT);
 

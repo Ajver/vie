@@ -281,27 +281,52 @@ namespace vie
 
 	void Graphics::fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC)
 	{
-		fillTriangle(posA, posB, posC, getNextTextureDepth());
-	}
-
-	void Graphics::fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float depth)
-	{
-		if (depth > nextTextureDepth)
-			nextTextureDepth = depth;
+		nextTextureDepth = getNextTextureDepth();
 
 		Glyph *newGlyph = new Glyph();
 
-		glm::vec2 topLeft = transformPoint(posA);
-		glm::vec2 topRight = transformPoint(posB);
-		glm::vec2 bottomLeft = transformPoint(posC);
-		glm::vec2 bottomRight = transformPoint(posC);
+		glm::vec2 a = transformPoint(posA);
+		glm::vec2 b = transformPoint(posB);
+		glm::vec2 c = transformPoint(posC);
 
-		newGlyph->topLeft.setPosition(topLeft.x, topLeft.y);
-		newGlyph->topRight.setPosition(topRight.x, topRight.y);
-		newGlyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
-		newGlyph->bottomRight.setPosition(bottomRight.x, bottomRight.y);
+		newGlyph->topLeft.setPosition(a.x, a.y);
+		newGlyph->topRight.setPosition(b.x, b.y);
+		newGlyph->bottomLeft.setPosition(c.x, c.y);
+		newGlyph->bottomRight.setPosition(c.x, c.y);
 
-		setGlyphAttributes(newGlyph, onePixelTexture.getID(), depth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
+		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
+
+		currentLayer->appendGlyph(newGlyph);
+	}
+
+	void Graphics::drawTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float weight)
+	{
+		drawLine(posA, posB, weight);
+		drawLine(posB, posC, weight);
+		drawLine(posC, posA, weight);
+	}
+
+	void Graphics::drawLine(const glm::vec2& posA, const glm::vec2& posB, float weight)
+	{
+		nextTextureDepth = getNextTextureDepth();
+
+		Glyph *newGlyph = new Glyph();
+
+		float angle = atan2f(posB.y - posA.y, posB.x - posA.x);
+
+		glm::vec2 offset = glm::rotate(glm::vec2(0.0f, -weight), angle) * 0.5f;
+
+		glm::vec2 a1 = transformPoint(posA - offset);
+		glm::vec2 a2 = transformPoint(posA + offset);
+		glm::vec2 b1 = transformPoint(posB - offset);
+		glm::vec2 b2 = transformPoint(posB + offset);
+
+		newGlyph->topLeft.setPosition(a1.x, a1.y);
+		newGlyph->topRight.setPosition(a2.x, a2.y);
+		newGlyph->bottomLeft.setPosition(b1.x, b1.y);
+		newGlyph->bottomRight.setPosition(b2.x, b2.y);
+
+		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
 
 		currentLayer->appendGlyph(newGlyph);
 	}

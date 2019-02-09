@@ -97,9 +97,17 @@ void MainClass::render(vie::Graphics* g)
 	g->fillTriangle(posA, posB, posC);
 	
 	g->setColor(vie::COLOR::RED);
-	g->fillRect(posA - smallSize*0.5f, smallSize);
-	g->fillRect(posB - smallSize * 0.5f, smallSize);
-	g->fillRect(posC - smallSize * 0.5f, smallSize);
+	//g->fillRect(posA - smallSize*0.5f, smallSize);
+	//g->fillRect(posB - smallSize * 0.5f, smallSize);
+	//g->fillRect(posC - smallSize * 0.5f, smallSize);
+
+	g->setColor(vie::Color(255, 0, 0, 128));
+	g->drawLine(posA, posB, 16.0f);
+	g->drawLine(posA, posC, 16.0f);
+	g->drawLine(posB, posC, 16.0f);
+
+	g->setColor(vie::Color(255, 255, 0, 128));
+	g->drawTriangle(posA, posB, posC, 8.0f);
 }
 
 void MainClass::onKeyRelease()
