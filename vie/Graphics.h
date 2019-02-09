@@ -49,6 +49,13 @@ namespace vie
 		void fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC);
 		void drawTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float weight = 2.0f);
 
+		void drawOval(const glm::vec2& position, const glm::vec2& size, float weight = 2.0f);
+		void fillOval(const glm::vec2& position, const glm::vec2& size);
+
+		void fillPolygon(std::vector<glm::vec2> polygon);
+
+		void fillQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD);
+
 		void drawLine(const glm::vec2& posA, const glm::vec2& posB, float weight = 2.0f);
 
 		void drawString(const std::string& str, const glm::vec2& position, TextJustification just = TextJustification::LEFT);
@@ -89,6 +96,7 @@ namespace vie
 		float nextTextureDepth;
 		float nextTextureDepthStep;
 		Texture onePixelTexture;
+		float ovalRenderingPrecision;
 
 		glm::vec2 translateVec;
 		float scale;

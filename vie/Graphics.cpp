@@ -25,7 +25,8 @@ namespace vie
 		currentLayer(nullptr),
 		defaultColor(COLOR::WHITE),
 		spriteFont(nullptr),
-		nextTextureDepthStep(0.1f)
+		nextTextureDepthStep(0.1f),
+		ovalRenderingPrecision(0.5f)
 	{
 	}
 
@@ -280,6 +281,16 @@ namespace vie
 		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2 * weight));
 	}
 
+	void Graphics::drawTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float weight)
+	{
+		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
+		drawLine(posA, posB, weight);
+		nextTextureDepth -= nextTextureDepthStep;
+		drawLine(posB, posC, weight);
+		nextTextureDepth -= nextTextureDepthStep;
+		drawLine(posC, posA, weight);
+	}
+
 	void Graphics::fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC)
 	{
 		nextTextureDepth = getNextTextureDepth();
@@ -300,14 +311,78 @@ namespace vie
 		currentLayer->appendGlyph(newGlyph);
 	}
 
-	void Graphics::drawTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float weight)
+	void Graphics::drawOval(const glm::vec2& position, const glm::vec2& size, float weight)
 	{
-		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
-		drawLine(posA, posB, weight);
-		nextTextureDepth -= nextTextureDepthStep;
-		drawLine(posB, posC, weight);
-		nextTextureDepth -= nextTextureDepthStep;
-		drawLine(posC, posA, weight);
+		static const float TWO_PI = M_PI * 2.0f;
+		const float step = TWO_PI / (ovalRenderingPrecision * fmin(size.x, size.y) * 0.4f);
+
+		glm::vec2 prev = glm::vec2(position.x + size.x, position.y);
+		for (float i = step; i <= TWO_PI; i += step)
+		{
+			glm::vec2 a(cos(i)*size.x, sin(i)*size.y);
+			a += position;
+			drawLine(prev, a, weight);
+			prev = a;
+		}
+		drawLine(prev, glm::vec2(position.x + size.x, position.y), weight);
+	}
+
+	void Graphics::fillOval(const glm::vec2& position, const glm::vec2& size)
+	{
+		static const float TWO_PI = M_PI * 2.0f;
+		const float step = TWO_PI / (ovalRenderingPrecision * fmin(size.x, size.y) * 0.4f);
+
+		glm::vec2 prev(position.x + size.x, position.y);
+		glm::vec2 curr(cos(step)*size.x + position.x, sin(step)*size.y + position.y);
+		for (float i = step * 2.0f; i <= TWO_PI; i += step * 2.0f)
+		{
+			glm::vec2 a(cos(i)*size.x + position.x, sin(i)*size.y + position.y);
+			fillQuadrangle(prev, curr, a, position);
+			prev = a;
+			curr = glm::vec2(cos(i + step)*size.x + position.x, sin(i + step)*size.y + position.y);
+		}
+		fillTriangle(prev, glm::vec2(position.x + size.x, position.y), position);
+	}
+
+	void Graphics::fillPolygon(std::vector<glm::vec2> polygon)
+	{
+		if (polygon.size() < 2)
+			return;
+
+		if (polygon.size() == 3)
+		{
+			fillTriangle(polygon[0], polygon[1], polygon[2]);
+			return;
+		}
+
+		if (polygon.size() == 4)
+		{
+			fillQuadrangle(polygon[0], polygon[1], polygon[2], polygon[3]);
+			return;
+		}
+
+		// TODO
+	}
+
+	void Graphics::fillQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD)
+	{
+		nextTextureDepth = getNextTextureDepth();
+
+		Glyph *newGlyph = new Glyph();
+
+		glm::vec2 a = transformPoint(posA);
+		glm::vec2 b = transformPoint(posB);
+		glm::vec2 c = transformPoint(posC);
+		glm::vec2 d = transformPoint(posD);
+
+		newGlyph->topLeft.setPosition(a.x, a.y);
+		newGlyph->topRight.setPosition(b.x, b.y);
+		newGlyph->bottomRight.setPosition(c.x, c.y);
+		newGlyph->bottomLeft.setPosition(d.x, d.y);
+
+		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
+
+		currentLayer->appendGlyph(newGlyph);
 	}
 
 	void Graphics::drawLine(const glm::vec2& posA, const glm::vec2& posB, float weight)

@@ -44,7 +44,7 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	setFPSLimit(60);
+	setFPSLimit(-60);
 	createWorld();
 
 	Car* playerCar = new Car(objectsManager, b_world);
@@ -108,6 +108,11 @@ void MainClass::render(vie::Graphics* g)
 
 	g->setColor(vie::Color(255, 255, 0, 128));
 	g->drawTriangle(posA, posB, posC, 8.0f);
+
+	g->drawOval({ 200.0f, -100.0f }, { 100.0f, 350.0f }, 6);
+
+	g->setColor(vie::Color(255, 255, 128, 96));
+	g->fillOval({ 200.0f, -100.0f }, { 100.0f, 150.0f });
 }
 
 void MainClass::onKeyRelease()
