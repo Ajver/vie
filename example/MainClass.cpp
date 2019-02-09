@@ -44,7 +44,7 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	setFPSLimit(-60);
+	setFPSLimit(60);
 	createWorld();
 
 	Car* playerCar = new Car(objectsManager, b_world);

@@ -8,7 +8,7 @@
 
 Map::Map(vie::ObjectsManager* om, b2World* b_world) :
 	TILE_SIZE(14.0f),
-	size(vie::Window::getScreenSize())
+	size(vie::Window::getScreenSize() * 0.5f)
 {
 	glm::vec2 haflSize = size * 0.5f;
 	for (int i = 0; i < size.y; i += TILE_SIZE * 2.0f)
