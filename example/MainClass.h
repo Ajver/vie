@@ -14,11 +14,11 @@ public:
 	MainClass();
 	~MainClass();
 
-	void onKeyRelease() override;
+	void onKeyRelease();
 
-	void onCreate() override;
-	void update(float et) override;
-	void render(vie::Graphics* g) override;
+	void onCreate();
+	void update(float et);
+	void render(vie::Graphics* g);
 
 private:
 	Map* mainMap;

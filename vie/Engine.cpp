@@ -23,8 +23,9 @@ namespace vie
 		graphics(nullptr),
 		mainCamera(nullptr),
 		b_world(nullptr),
-		velocityIterations(8),
-		positionIterations(3)
+		b_velocityIterations(8),
+		b_positionIterations(3),
+		isWorldUpdating(false)
 	{
 	}
 
@@ -122,10 +123,10 @@ namespace vie
 	{
 		Window::updateScreenSizeFromSDL();
 		update(elapsedTimeFromPreviousFrame);
-		if (b_world != nullptr)
+		if (b_world != nullptr && isWorldUpdating)
 		{
 			if(getFpsCount() != 0)
-				b_world->Step(1.0f / getFpsCount(), velocityIterations, positionIterations);
+				b_world->Step(1.0f / getFpsCount(), b_velocityIterations, b_positionIterations);
 		}
 	}
 
@@ -227,11 +228,45 @@ namespace vie
 	void Engine::createWorld(const glm::vec2& gravity)
 	{
 		b_world = new b2World(b2Vec2(gravity.x, gravity.y));
+		isWorldUpdating = true;
 	}
+
+	void Engine::setVelocityIterations(unsigned int it)
+	{
+		b_velocityIterations = it;
+	}
+
+	void Engine::setPositionIterations(unsigned int it)
+	{
+		b_positionIterations = it;
+	}
+
+	void Engine::setIsWorldUpdating(bool flag)
+	{
+		isWorldUpdating = flag;
+	}
+
+	unsigned int Engine::getVelocityIterations() const
+	{
+		return b_velocityIterations;
+	}
+
+	unsigned int Engine::getPositionIterations() const
+	{
+		return b_positionIterations;
+	}
+
+	unsigned int Engine::getIsWorldUpdating() const
+	{
+		return isWorldUpdating;
+	}
+
 
 	// Default bodies (it's not necessary to use them)
 	void Engine::onCreate() {}
 	void Engine::onDestroy() {}
+	void Engine::update(float) {}
+	void Engine::render(Graphics*) {}
 	void Engine::onKeyPress() {}
 	void Engine::onKeyRelease() {}
 	void Engine::onMousePress() {}
