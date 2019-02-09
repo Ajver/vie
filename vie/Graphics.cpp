@@ -347,6 +347,11 @@ namespace vie
 		return defaultColor;
 	}
 
+	SpriteFont* Graphics::getFont() const
+	{
+		return spriteFont;
+	}
+
 	GLuint Graphics::getVBO() const
 	{
 		return vbo;

@@ -64,6 +64,7 @@ namespace vie
 		float getScale() const;
 		float getRotate() const;
 		Color getDefaultColor() const;
+		SpriteFont* getFont() const;
 		GLuint getVBO() const;
 		GLuint getVAO() const;
 		float getNextTextureDepth() const;
