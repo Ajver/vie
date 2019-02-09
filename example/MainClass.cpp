@@ -44,7 +44,7 @@ MainClass::~MainClass()
 
 void MainClass::onCreate()
 {
-	setFPSLimit(-60);
+	setFPSLimit(60);
 	createWorld();
 
 	Car* playerCar = new Car(objectsManager, b_world);
@@ -87,52 +87,6 @@ void MainClass::render(vie::Graphics* g)
 	objectsManager->render(g);
 
 	g->switchLayer("hud");
-	g->setColor(vie::COLOR::ORANGE);
-
-	glm::vec2 posA(-100.0f, -10.0f);
-	glm::vec2 posB(-150.0f, 60.0f);
-	glm::vec2 posC(30.0f, 70.0f);
-	glm::vec2 smallSize(15.0f);
-
-	g->fillTriangle(posA, posB, posC);
-
-	g->setColor(vie::COLOR::RED);
-	//g->fillRect(posA - smallSize*0.5f, smallSize);
-	//g->fillRect(posB - smallSize * 0.5f, smallSize);
-	//g->fillRect(posC - smallSize * 0.5f, smallSize);
-
-	g->setColor(vie::Color(255, 0, 0, 128));
-	g->drawLine(posA, posB, 16.0f);
-	g->drawLine(posA, posC, 16.0f);
-	g->drawLine(posB, posC, 16.0f);
-
-	g->setColor(vie::Color(255, 255, 0, 128));
-	g->drawTriangle(posA, posB, posC, 8.0f);
-
-	g->drawOval({ 200.0f, -100.0f }, { 100.0f, 350.0f }, 6);
-
-	g->setColor(vie::Color(255, 255, 128, 96));
-	g->fillOval({ 200.0f, -100.0f }, { 100.0f, 150.0f });
-
-	g->fillPolygon({
-		{ -200.0f, -200.0f },
-		{ -280.0f, -160.0f },
-		{ -120.0f, -10.0f },
-		{ 50.0f, 70.0f },
-		{ 90.0f, -30.0f },
-		{ 90.0f, -50.0f },
-		{ 80.0f, -100.0f }
-	});
-
-	g->drawPolygon({
-		{ -200.0f, -200.0f },
-		{ -280.0f, -160.0f },
-		{ -120.0f, -10.0f },
-		{ 50.0f, 70.0f },
-		{ 90.0f, -30.0f },
-		{ 90.0f, -50.0f },
-		{ 80.0f, -100.0f }
-		}, 16.0f);
 }
 
 void MainClass::onKeyRelease()
