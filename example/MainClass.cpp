@@ -95,7 +95,7 @@ void MainClass::render(vie::Graphics* g)
 	glm::vec2 smallSize(15.0f);
 
 	g->fillTriangle(posA, posB, posC);
-	
+
 	g->setColor(vie::COLOR::RED);
 	//g->fillRect(posA - smallSize*0.5f, smallSize);
 	//g->fillRect(posB - smallSize * 0.5f, smallSize);
@@ -113,6 +113,26 @@ void MainClass::render(vie::Graphics* g)
 
 	g->setColor(vie::Color(255, 255, 128, 96));
 	g->fillOval({ 200.0f, -100.0f }, { 100.0f, 150.0f });
+
+	g->fillPolygon({
+		{ -200.0f, -200.0f },
+		{ -280.0f, -160.0f },
+		{ -120.0f, -10.0f },
+		{ 50.0f, 70.0f },
+		{ 90.0f, -30.0f },
+		{ 90.0f, -50.0f },
+		{ 80.0f, -100.0f }
+	});
+
+	g->drawPolygon({
+		{ -200.0f, -200.0f },
+		{ -280.0f, -160.0f },
+		{ -120.0f, -10.0f },
+		{ 50.0f, 70.0f },
+		{ 90.0f, -30.0f },
+		{ 90.0f, -50.0f },
+		{ 80.0f, -100.0f }
+		}, 16.0f);
 }
 
 void MainClass::onKeyRelease()

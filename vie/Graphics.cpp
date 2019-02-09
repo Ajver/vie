@@ -344,6 +344,34 @@ namespace vie
 		fillTriangle(prev, glm::vec2(position.x + size.x, position.y), position);
 	}
 
+	void Graphics::drawPolygon(std::vector<glm::vec2> polygon, float weight)
+	{
+		if (polygon.size() < 2)
+			return;
+
+		if (polygon.size() == 3)
+		{
+			drawTriangle(polygon[0], polygon[1], polygon[2], weight);
+			return;
+		}
+
+		if (polygon.size() == 4)
+		{
+			drawQuadrangle(polygon[0], polygon[1], polygon[2], polygon[3], weight);
+			return;
+		}
+
+		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
+		for (int i = 0; i < polygon.size() - 1; i++)
+		{
+			nextTextureDepth -= nextTextureDepthStep;
+			drawLine(polygon[i], polygon[i + 1], weight);
+		}
+
+		nextTextureDepth -= nextTextureDepthStep;
+		drawLine(polygon[0], polygon[polygon.size() - 1], weight);
+	}
+
 	void Graphics::fillPolygon(std::vector<glm::vec2> polygon)
 	{
 		if (polygon.size() < 2)
@@ -361,7 +389,29 @@ namespace vie
 			return;
 		}
 
-		// TODO
+		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
+		for (int i = 1; i < polygon.size() - 2; i += 2)
+		{
+			nextTextureDepth -= nextTextureDepthStep;
+			fillQuadrangle(polygon[0], polygon[i], polygon[i + 1], polygon[i + 2]);
+		}
+		if (polygon.size() % 2 != 0)
+		{
+			nextTextureDepth -= nextTextureDepthStep;
+			fillTriangle(polygon[0], polygon[polygon.size() - 2], polygon[polygon.size() - 1]);
+		}
+	}
+
+	void Graphics::drawQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD, float weight)
+	{
+		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
+		drawLine(posA, posB, weight);
+		nextTextureDepth -= nextTextureDepthStep;
+		drawLine(posB, posC, weight);
+		nextTextureDepth -= nextTextureDepthStep;
+		drawLine(posC, posD, weight);
+		nextTextureDepth -= nextTextureDepthStep;
+		drawLine(posD, posA, weight);
 	}
 
 	void Graphics::fillQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD)

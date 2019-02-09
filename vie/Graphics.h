@@ -52,8 +52,10 @@ namespace vie
 		void drawOval(const glm::vec2& position, const glm::vec2& size, float weight = 2.0f);
 		void fillOval(const glm::vec2& position, const glm::vec2& size);
 
+		void drawPolygon(std::vector<glm::vec2> polygon, float weight = 2.0f);
 		void fillPolygon(std::vector<glm::vec2> polygon);
 
+		void drawQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD, float weight = 2.0f);
 		void fillQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD);
 
 		void drawLine(const glm::vec2& posA, const glm::vec2& posB, float weight = 2.0f);
