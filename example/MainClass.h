@@ -4,7 +4,6 @@
 #include <vie/Texture.h>
 #include <vie/Timer.h>
 #include <vie/Sound.h>
-#include <vie/SpriteFont.h>
 
 class Map;
 class CarFollower;
@@ -25,5 +24,4 @@ private:
 	Map* mainMap;
 	CarFollower* carFollower;
 	vie::Timer fpsPrintTimer;
-	vie::SpriteFont* sf;
 };

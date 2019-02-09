@@ -9,6 +9,7 @@
 #include <vie/Camera2D.h>
 #include <vie/Window.h>
 #include <vie/Layer.h>
+#include <vie/SpriteFont.h>
 
 #include "Car.h"
 #include "Map.h"
@@ -30,17 +31,15 @@ glew32.lib
 MainClass::MainClass() :
 	mainMap(nullptr),
 	carFollower(nullptr),
-	fpsPrintTimer(1000),
-	sf(nullptr)
+	fpsPrintTimer(1000)
 {
-	runEngine("Example Engine Application", 1024, 728, vie::WindowFlags::DEFAULT);
+	runEngine("Example vie Application", 1024, 728, vie::WindowFlags::DEFAULT);
 }
 
 MainClass::~MainClass()
 {
 	delete mainMap;
 	delete carFollower;
-	delete sf;
 }
 
 void MainClass::onCreate()
@@ -67,8 +66,7 @@ void MainClass::onCreate()
 
 	mainCamera->setScale(24.0f);
 
-	sf = new vie::SpriteFont("Fonts/calibri.ttf", 64);
-	graphics->setFont(sf);
+	graphics->setFont(new vie::SpriteFont("Fonts/calibri.ttf", 64));
 }
 
 void MainClass::update(float et)
@@ -89,7 +87,6 @@ void MainClass::render(vie::Graphics* g)
 	objectsManager->render(g);
 
 	g->switchLayer("hud");
-	sf->draw(g, "Hahaha!", { 0.0f, 0.0f }, { 1.0f, 1.0f }, 1.0f, vie::COLOR::WHITE);
 	
 	g->drawString("Foo!", { 0.0f, 0.0f }, vie::TextJustification::RIGHT);
 }
