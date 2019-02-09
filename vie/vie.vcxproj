@@ -34,6 +34,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="RenderBatch.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="SpriteFont.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowFlags.h" />
@@ -54,6 +55,7 @@
     <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SpriteFont.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vertex.cpp" />

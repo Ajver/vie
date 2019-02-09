@@ -30,15 +30,17 @@ glew32.lib
 MainClass::MainClass() :
 	mainMap(nullptr),
 	carFollower(nullptr),
-	fpsPrintTimer(1000)
+	fpsPrintTimer(1000),
+	sf(nullptr)
 {
-	runEngine("Example Engine Application", 1024, 728, vie::WindowFlags::FULLSCREEN);
+	runEngine("Example Engine Application", 1024, 728, vie::WindowFlags::DEFAULT);
 }
 
 MainClass::~MainClass()
 {
 	delete mainMap;
 	delete carFollower;
+	delete sf;
 }
 
 void MainClass::onCreate()
@@ -57,12 +59,15 @@ void MainClass::onCreate()
 
 	graphics->createLayer("ground", mainCamera);
 	graphics->createLayer("car", mainCamera);
+	graphics->createLayer("hud");
 
 	graphics->switchLayer("ground");
 	graphics->getCurrentLayer()->setIsRemovingGlyphs(false);
 	mainMap->render(graphics);
 
 	mainCamera->setScale(24.0f);
+
+	sf = new vie::SpriteFont("Fonts/calibri.ttf", 64);
 }
 
 void MainClass::update(float et)
@@ -81,6 +86,9 @@ void MainClass::render(vie::Graphics* g)
 {
 	graphics->switchLayer("car");
 	objectsManager->render(g);
+
+	g->switchLayer("hud");
+	sf->draw(g, "Hahaha!", { 0.0f, 0.0f }, { 1.0f, 1.0f }, 1.0f, vie::COLOR::WHITE);
 }
 
 void MainClass::onKeyRelease()
