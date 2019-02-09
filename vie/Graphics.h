@@ -87,6 +87,7 @@ namespace vie
 
 		Color defaultColor;
 		float nextTextureDepth;
+		float nextTextureDepthStep;
 		Texture onePixelTexture;
 
 		glm::vec2 translateVec;

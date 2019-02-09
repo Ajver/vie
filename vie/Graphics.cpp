@@ -24,7 +24,8 @@ namespace vie
 		rotateAngleInRadians(0.0f),
 		currentLayer(nullptr),
 		defaultColor(COLOR::WHITE),
-		spriteFont(nullptr)
+		spriteFont(nullptr),
+		nextTextureDepthStep(0.1f)
 	{
 	}
 
@@ -301,8 +302,11 @@ namespace vie
 
 	void Graphics::drawTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, float weight)
 	{
+		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
 		drawLine(posA, posB, weight);
+		nextTextureDepth -= nextTextureDepthStep;
 		drawLine(posB, posC, weight);
+		nextTextureDepth -= nextTextureDepthStep;
 		drawLine(posC, posA, weight);
 	}
 
@@ -415,7 +419,7 @@ namespace vie
 
 	float Graphics::getNextTextureDepth() const
 	{
-		return nextTextureDepth + 0.1f;
+		return nextTextureDepth + nextTextureDepthStep;
 	}
 
 }
