@@ -62,16 +62,6 @@ TEST(GraphicsTest, Should_RemoveLayer)
 	EXPECT_FALSE(g.containsLayer("test_layer"));
 }
 
-TEST(GraphicsTest, ShouldSet_Font)
-{
-	vie::Graphics g;
-	EXPECT_EQ(nullptr, g.getFont());
-
-	vie::SpriteFont* sf;//new vie::SpriteFont("Fonts/calibri.ttf", 64);
-	g.setFont(sf);
-	EXPECT_EQ(sf, g.getFont());
-}
-
 TEST(GraphicsTest, ShouldSet_Translate)
 {
 	vie::Graphics g;
