@@ -68,6 +68,7 @@ void MainClass::onCreate()
 	mainCamera->setScale(24.0f);
 
 	sf = new vie::SpriteFont("Fonts/calibri.ttf", 64);
+	graphics->setFont(sf);
 }
 
 void MainClass::update(float et)
@@ -89,6 +90,8 @@ void MainClass::render(vie::Graphics* g)
 
 	g->switchLayer("hud");
 	sf->draw(g, "Hahaha!", { 0.0f, 0.0f }, { 1.0f, 1.0f }, 1.0f, vie::COLOR::WHITE);
+	
+	g->drawString("Foo!", { 0.0f, 0.0f }, vie::TextJustification::RIGHT);
 }
 
 void MainClass::onKeyRelease()

@@ -35,6 +35,7 @@
     <ClInclude Include="RenderBatch.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SpriteFont.h" />
+    <ClInclude Include="TextJustification.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowFlags.h" />

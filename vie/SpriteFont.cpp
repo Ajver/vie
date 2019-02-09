@@ -13,8 +13,6 @@ int closestPow2(int i) {
 	return pi;
 }
 
-//#define MAX_TEXTURE_RES 4096
-
 namespace vie
 {
 
@@ -221,14 +219,14 @@ namespace vie
 		return size;
 	}
 
-	void SpriteFont::draw(Graphics* g, const char * s, glm::vec2 position, glm::vec2 scaling, float depth, const Color& tint, Justification just /* = Justification::LEFT*/)
+	void SpriteFont::draw(Graphics* g, const char * s, glm::vec2 position, glm::vec2 scaling, float depth, const Color& tint, TextJustification just)
 	{
 		glm::vec2 tp = position;
 		// Apply justification
-		if (just == Justification::MIDDLE) {
+		if (just == TextJustification::CENTER) {
 			tp.x -= measure(s).x * scaling.x / 2;
 		}
-		else if (just == Justification::RIGHT) {
+		else if (just == TextJustification::RIGHT) {
 			tp.x -= measure(s).x * scaling.x;
 		}
 		for (int si = 0; s[si] != 0; si++) {

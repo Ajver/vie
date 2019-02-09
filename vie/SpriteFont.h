@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Vertex.h"
+#include "TextJustification.h"
 
 namespace vie 
 {
@@ -25,12 +26,6 @@ namespace vie
 #define FIRST_PRINTABLE_CHAR ((char)32)
 #define LAST_PRINTABLE_CHAR ((char)126)
 
-	// For text Justification
-	enum class Justification 
-	{
-		LEFT, MIDDLE, RIGHT
-	};
-
 	class SpriteFont
 	{
 	public:
@@ -40,7 +35,7 @@ namespace vie
 
 		void dispose();
 		glm::vec2 measure(const char* s);
-		void draw(Graphics* g, const char* s, glm::vec2 position, glm::vec2 scaling, float depth, const Color& tint, Justification just = Justification::LEFT);
+		void draw(Graphics* g, const char* s, glm::vec2 position, glm::vec2 scaling, float depth, const Color& tint, TextJustification just = TextJustification::LEFT);
 
 		// getters
 		int getFontHeight() const {

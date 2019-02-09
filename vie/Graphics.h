@@ -8,11 +8,13 @@
 #include "Texture.h"
 #include "Glyph.h"
 #include "Camera2D.h"
+#include "TextJustification.h"
 
 
 namespace vie
 {
 	class Layer;
+	class SpriteFont;
 
 	class Graphics
 	{
@@ -44,6 +46,9 @@ namespace vie
 		void fillRect(const glm::vec2& position, const glm::vec2& size);
 		void drawRect(const glm::vec2& position, const glm::vec2& size, float weight = 1.0f);
 
+		void drawString(const std::string& str, const glm::vec2& position, TextJustification just = TextJustification::LEFT);
+
+		void setFont(SpriteFont* nfont);
 		void setTranslate(const glm::vec2& newTranslate);
 		void setScale(float newScale);
 		void setRotate(float newRotate);
@@ -69,6 +74,7 @@ namespace vie
 		GLuint vbo;
 		GLuint vao;
 		GlyphSortType sortType;
+		SpriteFont* spriteFont;
 
 		Layer* currentLayer;
 		std::vector<Layer*> layers;

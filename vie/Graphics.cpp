@@ -9,6 +9,7 @@
 #include "Errors.h"
 #include "Window.h"
 #include "Layer.h"
+#include "SpriteFont.h"
 
 namespace vie
 {
@@ -22,7 +23,8 @@ namespace vie
 		nextTextureDepth(0.0f),
 		rotateAngleInRadians(0.0f),
 		currentLayer(nullptr),
-		defaultColor(COLOR::WHITE)
+		defaultColor(COLOR::WHITE),
+		spriteFont(nullptr)
 	{
 	}
 
@@ -275,6 +277,19 @@ namespace vie
 
 		// Right
 		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2 * weight));
+	}
+
+	void Graphics::drawString(const std::string& str, const glm::vec2& position, TextJustification just)
+	{
+		if (spriteFont == nullptr)
+			fatalError("Error: Graphics class has no font initialized.\nTry setFont() before drawString()");
+		else
+			spriteFont->draw(this, str.c_str(), position, glm::vec2(scale), getNextTextureDepth(), defaultColor, just);
+	}
+
+	void Graphics::setFont(SpriteFont* nfont)
+	{
+		spriteFont = nfont;
 	}
 
 	void Graphics::setTranslate(const glm::vec2& newTranslate)
