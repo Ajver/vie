@@ -62,6 +62,7 @@ namespace vie
 
 		void drawString(const std::string& str, const glm::vec2& position, TextJustification just = TextJustification::LEFT);
 
+		void setOvalPrecision(float nprec);
 		void setFont(SpriteFont* nfont);
 		void setTranslate(const glm::vec2& newTranslate);
 		void setScale(float newScale);
@@ -74,6 +75,7 @@ namespace vie
 
 		void render();
 
+		float getOvalPrecision() const;
 		glm::vec2 getTranslate() const;
 		float getScale() const;
 		float getRotate() const;

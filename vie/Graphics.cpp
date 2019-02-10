@@ -26,7 +26,7 @@ namespace vie
 		defaultColor(COLOR::WHITE),
 		spriteFont(nullptr),
 		nextTextureDepthStep(0.1f),
-		ovalRenderingPrecision(0.5f)
+		ovalRenderingPrecision(1.0f)
 	{
 	}
 
@@ -468,6 +468,11 @@ namespace vie
 			spriteFont->draw(this, str.c_str(), position, glm::vec2(scale), getNextTextureDepth(), defaultColor, just);
 	}
 
+	void Graphics::setOvalPrecision(float nprec)
+	{
+		ovalRenderingPrecision = nprec;
+	}
+
 	void Graphics::setFont(SpriteFont* nfont)
 	{
 		spriteFont = nfont;
@@ -506,6 +511,11 @@ namespace vie
 	void Graphics::rotate(float angle)
 	{
 		rotateAngleInRadians += angle;
+	}
+
+	float Graphics::getOvalPrecision() const
+	{
+		return ovalRenderingPrecision;
 	}
 
 	glm::vec2 Graphics::getTranslate() const
