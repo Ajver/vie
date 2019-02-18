@@ -34,6 +34,8 @@ namespace vie
 		ulong leftTime;
 		ulong breakTime;
 		bool isRunning;
+
+		float getFromRange01(float a) const;
 	};
 
 }

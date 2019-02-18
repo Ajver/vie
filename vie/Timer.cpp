@@ -73,7 +73,7 @@ namespace vie
 		else
 			diff = 1.0f * leftTime;
 
-		return diff / duration;
+		return getFromRange01(diff / duration);
 	}
 
 	float Timer::getEaseProgress() const
@@ -116,6 +116,15 @@ namespace vie
 	bool Timer::getIsRunning() const
 	{
 		return isRunning;
+	}
+
+	float Timer::getFromRange01(float a) const
+	{
+		if (a < 0.0f)
+			return 0.0f;
+		if (a > 1.0f)
+			return 1.0f;
+		return a;
 	}
 
 }
