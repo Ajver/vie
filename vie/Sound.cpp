@@ -1,5 +1,5 @@
 #include "Sound.h"
-#include "Errors.h"
+#include "Logger.h"
 
 namespace vie
 {
@@ -47,7 +47,7 @@ namespace vie
 			errorMsg += "then check if the file has valid type (wav)\n";
 			errorMsg += "SDL error: ";
 			errorMsg += SDL_GetError();
-			fatalError(errorMsg);
+			Logger::fatalError(errorMsg);
 		}
 
 		reset();

@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 
-#include "Errors.h"
+#include "Logger.h"
 
 
 namespace vie
@@ -60,7 +60,7 @@ namespace vie
 
 		if (!readFileToBuffer(filePath, in))
 		{
-			fatalError("Failed to load PNG file to buffer: " + filePath);
+			Logger::fatalError("Failed to load PNG file to buffer: " + filePath);
 		}
 
 		int errorCode = decodePNG(*out, width, height, &(in[0]), in.size());
@@ -68,7 +68,7 @@ namespace vie
 		// 0 - no error
 		if (errorCode != 0)
 		{
-			fatalError("decodePNG failed with error: " + std::to_string(errorCode));
+			Logger::fatalError("decodePNG failed with error: " + std::to_string(errorCode));
 		}
 
 		GLuint textureID;

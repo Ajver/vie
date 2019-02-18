@@ -1,6 +1,6 @@
 #include "GLSLProgram.h"
 
-#include "Errors.h"
+#include "Logger.h"
 #include <vector>
 
 namespace vie
@@ -38,12 +38,12 @@ namespace vie
 		vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 
 		if (vertexShaderID == 0)
-			fatalError("Vertex shader failed to be created!");
+			Logger::fatalError("Vertex shader failed to be created!");
 
 		fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
 		if (fragmentShaderID == 0)
-			fatalError("Fragment shader failed to be created!");
+			Logger::fatalError("Fragment shader failed to be created!");
 
 		std::string vertexShader = getVertexShader();
 		const char *contentsPtr = vertexShader.c_str();
@@ -67,7 +67,7 @@ namespace vie
 
 
 			std::printf("%s\n", &errorLog[0]);
-			fatalError("Vertex shader failed to compile!");
+			Logger::fatalError("Vertex shader failed to compile!");
 		}
 
 		compileShader(getVertexShader(), vertexShaderID);
@@ -139,7 +139,7 @@ namespace vie
 			glDeleteShader(id);
 
 			std::printf("%s\n", &errorLog[0]);
-			fatalError("Shader " + shaderText + "failed to compile!");
+			Logger::fatalError("Shader " + shaderText + "failed to compile!");
 		}
 	}
 
@@ -173,7 +173,7 @@ namespace vie
 
 			// In this simple program, we'll just leave
 			std::printf("%s\n", &errorLog[0]);
-			fatalError("Shader failed to link!");
+			Logger::fatalError("Shader failed to link!");
 		}
 
 		// Always detach shaders after a successful link.
@@ -194,7 +194,7 @@ namespace vie
 		GLuint location = glGetUniformLocation(programID, uniformName.c_str());
 		if (location == GL_INVALID_INDEX)
 		{
-			fatalError("Uniform " + uniformName + " not found in shader!");
+			Logger::fatalError("Uniform " + uniformName + " not found in shader!");
 		}
 
 		return location;

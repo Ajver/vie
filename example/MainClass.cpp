@@ -10,6 +10,7 @@
 #include <vie/Window.h>
 #include <vie/Layer.h>
 #include <vie/SpriteFont.h>
+#include <vie/Logger.h>
 
 #include "Car.h"
 #include "Map.h"
@@ -95,6 +96,12 @@ void MainClass::onKeyRelease()
 	{
 	case SDLK_ESCAPE:
 		destroyEngine();
+		break;
+	case SDLK_l:
+		vie::Logger::log("Test log...");
+		break;
+	case SDLK_k:
+		vie::Logger::fatalError("Test error!");
 		break;
 	}
 }

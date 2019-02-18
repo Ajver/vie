@@ -1,6 +1,6 @@
 #include "ObjectsManager.h"
 
-#include "Errors.h"
+#include "Logger.h"
 #include "Input.h"
 
 #include <iostream>

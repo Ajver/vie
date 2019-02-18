@@ -1,6 +1,6 @@
 ﻿#include "SpriteFont.h"
 #include "Graphics.h"
-#include "Errors.h"
+#include "Logger.h"
 #include <TTF/SDL_ttf.h>
 
 int closestPow2(int i) {
@@ -23,7 +23,7 @@ namespace vie
 		}
 		TTF_Font* f = TTF_OpenFont(font, size);
 		if (f == nullptr) {
-			fatalError("Failed to open TTF font: " + (std::string)font);
+			Logger::fatalError("Failed to open TTF font: " + (std::string)font);
 		}
 		_fontHeight = TTF_FontHeight(f);
 		_regStart = cs;

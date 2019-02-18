@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include "Errors.h"
+#include "Logger.h"
 
 namespace vie
 {
@@ -71,7 +71,7 @@ namespace vie
 	void Window::catchErrors()
 	{
 		if (sdlWindow == nullptr)
-			fatalError(SDL_GetError());
+			Logger::fatalError(SDL_GetError());
 	}
 
 	void Window::setWindowSize(int sw, int sh)

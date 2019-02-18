@@ -6,7 +6,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 #include "Camera2D.h"
-#include "Errors.h"
+#include "Logger.h"
 #include "Window.h"
 #include "Layer.h"
 #include "SpriteFont.h"
@@ -100,7 +100,7 @@ namespace vie
 	void Graphics::createLayer(const std::string& layerName, Camera2D* camera)
 	{
 		if (containsLayer(layerName))
-			fatalError("Error: Cannot create layer with name: " + layerName + " (Layer exist)");
+			Logger::fatalError("Error: Cannot create layer with name: " + layerName + " (Layer exist)");
 		else
 			layers.push_back(new Layer(layerName, vbo, vao, camera));
 	}
@@ -114,12 +114,12 @@ namespace vie
 				return;
 			}			
 		}
-		fatalError("Error: Cannot switch to layer with name: " + layerName + " (Layer not found)");
+		Logger::fatalError("Error: Cannot switch to layer with name: " + layerName + " (Layer not found)");
 	}
 	void Graphics::removeLayer(const std::string& layerName)
 	{
 		if (layerName == "main")
-			fatalError("Error: Cannot remove main layer!");
+			Logger::fatalError("Error: Cannot remove main layer!");
 		else
 		{
 			int osize = layers.size();
@@ -134,7 +134,7 @@ namespace vie
 			}
 		}
 
-		fatalError("Error: Cannot remove layer with name: " + layerName + " (Layer not found)");
+		Logger::fatalError("Error: Cannot remove layer with name: " + layerName + " (Layer not found)");
 	}
 	bool Graphics::containsLayer(const std::string& layerName) const
 	{
@@ -155,7 +155,7 @@ namespace vie
 			if (currLayer->isNamed(layerName))
 				return currLayer;
 		}
-		fatalError("Error: Cannot get layer with name: " + layerName + " (Layer not found)");
+		Logger::fatalError("Error: Cannot get layer with name: " + layerName + " (Layer not found)");
 		return nullptr;
 	}
 
@@ -463,7 +463,7 @@ namespace vie
 	void Graphics::drawString(const std::string& str, const glm::vec2& position, TextJustification just)
 	{
 		if (spriteFont == nullptr)
-			fatalError("Error: Graphics class has no font initialized.\nTry setFont() before drawString()");
+			Logger::fatalError("Error: Graphics class has no font initialized.\nTry setFont() before drawString()");
 		else
 			spriteFont->draw(this, str.c_str(), position, glm::vec2(scale), getNextTextureDepth(), defaultColor, just);
 	}

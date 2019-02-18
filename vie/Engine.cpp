@@ -7,7 +7,7 @@
 #include <string>
 
 #include "Window.h"
-#include "Errors.h"
+#include "Logger.h"
 #include "Graphics.h"
 #include "ObjectsManager.h"
 #include "Input.h"
@@ -44,19 +44,27 @@ namespace vie
 
 	void Engine::runEngine(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags)
 	{
-		if (isRunning)
+		try
 		{
-			printf("Error: The Engine is running\n");
-			return;
+			if (isRunning)
+			{
+				printf("Error: The Engine is running\n");
+				return;
+			}
+
+			initSDLAndWindowAndGraphics(title, sw, sh, windowFlags);
+
+			onCreate();
+
+			isRunning = true;
+			mainLoop();
+		}
+		catch (const std::exception& e)
+		{
+			printf("\n%s\n\n", e.what());
+			system("pause");
 		}
 
-		initSDLAndWindowAndGraphics(title, sw, sh, windowFlags);
-
-		onCreate();
-
-		isRunning = true;
-		mainLoop();
-		
 		destroy();
 	}
 
@@ -81,10 +89,10 @@ namespace vie
 		SDL_GLContext glContext = Window::getSDLGLContext();
 
 		if (glContext == nullptr)
-			fatalError("SDL_GL context could not be created!");
+			Logger::fatalError("SDL_GL context could not be created!");
 
 		if (glewInit() != GLEW_OK)
-			fatalError("Glew could not be initialized!");
+			Logger::fatalError("Glew could not be initialized!");
 	}
 
 	void Engine::mainLoop()
