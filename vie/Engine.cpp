@@ -207,10 +207,8 @@ namespace vie
 	void Engine::destroy()
 	{
 		onDestroy();
-
 		Window::destroySDLWindow();
 		SDL_Quit();
-		exit(0);
 	}
 
 	void Engine::destroyEngine()
