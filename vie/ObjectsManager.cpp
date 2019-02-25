@@ -50,6 +50,12 @@ namespace vie
 	{
 		keyListeners.push_back(ob);
 	}
+	void ObjectsManager::appendAll(Object* ob)
+	{
+		appendObject(ob);
+		appendMouseListener(ob);
+		appendKeyListener(ob);
+	}
 
 	Object* ObjectsManager::getObject(size_t id) const
 	{
@@ -106,6 +112,19 @@ namespace vie
 		auto it = std::find(keyListeners.begin(), keyListeners.end(), rob);
 		if (it != keyListeners.end())
 			keyListeners.erase(it);
+	}
+	void ObjectsManager::removeAll(Object* ob)
+	{
+		removeObject(ob);
+		removeMouseListener(ob);
+		removeKeyListener(ob);
+	}
+
+	void ObjectsManager::destroyObject(Object* &ob)
+	{
+		removeAll(ob);
+		delete ob;
+		ob = nullptr;
 	}
 
 	bool ObjectsManager::containsObject(Object* ob) const

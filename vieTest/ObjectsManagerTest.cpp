@@ -35,6 +35,21 @@ TEST(ObjectsManagerTest, ShouldAppend_Key_Listener)
 	EXPECT_TRUE(om.containsKeyListener(object));
 }
 
+TEST(ObjectsManagerTest, ShouldAppend_All)
+{
+	vie::ObjectsManager om;
+	vie::Object* object = new vie::Object();
+
+	EXPECT_FALSE(om.containsObject(object));
+	EXPECT_FALSE(om.containsMouseListener(object));
+	EXPECT_FALSE(om.containsKeyListener(object));
+
+	om.appendAll(object);
+	EXPECT_TRUE(om.containsObject(object));
+	EXPECT_TRUE(om.containsMouseListener(object));
+	EXPECT_TRUE(om.containsKeyListener(object));
+}
+
 TEST(ObjectsManagerTest, Should_Contains_Object_WithLabel)
 {
 	vie::ObjectsManager om;
@@ -105,6 +120,36 @@ TEST(ObjectsManagerTest, ShouldRemove_Key_Listener)
 
 	om.removeKeyListener(object);
 	EXPECT_FALSE(om.containsKeyListener(object));
+}
+
+TEST(ObjectsManagerTest, ShouldRemove_All)
+{
+	vie::ObjectsManager om;
+	vie::Object* object = new vie::Object();
+
+	om.appendAll(object);
+	EXPECT_TRUE(om.containsObject(object));
+	EXPECT_TRUE(om.containsMouseListener(object));
+	EXPECT_TRUE(om.containsKeyListener(object));
+
+	om.removeAll(object);
+	EXPECT_FALSE(om.containsObject(object));
+	EXPECT_FALSE(om.containsMouseListener(object));
+	EXPECT_FALSE(om.containsKeyListener(object));
+}
+
+TEST(ObjectsManagerTest, ShouldDestroy_Object)
+{
+	vie::ObjectsManager om;
+	vie::Object* object = new vie::Object();
+
+	om.appendAll(object);
+	om.destroyObject(object);
+	EXPECT_FALSE(om.containsObject(object));
+	EXPECT_FALSE(om.containsMouseListener(object));
+	EXPECT_FALSE(om.containsKeyListener(object));
+
+	EXPECT_EQ(nullptr, object);
 }
 
 TEST(ObjectsManagerTest, ShouldReturn_Object_ByLabel)

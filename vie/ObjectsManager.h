@@ -20,10 +20,14 @@ namespace vie
 		void appendObject(Object* ob);
 		void appendMouseListener(Object* ob);
 		void appendKeyListener(Object* ob);
+		void appendAll(Object* ob);
 
 		void removeObject(Object* ob);
 		void removeMouseListener(Object* ob);
 		void removeKeyListener(Object* ob);
+		void removeAll(Object* ob);
+
+		void destroyObject(Object* &ob);
 
 		bool containsObject(Object* ob) const;
 		bool containsMouseListener(Object* ob) const;

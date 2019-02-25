@@ -7,7 +7,7 @@
 
 #include <SDL/SDL.h>
 #include <GL/glew.h>
-#include <vie/Errors.h>
+#include <vie/Logger.h>
 #include <vie/Window.h>
 
 int main(int argc, char *args[])
@@ -19,10 +19,10 @@ int main(int argc, char *args[])
 	SDL_GLContext glContext = vie::Window::getSDLGLContext();
 
 	if (glContext == nullptr)
-		vie::fatalError("SDL_GL context could not be created!");
+		vie::Logger::fatalError("SDL_GL context could not be created!");
 
 	if (glewInit() != GLEW_OK)
-		vie::fatalError("Glew could not be initialized!");
+		vie::Logger::fatalError("Glew could not be initialized!");
 
 	testing::InitGoogleTest(&argc, args);
 
