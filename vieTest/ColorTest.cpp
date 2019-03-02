@@ -48,6 +48,63 @@ TEST(ColorTest, Should_ColorsBe_NOT_Equals)
 	EXPECT_FALSE(white == black);
 }
 
+TEST(ColorTest, ShouldMultiply_Colors)
+{
+	vie::Color color = vie::Color(128, 64, 255, 128) * vie::Color(255, 128, 255, 32);
+	EXPECT_EQ(128, color.r);
+	EXPECT_EQ(32, color.g);
+	EXPECT_EQ(255, color.b);
+	EXPECT_EQ(16, color.a);
+}
+
+TEST(ColorTest, ShouldMultiplyEqual_Color)
+{
+	vie::Color color(128, 64, 255, 128);
+	color *= vie::Color(255, 128, 255, 32);
+	EXPECT_EQ(128, color.r);
+	EXPECT_EQ(32, color.g);
+	EXPECT_EQ(255, color.b);
+	EXPECT_EQ(16, color.a);
+}
+
+TEST(ColorTest, ShouldAdd_Colors)
+{
+	vie::Color color = vie::Color(128, 64, 255, 128) + vie::Color(255, 128, 255, 32);
+	EXPECT_EQ(255, color.r);
+	EXPECT_EQ(192, color.g);
+	EXPECT_EQ(255, color.b);
+	EXPECT_EQ(160, color.a);
+}
+
+TEST(ColorTest, ShouldAddEqual_Color)
+{
+	vie::Color color(128, 64, 255, 128);
+	color += vie::Color(255, 128, 255, 32);
+	EXPECT_EQ(255, color.r);
+	EXPECT_EQ(192, color.g);
+	EXPECT_EQ(255, color.b);
+	EXPECT_EQ(160, color.a);
+}
+
+TEST(ColorTest, ShouldSubtract_Colors)
+{
+	vie::Color color = vie::Color(255, 64, 255, 128) - vie::Color(128, 128, 255, 32);
+	EXPECT_EQ(127, color.r);
+	EXPECT_EQ(0, color.g);
+	EXPECT_EQ(0, color.b);
+	EXPECT_EQ(96, color.a);
+}
+
+TEST(ColorTest, ShouldSubtractEqual_Color)
+{
+	vie::Color color(255, 64, 255, 128);
+	color -= vie::Color(128, 128, 255, 32);
+	EXPECT_EQ(127, color.r);
+	EXPECT_EQ(0, color.g);
+	EXPECT_EQ(0, color.b);
+	EXPECT_EQ(96, color.a);
+}
+
 TEST(ColorTest, Should_ExampleColorsBeValid)
 {
 	EXPECT_EQ(vie::Color(255, 0, 0), vie::COLOR::RED);

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />

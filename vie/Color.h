@@ -7,35 +7,18 @@ namespace vie
 	class Color
 	{
 	public: 
-		Color()
-		{
-			setColor(255, 255, 255, 255);
-		}
+		Color();
+		Color(GLubyte nr, GLubyte ng, GLubyte nb, GLubyte na = 255);
 
-		Color(GLubyte nr, GLubyte ng, GLubyte nb, GLubyte na = 255) :
-			r(nr), g(ng), b(nb), a(na) {}
-
-		void setColor(GLubyte nr, GLubyte ng, GLubyte nb, GLubyte na = 255)
-		{
-			r = nr;
-			g = ng;
-			b = nb;
-			a = na;
-		}
-
-		bool operator == (const Color& other) const
-		{
-			return
-				r == other.r &&
-				g == other.g &&
-				b == other.b &&
-				a == other.a;
-		}
-
-		bool operator != (const Color& other) const
-		{
-			return !(operator == (other));
-		}
+		void setColor(GLubyte nr, GLubyte ng, GLubyte nb, GLubyte na = 255);
+		bool operator == (const Color& other) const;
+		bool operator != (const Color& other) const;
+		Color operator * (const Color& other) const;
+		Color operator *= (const Color& other);
+		Color operator + (const Color& other) const;
+		Color operator += (const Color& other);
+		Color operator - (const Color& other) const;
+		Color operator -= (const Color& other);
 
 		GLubyte r;
 		GLubyte g;
