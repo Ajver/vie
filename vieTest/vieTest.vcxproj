@@ -42,6 +42,7 @@
   <ItemGroup>
     <ClCompile Include="CameraTest.cpp" />
     <ClCompile Include="ColorTest.cpp" />
+    <ClCompile Include="EngineTest.cpp" />
     <ClCompile Include="GraphicsTest.cpp" />
     <ClCompile Include="LayerTest.cpp" />
     <ClCompile Include="ObjectsManagerTest.cpp" />

@@ -4,6 +4,7 @@
 
 namespace vie
 {
+	class Engine;
 
 	class Logger
 	{
@@ -12,6 +13,11 @@ namespace vie
 		static void log(const std::string& logString);
 		
 	private:
+		static Engine* m_engine;
+
+		friend Engine;
+
 		Logger();
+
 	};
 }

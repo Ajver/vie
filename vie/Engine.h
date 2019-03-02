@@ -24,6 +24,12 @@ namespace vie
 		// Get FPS count from previous frame (updated after each second)
 		unsigned int getFpsCount();
 
+		// Runs automaticly after run vie::Logger::fatalError();
+		virtual void onFatalError(const std::string& errorMessage);
+
+		// Runs automaticly after run vie::Logger::log();
+		virtual void onLog(const std::string& logMessage);
+
 	protected:
 		ObjectsManager* objectsManager;
 
@@ -111,7 +117,6 @@ namespace vie
 		void processRender();
 		void limitFPS(unsigned int elapsedMillis);
 
-		void destroy();
 	};
 
 }

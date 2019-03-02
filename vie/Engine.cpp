@@ -61,18 +61,21 @@ namespace vie
 		}
 		catch (const std::exception& e)
 		{
-			printf("\n%s\n\n", e.what());
+			onFatalError(e.what());
 			system("pause");
 		}
 
-		destroy();
+		destroyEngine();
 	}
 
-	void Engine::initSDLAndWindowAndGraphics(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) {
+	void Engine::initSDLAndWindowAndGraphics(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) 
+	{
 		SDL_Init(SDL_INIT_EVERYTHING);
 
 		Window::create(title, sw, sh, windowFlags);
 
+		Logger::m_engine = this;
+		
 		createGlewContextAndCatchErrors();
 		
 		mainCamera = new Camera2D();
@@ -147,7 +150,7 @@ namespace vie
 			switch (evnt.type)
 			{
 			case SDL_QUIT:
-				destroy();
+				destroyEngine();
 				break;
 			case SDL_KEYDOWN:
 				Input::setKey(evnt.key.keysym.sym, true);
@@ -204,16 +207,12 @@ namespace vie
 			SDL_Delay(maxET - elapsedMillis);
 	}
 
-	void Engine::destroy()
+	void Engine::destroyEngine()
 	{
 		onDestroy();
 		Window::destroySDLWindow();
 		SDL_Quit();
-	}
-
-	void Engine::destroyEngine()
-	{
-		isRunning = false;
+		exit(0);
 	}
 
 	unsigned int Engine::getFpsCount() 
@@ -271,6 +270,8 @@ namespace vie
 	// Default bodies (it's not necessary to use them)
 	void Engine::onCreate() {}
 	void Engine::onDestroy() {}
+	void Engine::onFatalError(const std::string&) {}
+	void Engine::onLog(const std::string&) {}
 	void Engine::update(float) {}
 	void Engine::render(Graphics*) {}
 	void Engine::onKeyPress() {}
