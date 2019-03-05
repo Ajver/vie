@@ -6,19 +6,19 @@
 #include <vie/SpriteFont.h>
 
 void drawSomething(vie::Graphics* g);
-vie::Graphics* getInitedGraphics();
+vie::Graphics getInitedGraphics();
 
 
 TEST(GraphicsTest, Should_AppendLayer)
 {
-	vie::Graphics g = *getInitedGraphics();
+	vie::Graphics g = getInitedGraphics();
 	g.appendLayer(new vie::Layer("test_layer", 1, 1, new vie::Camera2D()));
 	EXPECT_TRUE(g.containsLayer("test_layer"));
 }
 
 TEST(GraphicsTest, Should_GetLayerByName)
 {
-	vie::Graphics g = *getInitedGraphics();
+	vie::Graphics g = getInitedGraphics();
 	g.appendLayer(new vie::Layer("test_layer", 1, 1, new vie::Camera2D()));
 	EXPECT_FALSE(nullptr == g.getLayerByName("test_layer"));
 }
@@ -40,11 +40,13 @@ TEST(GraphicsTest, Should_CreateLayerWithSpecificCamera)
 
 	g.createLayer("test_layer", cam);
 	EXPECT_EQ(cam, g.getLayerByName("test_layer")->getCamera());
+
+	delete cam;
 }
 
 TEST(GraphicsTest, Should_SwitchLayer)
 {
-	vie::Graphics g = *getInitedGraphics();
+	vie::Graphics g = getInitedGraphics();
 	g.createLayer("test_layer");
 	EXPECT_FALSE("test_layer" == g.getCurrentLayer()->getName());
 	
@@ -163,9 +165,9 @@ void drawSomething(vie::Graphics* g)
 		g->fillRect(glm::vec2(), glm::vec2());
 }
 
-vie::Graphics* getInitedGraphics()
+vie::Graphics getInitedGraphics()
 {
-	vie::Graphics* g = new vie::Graphics();
+	vie::Graphics* g = (new vie::Graphics());
 	g->init(new vie::Camera2D());
-	return g;
+	return *g;
 }

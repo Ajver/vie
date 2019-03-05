@@ -117,6 +117,8 @@ namespace vie
 		void processRender();
 		void limitFPS(unsigned int elapsedMillis);
 
+		void destroy();
+
 	};
 
 }

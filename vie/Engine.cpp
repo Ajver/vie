@@ -27,6 +27,7 @@ namespace vie
 		b_positionIterations(3),
 		isWorldUpdating(false)
 	{
+		Logger::m_engine = this;
 	}
 
 	Engine::~Engine()
@@ -54,18 +55,18 @@ namespace vie
 
 			initSDLAndWindowAndGraphics(title, sw, sh, windowFlags);
 
+			isRunning = true;
+			
 			onCreate();
 
-			isRunning = true;
 			mainLoop();
 		}
 		catch (const std::exception& e)
 		{
 			onFatalError(e.what());
-			system("pause");
 		}
 
-		destroyEngine();
+		destroy();
 	}
 
 	void Engine::initSDLAndWindowAndGraphics(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags) 
@@ -73,8 +74,6 @@ namespace vie
 		SDL_Init(SDL_INIT_EVERYTHING);
 
 		Window::create(title, sw, sh, windowFlags);
-
-		Logger::m_engine = this;
 		
 		createGlewContextAndCatchErrors();
 		
@@ -209,10 +208,14 @@ namespace vie
 
 	void Engine::destroyEngine()
 	{
+		isRunning = false;
+	}
+
+	void Engine::destroy()
+	{
 		onDestroy();
 		Window::destroySDLWindow();
 		SDL_Quit();
-		exit(0);
 	}
 
 	unsigned int Engine::getFpsCount() 

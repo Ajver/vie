@@ -7,17 +7,17 @@
 namespace vie
 {
 
-	Engine* Logger::m_engine;
+	Engine* Logger::m_engine = nullptr;
 
 	void Logger::fatalError(const std::string& errorString)
 	{
-		printf("\nFATAL ERROR: %s\n\n", errorString.c_str());
+		printf("FATAL ERROR: %s\n", errorString.c_str());
 		throw std::runtime_error(errorString);
 	}
 
 	void Logger::log(const std::string& logString)
 	{
-		printf("\nLOG: \n\n", logString.c_str());
+		printf("LOG: %s\n", logString.c_str());
 		m_engine->onLog(logString);
 	}
 
