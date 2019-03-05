@@ -20,8 +20,14 @@ public:
 	void update(float et);
 	void render(vie::Graphics* g);
 
+	void onLog(const std::string& logMsg);
+	void onFatalError(const std::string& errMsg);
+
 private:
 	Map* mainMap;
 	CarFollower* carFollower;
 	vie::Timer fpsPrintTimer;
+
+	void logToFile(const std::string& logMsg);
+	std::string getCurrentDate();
 };
