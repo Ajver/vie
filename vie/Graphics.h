@@ -114,6 +114,8 @@ namespace vie
 		void renderLayers();
 
 		void setGlyphAttributes(Glyph* glyph, GLuint id, float depth, const glm::vec4& uvRect, const Color& color);
+		void setGlyphPosition(Glyph* glyph, const glm::vec2& topLeft, const glm::vec2& topRight, const glm::vec2& bottomLeft, const glm::vec2& bottomRight);
+
 
 	};
 

@@ -200,11 +200,7 @@ namespace vie
 		glm::vec2 bottomLeft = transformPoint(glm::vec2(destRect.x, destRect.y + destRect.w));
 		glm::vec2 bottomRight = transformPoint(glm::vec2(destRect.x + destRect.z, destRect.y + destRect.w));
 
-		newGlyph->topLeft.setPosition(topLeft.x, topLeft.y);
-		newGlyph->topRight.setPosition(topRight.x, topRight.y);
-		newGlyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
-		newGlyph->bottomRight.setPosition(bottomRight.x, bottomRight.y);
-
+		setGlyphPosition(newGlyph, topLeft, topRight, bottomLeft, bottomRight);
 		setGlyphAttributes(newGlyph, textureID, depth, uvRect, color);
 
 		currentLayer->appendGlyph(newGlyph);
@@ -217,6 +213,14 @@ namespace vie
 		point += translateVec;
 
 		return point;
+	}
+
+	void Graphics::setGlyphPosition(Glyph* glyph, const glm::vec2& topLeft, const glm::vec2& topRight, const glm::vec2& bottomLeft, const glm::vec2& bottomRight)
+	{
+		glyph->topLeft.setPosition(topLeft.x, topLeft.y);
+		glyph->topRight.setPosition(topRight.x, topRight.y);
+		glyph->bottomLeft.setPosition(bottomLeft.x, bottomLeft.y);
+		glyph->bottomRight.setPosition(bottomRight.x, bottomRight.y);
 	}
 
 	void Graphics::setGlyphAttributes(Glyph* glyph, GLuint textureID, float depth, const glm::vec4& uvRect, const Color& color)
@@ -285,10 +289,7 @@ namespace vie
 		glm::vec2 b = transformPoint(posB);
 		glm::vec2 c = transformPoint(posC);
 
-		newGlyph->topLeft.setPosition(a.x, a.y);
-		newGlyph->topRight.setPosition(b.x, b.y);
-		newGlyph->bottomLeft.setPosition(c.x, c.y);
-		newGlyph->bottomRight.setPosition(c.x, c.y);
+		setGlyphPosition(newGlyph, a, b, c, c);
 
 		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
 
@@ -332,28 +333,15 @@ namespace vie
 	{
 		if (polygon.size() < 2)
 			return;
-
-		if (polygon.size() == 3)
-		{
-			drawTriangle(polygon[0], polygon[1], polygon[2], weight);
-			return;
-		}
-
-		if (polygon.size() == 4)
-		{
-			drawQuadrangle(polygon[0], polygon[1], polygon[2], polygon[3], weight);
-			return;
-		}
-
+		
 		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
 		for (int i = 0; i < polygon.size() - 1; i++)
 		{
-			nextTextureDepth -= nextTextureDepthStep;
 			drawLine(polygon[i], polygon[i + 1], weight);
+			nextTextureDepth -= nextTextureDepthStep;
 		}
 
-		nextTextureDepth -= nextTextureDepthStep;
-		drawLine(polygon[0], polygon[polygon.size() - 1], weight);
+		drawLine(polygon[polygon.size() - 1], polygon[0], weight);
 	}
 
 	void Graphics::fillPolygon(std::vector<glm::vec2> polygon)
