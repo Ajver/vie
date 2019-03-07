@@ -403,7 +403,7 @@ namespace vie
 		glm::vec2 c = transformPoint(posC);
 		glm::vec2 d = transformPoint(posD);
 
-		setGlyphPosition(newGlyph, a, b, c, d);
+		setGlyphPosition(newGlyph, a, b, d, c);
 		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth = getNextTextureDepth(), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
 
 		currentLayer->appendGlyph(newGlyph);
