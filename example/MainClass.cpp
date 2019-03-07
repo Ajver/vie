@@ -91,7 +91,9 @@ void MainClass::render(vie::Graphics* g)
 {
 	graphics->switchLayer("car");
 	objectsManager->render(g);
-	renderer->render(g);
+
+	if(vie::Input::isKeyPressed(SDLK_t))
+		renderer->render(g);
 }
 
 void MainClass::onKeyRelease()
