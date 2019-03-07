@@ -43,4 +43,20 @@ namespace vie
 		bottomRight.position.y = screenHeight - bottomRight.position.y;
 	}
 
+	void Glyph::setUV(const glm::vec4& uvRect)
+	{
+		topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+		topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+		bottomLeft.setUV(uvRect.x, uvRect.y);
+		bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+	}
+
+	void Glyph::setColor(const Color& color)
+	{
+		topLeft.setColor(color);
+		topRight.setColor(color);
+		bottomLeft.setColor(color);
+		bottomRight.setColor(color);
+	}
+	
 }

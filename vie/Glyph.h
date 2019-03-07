@@ -24,6 +24,8 @@ namespace vie
 		void rotateByAngle(float angle);
 		void translateByVec2(const glm::vec2& vec);
 		void invertInYAxis(float screenHeight);
+		void setUV(const glm::vec4& uvRect);
+		void setColor(const Color& color);
 	};
 
 	enum class GlyphSortType

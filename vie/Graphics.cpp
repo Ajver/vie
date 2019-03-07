@@ -223,24 +223,8 @@ namespace vie
 	{
 		glyph->textureID = textureID;
 		glyph->depth = depth;
-		setGlyphUV(glyph, uvRect);
-		setGlyphColor(glyph, color);
-	}
-
-	void Graphics::setGlyphUV(Glyph* glyph, const glm::vec4& uvRect)
-	{
-		glyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
-		glyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
-		glyph->bottomLeft.setUV(uvRect.x, uvRect.y);
-		glyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
-	}
-
-	void Graphics::setGlyphColor(Glyph* glyph, const Color& color)
-	{
-		glyph->topLeft.setColor(color);
-		glyph->topRight.setColor(color);
-		glyph->bottomLeft.setColor(color);
-		glyph->bottomRight.setColor(color);
+		glyph->setUV(uvRect);
+		glyph->setColor(color);
 	}
 	
 	void Graphics::drawTexture(const Texture& texture, const glm::vec2& position, const Color& color)
