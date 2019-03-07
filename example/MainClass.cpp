@@ -17,6 +17,7 @@
 #include "Car.h"
 #include "Map.h"
 #include "CarFollower.h"
+#include "Renderer.h"
 
 #include <Box2D/Box2D.h>
 
@@ -56,12 +57,13 @@ void MainClass::onCreate()
 
 	mainMap = new Map(objectsManager, b_world);
 	carFollower = new CarFollower(mainCamera, playerCar);
+	renderer = new Renderer();
 
 	graphics->setBackgroundColor(vie::Color(10, 30, 20));
 
 	graphics->createLayer("ground", mainCamera);
 	graphics->createLayer("car", mainCamera);
-	graphics->createLayer("hud");
+	graphics->createLayer("renderer", renderer->getCamera());
 
 	graphics->switchLayer("ground");
 	graphics->getCurrentLayer()->setIsRemovingGlyphs(false);
@@ -76,6 +78,7 @@ void MainClass::update(float et)
 {	
 	objectsManager->update(et);
 	carFollower->update(et);
+	renderer->update();
 
 	if (fpsPrintTimer.tick())
 	{
@@ -88,8 +91,7 @@ void MainClass::render(vie::Graphics* g)
 {
 	graphics->switchLayer("car");
 	objectsManager->render(g);
-
-	g->switchLayer("hud");
+	renderer->render(g);
 }
 
 void MainClass::onKeyRelease()

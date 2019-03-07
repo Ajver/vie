@@ -256,14 +256,18 @@ namespace vie
 
 	void Graphics::drawRect(const glm::vec2& position, const glm::vec2& size, float weight)
 	{
+		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
 		// Top
 		fillRect(glm::vec2(position.x + weight, position.y), glm::vec2(size.x - weight, weight));
+		nextTextureDepth -= nextTextureDepthStep;
 
 		// Bottom
 		fillRect(glm::vec2(position.x + weight, position.y + size.y - weight), glm::vec2(size.x - weight, weight));
+		nextTextureDepth -= nextTextureDepthStep;
 
 		// Left
 		fillRect(position, glm::vec2(weight, size.y));
+		nextTextureDepth -= nextTextureDepthStep;
 
 		// Right
 		fillRect(glm::vec2(position.x + size.x - weight, position.y + weight), glm::vec2(weight, size.y - 2 * weight));
@@ -281,8 +285,6 @@ namespace vie
 
 	void Graphics::fillTriangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC)
 	{
-		nextTextureDepth = getNextTextureDepth();
-
 		Glyph *newGlyph = new Glyph();
 
 		glm::vec2 a = transformPoint(posA);
@@ -291,7 +293,7 @@ namespace vie
 
 		setGlyphPosition(newGlyph, a, b, c, c);
 
-		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
+		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth = getNextTextureDepth(), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
 
 		currentLayer->appendGlyph(newGlyph);
 	}
@@ -315,7 +317,7 @@ namespace vie
 	void Graphics::fillOval(const glm::vec2& position, const glm::vec2& size)
 	{
 		static const float TWO_PI = M_PI * 2.0f;
-		const float step = TWO_PI / (ovalRenderingPrecision * fmin(size.x, size.y) * 0.4f);
+		const float step = TWO_PI / fmax((ovalRenderingPrecision * fmin(size.x, size.y) * 0.6f), 10.0f);
 
 		glm::vec2 prev(position.x + size.x, position.y);
 		glm::vec2 curr(cos(step)*size.x + position.x, sin(step)*size.y + position.y);
@@ -349,6 +351,12 @@ namespace vie
 		if (polygon.size() < 2)
 			return;
 
+		if (polygon.size() == 2)
+		{
+			drawLine(polygon[0], polygon[1]);
+			return;
+		}
+
 		if (polygon.size() == 3)
 		{
 			fillTriangle(polygon[0], polygon[1], polygon[2]);
@@ -364,14 +372,14 @@ namespace vie
 		// This 'nextTextureDepth -= nextTextureDepthStep' operation is important for render all lines in the same depth
 		for (int i = 1; i < polygon.size() - 2; i += 2)
 		{
-			nextTextureDepth -= nextTextureDepthStep;
 			fillQuadrangle(polygon[0], polygon[i], polygon[i + 1], polygon[i + 2]);
-		}
-		if (polygon.size() % 2 != 0)
-		{
 			nextTextureDepth -= nextTextureDepthStep;
-			fillTriangle(polygon[0], polygon[polygon.size() - 2], polygon[polygon.size() - 1]);
 		}
+
+		if (polygon.size() % 2 != 0)
+			fillTriangle(polygon[0], polygon[polygon.size() - 2], polygon[polygon.size() - 1]);
+		else
+			nextTextureDepth += nextTextureDepthStep;
 	}
 
 	void Graphics::drawQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD, float weight)
@@ -388,8 +396,6 @@ namespace vie
 
 	void Graphics::fillQuadrangle(const glm::vec2& posA, const glm::vec2& posB, const glm::vec2& posC, const glm::vec2& posD)
 	{
-		nextTextureDepth = getNextTextureDepth();
-
 		Glyph *newGlyph = new Glyph();
 
 		glm::vec2 a = transformPoint(posA);
@@ -397,24 +403,17 @@ namespace vie
 		glm::vec2 c = transformPoint(posC);
 		glm::vec2 d = transformPoint(posD);
 
-		newGlyph->topLeft.setPosition(a.x, a.y);
-		newGlyph->topRight.setPosition(b.x, b.y);
-		newGlyph->bottomRight.setPosition(c.x, c.y);
-		newGlyph->bottomLeft.setPosition(d.x, d.y);
-
-		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
+		setGlyphPosition(newGlyph, a, b, c, d);
+		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth = getNextTextureDepth(), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
 
 		currentLayer->appendGlyph(newGlyph);
 	}
 
 	void Graphics::drawLine(const glm::vec2& posA, const glm::vec2& posB, float weight)
 	{
-		nextTextureDepth = getNextTextureDepth();
-
 		Glyph *newGlyph = new Glyph();
 
 		float angle = atan2f(posB.y - posA.y, posB.x - posA.x);
-
 		glm::vec2 offset = glm::rotate(glm::vec2(0.0f, -weight), angle) * 0.5f;
 
 		glm::vec2 a1 = transformPoint(posA - offset);
@@ -422,12 +421,8 @@ namespace vie
 		glm::vec2 b1 = transformPoint(posB - offset);
 		glm::vec2 b2 = transformPoint(posB + offset);
 
-		newGlyph->topLeft.setPosition(a1.x, a1.y);
-		newGlyph->topRight.setPosition(a2.x, a2.y);
-		newGlyph->bottomLeft.setPosition(b1.x, b1.y);
-		newGlyph->bottomRight.setPosition(b2.x, b2.y);
-
-		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
+		setGlyphPosition(newGlyph, a1, a2, b1, b2);
+		setGlyphAttributes(newGlyph, onePixelTexture.getID(), nextTextureDepth = getNextTextureDepth(), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), defaultColor);
 
 		currentLayer->appendGlyph(newGlyph);
 	}

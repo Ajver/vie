@@ -163,6 +163,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CarFollower.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarFollower.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="Map.h" />
   </ItemGroup>

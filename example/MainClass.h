@@ -7,6 +7,7 @@
 
 class Map;
 class CarFollower;
+class Renderer;
 
 class MainClass : public vie::Engine
 {
@@ -26,6 +27,7 @@ public:
 private:
 	Map* mainMap;
 	CarFollower* carFollower;
+	Renderer* renderer;
 	vie::Timer fpsPrintTimer;
 
 	void logToFile(const std::string& logMsg);
