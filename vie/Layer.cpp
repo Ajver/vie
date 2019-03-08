@@ -135,9 +135,10 @@ namespace vie
 			}
 			else
 			{
-				prevGlyp = currGlyph;
-				renderBatches.emplace_back(0, 6, glyphs[0]->textureID);
+				renderBatches.emplace_back(0, 6, currGlyph->textureID);
 			}
+
+			prevGlyp = currGlyph;
 
 			vertices[currVertex++] = currGlyph->topLeft;
 			vertices[currVertex++] = currGlyph->bottomLeft;
