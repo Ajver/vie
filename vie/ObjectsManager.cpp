@@ -184,7 +184,10 @@ namespace vie
 			{
 				Object* ob = *(&mouseListeners[0] + i);
 				if (ob->isPointInside(Input::getMousePosition()))
+				{
 					mouseClickedObject(ob);
+					return;
+				}
 			}
 		}
 	}
