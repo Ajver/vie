@@ -15,6 +15,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vieTest", "vieTest\vieTest.
 		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9} = {ADE7330C-B86B-42FD-92D9-CB3A904E34A9}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vie_TTT", "vie_TTT\vie_TTT.vcxproj", "{D7BA3446-92E4-44BA-8440-B16DFB463C89}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9} = {ADE7330C-B86B-42FD-92D9-CB3A904E34A9}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +52,14 @@ Global
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Release|x64.Build.0 = Release|x64
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Release|x86.ActiveCfg = Release|Win32
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Release|x86.Build.0 = Release|Win32
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug|x64.ActiveCfg = Debug|x64
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug|x64.Build.0 = Debug|x64
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug|x86.ActiveCfg = Debug|Win32
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug|x86.Build.0 = Debug|Win32
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Release|x64.ActiveCfg = Release|x64
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Release|x64.Build.0 = Release|x64
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Release|x86.ActiveCfg = Release|Win32
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
