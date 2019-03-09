@@ -5,7 +5,8 @@
 #include <vie/Window.h>
 
 Renderer::Renderer() :
-	camera(new vie::Camera2D())
+	camera(new vie::Camera2D()),
+	swordman({ 600.0f, 400.0f })
 {
 	camera->setPosition(vie::Window::getScreenSize() * 0.5f);
 }
@@ -17,6 +18,7 @@ Renderer::~Renderer()
 void Renderer::update()
 {
 	camera->update();
+	swordman.update(0);
 }
 
 void Renderer::render(vie::Graphics* g)
@@ -89,6 +91,11 @@ void Renderer::render(vie::Graphics* g)
 	g->setColor(vie::Color(128, 128, 255, 128));
 	for (auto& p : polygon)
 		g->fillOval(p, { 10.0f, 10.0f });
+
+	///////////// SWORDMAN //////////////////
+
+	swordman.render(g);
+
 }
 
 vie::Camera2D* Renderer::getCamera() const

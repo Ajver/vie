@@ -19,6 +19,9 @@ namespace vie
 		void pause();
 		void stop();
 
+		void setDuration(ulong ndur);
+		void setProgress(float progress);
+
 		float getProgress() const;
 		float getInvertedProgress() const;
 		float getEaseProgress() const;
@@ -28,6 +31,8 @@ namespace vie
 		float getDecreasingProgress() const;
 
 		bool getIsRunning() const;
+		ulong getDuration() const;
+		ulong getLeftTime() const;
 
 	private:
 		ulong duration;

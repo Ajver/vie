@@ -56,6 +56,20 @@ namespace vie
 		isRunning = false;
 	}
 
+	void Timer::setDuration(ulong ndur)
+	{
+		leftTime = getLeftTime() + (ndur - duration);
+		breakTime = SDL_GetTicks() + leftTime;
+		duration = ndur;
+	}
+
+	void Timer::setProgress(float progress)
+	{
+		float invProgress = 1.0f - getFromRange01(progress);
+		leftTime = duration * invProgress;
+		breakTime = SDL_GetTicks() + leftTime;
+	}
+
 	float Timer::getProgress() const
 	{
 		return 1.0f - getInvertedProgress();
@@ -116,6 +130,19 @@ namespace vie
 	bool Timer::getIsRunning() const
 	{
 		return isRunning;
+	}
+
+	ulong Timer::getDuration() const
+	{
+		return duration;
+	}
+
+	ulong Timer::getLeftTime() const
+	{
+		if(isRunning)
+			return breakTime - SDL_GetTicks();
+
+		return 0;
 	}
 
 	float Timer::getFromRange01(float a) const

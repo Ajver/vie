@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Swordman.h"
+
 namespace vie
 {
 	class Graphics;
@@ -19,5 +21,6 @@ public:
 
 private:
 	vie::Camera2D* camera;
+	Swordman swordman;
 };
 

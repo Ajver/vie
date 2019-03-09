@@ -167,6 +167,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Swordman.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Swordman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
