@@ -70,6 +70,25 @@ namespace vie
 		breakTime = SDL_GetTicks() + leftTime;
 	}
 
+	float Timer::getProgress(TimingFunction tf) const
+	{
+		float progress;
+
+		if (tf & TimingFunction::EASE)
+			progress = getEaseProgress();
+		else if (tf & TimingFunction::EASE_IN)
+			progress = getEaseProgress();
+		else if (tf & TimingFunction::EASE_OUT)
+			progress = getEaseProgress();
+		else // LINEAR or INVERTED
+			progress = getProgress();
+
+		if (tf & TimingFunction::INVERTED)
+			progress = 1.0f - progress;
+
+		return progress;
+	}
+
 	float Timer::getProgress() const
 	{
 		return 1.0f - getInvertedProgress();
