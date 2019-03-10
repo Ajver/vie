@@ -7,12 +7,11 @@
 
 namespace vie
 {
+	class Engine;
 
 	class Window
 	{
 	public:
-		static void create(const char* title, int sw, int sh, WindowFlags wFlags);
-
 		static void setWindowSize(int sw, int sh);
 		static void setWindowTitle(const char* title);
 
@@ -29,14 +28,15 @@ namespace vie
 		static bool isWindowBorderless();
 		static bool isWindowResizable();
 
-		static void updateScreenSizeFromSDL();
-
 	private:
 		static SDL_Window* sdlWindow;
 		static const char* windowTitle;
 		static int screenWidth;
 		static int screenHeight;
 		static WindowFlags windowFlags;
+		
+		static void create(const char* title, int sw, int sh, WindowFlags wFlags);
+		static void updateScreenSizeFromSDL();
 
 		static void saveWindowProperties(const char* title, int sw, int sh, WindowFlags wFlags);
 		static void createSDLWindow();
@@ -44,6 +44,9 @@ namespace vie
 		static const char* getWindowTitle();
 		static void updateWindowTitleFromSDL();
 		static void catchErrors();
+
+		friend Engine;
+
 	};
 
 }
