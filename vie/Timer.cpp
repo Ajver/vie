@@ -70,31 +70,12 @@ namespace vie
 		breakTime = SDL_GetTicks() + leftTime;
 	}
 
-	float Timer::getProgress(TimingFunction tf) const
-	{
-		float progress;
-
-		if (tf & TimingFunction::EASE)
-			progress = getEaseProgress();
-		else if (tf & TimingFunction::EASE_IN)
-			progress = getEaseProgress();
-		else if (tf & TimingFunction::EASE_OUT)
-			progress = getEaseProgress();
-		else // LINEAR or INVERTED
-			progress = getProgress();
-
-		if (tf & TimingFunction::INVERTED)
-			progress = 1.0f - progress;
-
-		return progress;
-	}
-
 	float Timer::getProgress() const
 	{
-		return 1.0f - getInvertedProgress();
+		return 1.0f - getProgressINV();
 	}
 
-	float Timer::getInvertedProgress() const
+	float Timer::getProgressINV() const
 	{
 		if (duration == 0)
 			return 0.0f;
@@ -115,6 +96,11 @@ namespace vie
 		return (1.0f - cos(progress * M_PI)) / 2.0f;
 	}
 
+	float Timer::getEaseProgressINV() const
+	{
+		return 1.0f - getEaseProgress();
+	}
+
 	float Timer::getEaseInProgress() const
 	{
 		float progress = getProgress();
@@ -124,13 +110,23 @@ namespace vie
 			return progress;
 	}
 
+	float Timer::getEaseInProgressINV() const
+	{
+		return 1.0f - getEaseInProgress();
+	}
+
 	float Timer::getEaseOutProgress() const
 	{
 		float progress = getProgress();
-		if (progress > 0.5f)
+		if (progress >= 0.5f)
 			return getEaseProgress();
 		else
 			return progress;
+	}
+
+	float Timer::getEaseOutProgressINV() const
+	{
+		return 1.0f - getEaseOutProgress();
 	}
 
 	float Timer::getIncreasingProgress() const
@@ -139,11 +135,20 @@ namespace vie
 		return progress * progress;
 	}
 
+	float Timer::getIncreasingProgressINV() const
+	{
+		return 1.0f - getIncreasingProgress();
+	}
+
 	float Timer::getDecreasingProgress() const
 	{
-		float progress = getInvertedProgress();
-		progress *= progress;
-		return 1.0f - progress;
+		return 1.0f - getDecreasingProgressINV();
+	}
+
+	float Timer::getDecreasingProgressINV() const
+	{
+		float progress = getProgressINV();
+		return progress * progress;
 	}
 
 	bool Timer::getIsRunning() const

@@ -6,7 +6,8 @@
 
 Renderer::Renderer() :
 	camera(new vie::Camera2D()),
-	swordman({ 600.0f, 400.0f })
+	swordman({ 600.0f, 400.0f }),
+	timer(2500)
 {
 	camera->setPosition(vie::Window::getScreenSize() * 0.5f);
 }
@@ -19,6 +20,9 @@ void Renderer::update()
 {
 	camera->update();
 	swordman.update(0);
+
+	if (timer.tick())
+		timer.restart();
 }
 
 void Renderer::render(vie::Graphics* g)
@@ -95,6 +99,11 @@ void Renderer::render(vie::Graphics* g)
 	///////////// SWORDMAN //////////////////
 
 	swordman.render(g);
+
+	//////////// TIMER ///////////////////////
+
+	g->setColor(vie::COLOR::YELLOW);
+	g->fillRect({ timer.getDecreasingProgressINV() * (vie::Window::getScreenWidth() - 64), 500.0f }, { 64, 64 });
 
 }
 

@@ -22,5 +22,7 @@ public:
 private:
 	vie::Camera2D* camera;
 	Swordman swordman;
+	vie::Timer timer;
+
 };
 
