@@ -9,6 +9,15 @@
 #include <GL/glew.h>
 #include <vie/Logger.h>
 #include <vie/Window.h>
+#include <vie/Engine.h>
+
+class MainClass : public vie::Engine
+{
+public:
+	MainClass()
+	{
+	}
+};
 
 int main(int argc, char *args[])
 {

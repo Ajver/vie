@@ -138,11 +138,7 @@ namespace vie
 	}
 	bool Graphics::containsLayer(const std::string& layerName) const
 	{
-		for (auto& currLayer : layers)
-			if (currLayer->isNamed(layerName))
-				return true;
-
-		return false;
+		return hasVectorLayerWithName(layers, layerName);
 	}
 	Layer* Graphics::getCurrentLayer() const
 	{
@@ -155,8 +151,56 @@ namespace vie
 			if (currLayer->isNamed(layerName))
 				return currLayer;
 		}
-		Logger::fatalError("Error: Cannot get layer with name: " + layerName + " (Layer not found)");
+		Logger::fatalError("Cannot get layer with name: " + layerName + " (Layer not found)");
 		return nullptr;
+	}
+
+	void Graphics::setLayersOrder(const std::vector<std::string>& order)
+	{
+		if (order.size() > layers.size())
+			Logger::fatalError("vector of Order of layers can not be greater than vector of Layers!");
+
+		// TODO - do not allow repetes in order vector
+
+		std::vector<Layer*> newLayers(layers.size());
+		
+		for (int i = 0; i < order.size(); i++)
+			newLayers[i] = getLayerByName(order[i]);
+
+		if (order.size() <= layers.size())
+		{
+			for (int i = 0, offset = order.size(); i < layers.size(); i++)
+			{
+				bool hasLayer = false;
+				for (int j = 0; j < newLayers.size(); j++)
+				{
+					if (newLayers[j])
+					{
+						if (newLayers[j]->isNamed(layers[i]->getName()))
+						{
+							hasLayer = true;
+							j = newLayers.size();
+						}
+					}
+				}
+				if (!hasLayer)
+				{
+					newLayers[offset] = layers[i];
+					offset++;
+				}
+			}
+		}
+
+		layers = newLayers;
+	}
+
+	bool Graphics::hasVectorLayerWithName(const std::vector<Layer*>& l, std::string lName) const
+	{
+		for (auto& currLayer : l)
+			if (currLayer->isNamed(lName))
+				return true;
+
+		return false;
 	}
 
 	void Graphics::render()
@@ -522,6 +566,11 @@ namespace vie
 	float Graphics::getNextTextureDepth() const
 	{
 		return nextTextureDepth + nextTextureDepthStep;
+	}
+
+	std::vector<Layer*> Graphics::getLayersVector() const
+	{
+		return layers;
 	}
 
 }

@@ -104,7 +104,6 @@ void Renderer::render(vie::Graphics* g)
 
 	g->setColor(vie::COLOR::YELLOW);
 	g->fillRect({ timer.getDecreasingProgressINV() * (vie::Window::getScreenWidth() - 64), 500.0f }, { 64, 64 });
-
 }
 
 vie::Camera2D* Renderer::getCamera() const

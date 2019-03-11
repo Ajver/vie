@@ -27,7 +27,8 @@ namespace vie
 		void createLayer(const std::string& layerName, Camera2D* camera = new Camera2D());
 		void switchLayer(const std::string& layerName);
 		void removeLayer(const std::string& layerName);
-		
+		void setLayersOrder(const std::vector<std::string>& order);
+
 		bool containsLayer(const std::string& layerName) const;
 		Layer* getCurrentLayer() const;
 		Layer* getLayerByName(const std::string& layerName) const;
@@ -84,6 +85,7 @@ namespace vie
 		GLuint getVBO() const;
 		GLuint getVAO() const;
 		float getNextTextureDepth() const;
+		std::vector<Layer*> getLayersVector() const;
 
 		glm::vec2 transformPoint(glm::vec2 point) const;
 
@@ -116,6 +118,7 @@ namespace vie
 		void setGlyphAttributes(Glyph* glyph, GLuint id, float depth, const glm::vec4& uvRect, const Color& color);
 		void setGlyphPosition(Glyph* glyph, const glm::vec2& topLeft, const glm::vec2& topRight, const glm::vec2& bottomLeft, const glm::vec2& bottomRight);
 
+		bool hasVectorLayerWithName(const std::vector<Layer*>& l, std::string lName) const;
 
 	};
 

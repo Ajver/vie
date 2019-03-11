@@ -12,6 +12,8 @@ namespace vie
 	class Window
 	{
 	public:
+		static void create(const char* title, int sw, int sh, WindowFlags wFlags);
+		
 		static void setWindowSize(int sw, int sh);
 		static void setWindowTitle(const char* title);
 
@@ -35,7 +37,6 @@ namespace vie
 		static int screenHeight;
 		static WindowFlags windowFlags;
 		
-		static void create(const char* title, int sw, int sh, WindowFlags wFlags);
 		static void updateScreenSizeFromSDL();
 
 		static void saveWindowProperties(const char* title, int sw, int sh, WindowFlags wFlags);

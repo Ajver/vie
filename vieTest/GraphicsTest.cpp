@@ -7,6 +7,7 @@
 
 void drawSomething(vie::Graphics* g);
 vie::Graphics getInitedGraphics();
+bool areLayersVectorTheSame(const std::vector<vie::Layer*>& a, const std::vector<vie::Layer*>& b);
 
 
 TEST(GraphicsTest, Should_AppendLayer)
@@ -62,6 +63,84 @@ TEST(GraphicsTest, Should_RemoveLayer)
 	
 	g.removeLayer("test_layer");
 	EXPECT_FALSE(g.containsLayer("test_layer"));
+}
+
+TEST(GraphicsTest, Should_ReturnLayersVector)
+{
+	vie::Graphics g = getInitedGraphics();
+	g.createLayer("test1");
+	g.createLayer("test2");
+	g.createLayer("test3");
+
+	std::vector<vie::Layer*> layersBeforeSort = g.getLayersVector();
+
+	ASSERT_EQ(4, layersBeforeSort.size());
+	EXPECT_EQ("main", layersBeforeSort[0]->getName());
+	EXPECT_EQ("test1", layersBeforeSort[1]->getName());
+	EXPECT_EQ("test2", layersBeforeSort[2]->getName());
+	EXPECT_EQ("test3", layersBeforeSort[3]->getName());
+}
+
+TEST(GraphicsTest, Should_SetLayersOrder)
+{
+	vie::Graphics g = getInitedGraphics();
+	g.createLayer("test1");
+	g.createLayer("test2");
+	g.createLayer("test3");
+
+	g.setLayersOrder({
+		"test1",
+		"test3",
+		"main",
+		"test2"
+	});
+	
+	std::vector<vie::Layer*> layersAfterSort = g.getLayersVector();
+
+	ASSERT_EQ(4, layersAfterSort.size());
+	EXPECT_EQ("test1", layersAfterSort[0]->getName());
+	EXPECT_EQ("test3", layersAfterSort[1]->getName());
+	EXPECT_EQ("main", layersAfterSort[2]->getName());
+	EXPECT_EQ("test2", layersAfterSort[3]->getName());
+}
+
+TEST(GraphicsTest, Should_FillLayersWithMissing)
+{
+	vie::Graphics g = getInitedGraphics();
+	g.createLayer("test1");
+	g.createLayer("test2");
+	g.createLayer("test3");
+
+	g.setLayersOrder({
+		"test1",
+		"test3",
+		});
+
+	std::vector<vie::Layer*> layersAfterSort = g.getLayersVector();
+
+	ASSERT_EQ(4, layersAfterSort.size());
+	EXPECT_EQ("test1", layersAfterSort[0]->getName());
+	EXPECT_EQ("test3", layersAfterSort[1]->getName());
+	EXPECT_EQ("main", layersAfterSort[2]->getName());
+	EXPECT_EQ("test2", layersAfterSort[3]->getName());
+}
+
+TEST(GraphicsTest, Should_ThrowFatalError_OnMissingLayerToOrder)
+{
+	vie::Graphics g = getInitedGraphics();
+
+	try
+	{
+		g.setLayersOrder({
+			"test1"
+			});
+
+		FAIL();
+	}
+	catch (std::exception e)
+	{
+		EXPECT_EQ((std::string)"Cannot get layer with name: test1 (Layer not found)", (std::string)e.what());
+	}
 }
 
 TEST(GraphicsTest, ShouldSet_Translate)
@@ -170,4 +249,16 @@ vie::Graphics getInitedGraphics()
 	vie::Graphics* g = (new vie::Graphics());
 	g->init(new vie::Camera2D());
 	return *g;
+}
+
+bool areLayersVectorTheSame(const std::vector<vie::Layer*>& a, const std::vector<vie::Layer*>& b)
+{
+	if (a.size() != b.size())
+		return false;
+
+	for (int i = 0; i < a.size(); i++)
+		if (a[i] != b[i])
+			return false;
+
+	return true;
 }

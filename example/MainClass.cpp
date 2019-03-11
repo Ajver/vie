@@ -13,24 +13,13 @@
 #include <vie/Layer.h>
 #include <vie/SpriteFont.h>
 #include <vie/Logger.h>
+#include <Box2D/Box2D.h>
 
 #include "Car.h"
 #include "Map.h"
 #include "CarFollower.h"
 #include "Renderer.h"
 
-#include <Box2D/Box2D.h>
-
-/*
-Link those libs:
-
-vie.lib
-SDL2.lib
-SDL2main.lib
-Opengl32.lib
-glew32.lib
-
-*/
 
 MainClass::MainClass() :
 	mainMap(nullptr),
