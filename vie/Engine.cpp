@@ -288,8 +288,6 @@ namespace vie
 	// Default bodies (it's not necessary to use them)
 	void Engine::onCreate() {}
 	void Engine::onDestroy() {}
-	void Engine::onFatalError(const std::string&) {}
-	void Engine::onLog(const std::string&) {}
 	void Engine::update(float) {}
 	void Engine::render(Graphics*) {}
 	void Engine::onKeyPress() {}
@@ -298,4 +296,15 @@ namespace vie
 	void Engine::onMouseRelease() {}
 	void Engine::onMouseMove() {}
 	void Engine::onMouseDrag() {}
+
+	void Engine::onFatalError(const std::string& errorString)
+	{
+		printf("FATAL ERROR: %s\n", errorString.c_str());
+	}
+
+	void Engine::onLog(const std::string& logString)
+	{
+		printf("LOG: %s\n", logString.c_str());
+	}
+
 }
