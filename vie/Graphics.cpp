@@ -147,10 +147,9 @@ namespace vie
 	Layer* Graphics::getLayerByName(const std::string& layerName) const
 	{
 		for (auto& currLayer : layers)
-		{
 			if (currLayer->isNamed(layerName))
 				return currLayer;
-		}
+
 		Logger::fatalError("Cannot get layer with name: " + layerName + " (Layer not found)");
 		return nullptr;
 	}

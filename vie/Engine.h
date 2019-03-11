@@ -2,14 +2,19 @@
 
 #include <glm/glm.hpp>
 
+#include <Box2D/Box2D.h>
+
 #include "WindowFlags.h"
 #include "Graphics.h"
 
-
-class b2World;
+#define VIE_DEFAULT_WINDOW_TITLE "vie Application"
+#define VIE_DEFAULT_WINDOW_WIDTH 728
+#define VIE_DEFAULT_WINDOW_HEIGHT 480
+#define VIE_DEFAULT_WINDOW_FLAGS WindowFlags::DEFAULT
 
 namespace vie
 {
+
 	class ObjectsManager;
 	class Camera2D;
 
@@ -19,7 +24,7 @@ namespace vie
 		Engine();
 		~Engine();
 
-		char* getOpenGLVersion();
+		const char* getOpenGLVersion();
 
 		// Get FPS count from previous frame (updated after each second)
 		unsigned int getFpsCount();
@@ -56,13 +61,19 @@ namespace vie
 		virtual void onDestroy();
 
 		// Init all systems and run the vEngine (title, screen width, screen height, window type)
-		void runEngine(const char* title = "vie Engine", 
-			unsigned int sw = 728, 
-			unsigned int sh = 480, 
-			WindowFlags windowFlags = WindowFlags::DEFAULT);
+		void runEngine(
+			const char* title,
+			unsigned int sw, 
+			unsigned int sh, 
+			WindowFlags windowFlags = VIE_DEFAULT_WINDOW_FLAGS
+		);
 
-		void runEngine(const char* title = "vie Engine",
-			WindowFlags windowFlags = WindowFlags::DEFAULT);
+		void runEngine(
+			const char* title,
+			WindowFlags windowFlags = VIE_DEFAULT_WINDOW_FLAGS
+		);
+
+		void runEngine();
 
 		// If nMaxFps < 0 then no limits!
 		// (Default 60)
@@ -70,6 +81,7 @@ namespace vie
 
 		// Create world with specific gravity (default - no gravity)
 		void createWorld(const glm::vec2& gravity = { 0.0f, 0.0f });
+		void createWorld(const b2Vec2& gravity);
 
 		void setVelocityIterations(unsigned int it);
 		void setPositionIterations(unsigned int it);

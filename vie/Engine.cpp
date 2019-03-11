@@ -38,9 +38,19 @@ namespace vie
 		delete b_world;
 	}
 
+	void Engine::runEngine()
+	{
+		runEngine(
+			VIE_DEFAULT_WINDOW_TITLE, 
+			VIE_DEFAULT_WINDOW_WIDTH, 
+			VIE_DEFAULT_WINDOW_HEIGHT, 
+			VIE_DEFAULT_WINDOW_FLAGS
+		);
+	}
+
 	void Engine::runEngine(const char* title, WindowFlags windowFlags)
 	{
-		runEngine(title, 728, 480, windowFlags);
+		runEngine(title, VIE_DEFAULT_WINDOW_WIDTH, VIE_DEFAULT_WINDOW_HEIGHT, windowFlags);
 	}
 
 	void Engine::runEngine(const char *title, unsigned int sw, unsigned int sh, WindowFlags windowFlags)
@@ -223,7 +233,7 @@ namespace vie
 		return FPS; 
 	}
 
-	char* Engine::getOpenGLVersion()
+	const char* Engine::getOpenGLVersion()
 	{
 		return (char*)glGetString(GL_VERSION);
 	}
@@ -235,7 +245,12 @@ namespace vie
 
 	void Engine::createWorld(const glm::vec2& gravity)
 	{
-		b_world = new b2World(b2Vec2(gravity.x, gravity.y));
+		createWorld(b2Vec2(gravity.x, gravity.y));
+	}
+
+	void Engine::createWorld(const b2Vec2& gravity)
+	{
+		b_world = new b2World(gravity);
 		isWorldUpdating = true;
 	}
 
