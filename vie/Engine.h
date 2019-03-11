@@ -117,10 +117,13 @@ namespace vie
 		bool isWorldUpdating;
 
 		// Init all systems (title, screen width, screen height, window type)
-		void initSDLAndWindowAndGraphics(const char* title,
+		void initSDLAndWindowAndGraphics(
+			const char* title,
 			unsigned int sw,
 			unsigned int sh,
-			WindowFlags windowFlags);
+			WindowFlags windowFlags
+		);
+
 		void createGlewContextAndCatchErrors();
 
 		void mainLoop();
