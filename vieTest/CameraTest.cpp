@@ -139,6 +139,6 @@ vie::Camera2D getUpdatedCamera()
 vie::Camera2D getInitedCamera()
 {
 	vie::Camera2D camera;
-	camera.init();
+	camera.update();
 	return camera;
 }

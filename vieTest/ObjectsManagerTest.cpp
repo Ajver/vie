@@ -4,7 +4,7 @@
 
 TEST(ObjectsManagerTest, ShouldAppend_Object)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	EXPECT_FALSE(om.containsObject(object));
@@ -15,7 +15,7 @@ TEST(ObjectsManagerTest, ShouldAppend_Object)
 
 TEST(ObjectsManagerTest, ShouldAppend_Mouse_Listener)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	EXPECT_FALSE(om.containsMouseListener(object));
@@ -26,7 +26,7 @@ TEST(ObjectsManagerTest, ShouldAppend_Mouse_Listener)
 
 TEST(ObjectsManagerTest, ShouldAppend_Key_Listener)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	EXPECT_FALSE(om.containsKeyListener(object));
@@ -37,7 +37,7 @@ TEST(ObjectsManagerTest, ShouldAppend_Key_Listener)
 
 TEST(ObjectsManagerTest, ShouldAppend_All)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	EXPECT_FALSE(om.containsObject(object));
@@ -52,7 +52,7 @@ TEST(ObjectsManagerTest, ShouldAppend_All)
 
 TEST(ObjectsManagerTest, Should_Contains_Object_WithLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 	object->setLabel("test_label");
 
@@ -64,7 +64,7 @@ TEST(ObjectsManagerTest, Should_Contains_Object_WithLabel)
 
 TEST(ObjectsManagerTest, Should_Contains_Mouse_Listener_WithLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 	object->setLabel("test_label");
 
@@ -76,7 +76,7 @@ TEST(ObjectsManagerTest, Should_Contains_Mouse_Listener_WithLabel)
 
 TEST(ObjectsManagerTest, Should_Contains_Key_Listener_WithLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 	object->setLabel("test_label");
 
@@ -88,7 +88,7 @@ TEST(ObjectsManagerTest, Should_Contains_Key_Listener_WithLabel)
 
 TEST(ObjectsManagerTest, ShouldRemove_Object)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	om.appendObject(object);
@@ -100,7 +100,7 @@ TEST(ObjectsManagerTest, ShouldRemove_Object)
 
 TEST(ObjectsManagerTest, ShouldRemove_Mouse_Listener)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	om.appendMouseListener(object);
@@ -112,7 +112,7 @@ TEST(ObjectsManagerTest, ShouldRemove_Mouse_Listener)
 
 TEST(ObjectsManagerTest, ShouldRemove_Key_Listener)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	om.appendKeyListener(object);
@@ -124,7 +124,7 @@ TEST(ObjectsManagerTest, ShouldRemove_Key_Listener)
 
 TEST(ObjectsManagerTest, ShouldRemove_All)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	om.appendAll(object);
@@ -140,7 +140,7 @@ TEST(ObjectsManagerTest, ShouldRemove_All)
 
 TEST(ObjectsManagerTest, ShouldDestroy_Object)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 
 	om.appendAll(object);
@@ -154,7 +154,7 @@ TEST(ObjectsManagerTest, ShouldDestroy_Object)
 
 TEST(ObjectsManagerTest, ShouldReturn_Object_ByLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 	object->setLabel("test_label");
 	om.appendObject(object);
@@ -163,13 +163,13 @@ TEST(ObjectsManagerTest, ShouldReturn_Object_ByLabel)
 
 TEST(ObjectsManagerTest, ShouldReturn_nullptr_IfNo_Object_WithLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	EXPECT_EQ(nullptr, om.getObjectByLabel("wrong_label_name"));
 }
 
 TEST(ObjectsManagerTest, ShouldReturn_Mouse_Listener_ByLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 	object->setLabel("test_label");
 	om.appendMouseListener(object);
@@ -178,13 +178,13 @@ TEST(ObjectsManagerTest, ShouldReturn_Mouse_Listener_ByLabel)
 
 TEST(ObjectsManagerTest, ShouldReturn_nullptr_IfNo_Mouse_Listener_WithLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	EXPECT_EQ(nullptr, om.getMouseListenerByLabel("wrong_label_name"));
 }
 
 TEST(ObjectsManagerTest, ShouldReturn_Key_Listener_ByLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	vie::Object* object = new vie::Object();
 	object->setLabel("test_label");
 	om.appendKeyListener(object);
@@ -193,13 +193,13 @@ TEST(ObjectsManagerTest, ShouldReturn_Key_Listener_ByLabel)
 
 TEST(ObjectsManagerTest, ShouldReturn_nullptr_IfNo_Key_Listener_WithLabel)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	EXPECT_EQ(nullptr, om.getKeyListenerByLabel("wrong_label_name"));
 }
 
 TEST(ObjectsManagerTest, ShouldReturn_objectsVector)
 {
-	vie::ObjectsManager om;
+	vie::ObjectsManager om(nullptr);
 	EXPECT_EQ(0, om.getObjectsVector().size());
 
 	vie::Object* object = new vie::Object();
