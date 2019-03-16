@@ -16,6 +16,7 @@ public:
 	~MainClass();
 
 	void onKeyRelease();
+	void onMouseClick();
 
 	void onCreate();
 	void update(float et);

@@ -11,7 +11,7 @@ namespace vie
 	class ObjectsManager
 	{
 	public:
-		ObjectsManager();
+		ObjectsManager(Camera2D* ncamera);
 		~ObjectsManager();
 
 		void update(float et);
@@ -49,6 +49,7 @@ namespace vie
 
 		void onKeyPress();
 		void onKeyRelease();
+		void onMouseClick();
 		void onMousePress(); 
 		void onMouseRelease();
 		void onMouseMove();
@@ -60,6 +61,8 @@ namespace vie
 		std::vector<Object*> keyListeners;
 
 		Object* clickedObject;
+
+		Camera2D* mainCamera;
 
 		void mouseClickedObject(vie::Object* ob);
 

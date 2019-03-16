@@ -9,8 +9,9 @@
 namespace vie
 {
 
-	ObjectsManager::ObjectsManager() :
-		clickedObject(nullptr)
+	ObjectsManager::ObjectsManager(Camera2D* ncamera) :
+		clickedObject(nullptr),
+		mainCamera(ncamera)
 	{
 	}
 
@@ -176,14 +177,24 @@ namespace vie
 		}
 	}
 
+	void ObjectsManager::onMouseClick() 
+	{
+		if (isNoClickedObject())
+			return;
+
+		clickedObject->onMouseClick();
+	}
+
 	void ObjectsManager::onMousePress()
 	{
+		glm::vec2 worldMousePosition = mainCamera->screenToWorldPos(Input::getMousePosition());
+
 		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
 			if (i < mouseListeners.size())
 			{
 				Object* ob = *(&mouseListeners[0] + i);
-				if (ob->isPointInside(Input::getMousePosition()))
+				if (ob->isPointInside(worldMousePosition))
 				{
 					mouseClickedObject(ob);
 					return;
@@ -201,7 +212,9 @@ namespace vie
 		if (isNoClickedObject())
 			return;
 
-		if (clickedObject->isPointInside(Input::getMousePosition()))
+		glm::vec2 worldMousePosition = mainCamera->screenToWorldPos(Input::getMousePosition());
+
+		if (clickedObject->isPointInside(worldMousePosition))
 			mouseReleasedClickedObject();
 		else
 			mouseReleasedOutsideClickedObject();
@@ -226,12 +239,14 @@ namespace vie
 
 	void ObjectsManager::onMouseMove() 
 	{
+		glm::vec2 worldMousePosition = mainCamera->screenToWorldPos(Input::getMousePosition());
+
 		for (int i = mouseListeners.size() - 1; i >= 0; i--)
 		{
 			if (i < mouseListeners.size())
 			{
 				Object* ob = *(&mouseListeners[0] + i);
-				if (ob->isPointInside(Input::getMousePosition()))
+				if (ob->isPointInside(worldMousePosition))
 					mouseIsInsideObject(ob);
 				else
 					mouseIsOutsideObject(ob);

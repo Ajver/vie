@@ -35,6 +35,11 @@ MainClass::~MainClass()
 	delete carFollower;
 }
 
+void MainClass::onMouseClick() 
+{
+	std::cout << "Mouse Click! " << vie::Input::getMousePosition().x << " | " << vie::Input::getMousePosition().y << std::endl;
+}
+
 void MainClass::onCreate()
 {
 	setFPSLimit(60);

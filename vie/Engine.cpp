@@ -92,12 +92,11 @@ namespace vie
 		createGlewContextAndCatchErrors();
 		
 		mainCamera = new Camera2D();
-		mainCamera->init();
 
 		graphics = new Graphics();
 		graphics->init(mainCamera);
 
-		objectsManager = new ObjectsManager();
+		objectsManager = new ObjectsManager(mainCamera);
 	}
 
 	void Engine::createGlewContextAndCatchErrors()
@@ -158,6 +157,8 @@ namespace vie
 	{
 		SDL_Event evnt;
 
+		static bool wasMouseDragged = false;
+
 		while (SDL_PollEvent(&evnt))
 		{
 			switch (evnt.type)
@@ -182,6 +183,15 @@ namespace vie
 				break;
 			case SDL_MOUSEBUTTONUP:
 				Input::setKey(evnt.button.button, false);
+
+				if (!wasMouseDragged)
+				{
+					objectsManager->onMouseClick();
+					onMouseClick();
+				}
+				else
+					wasMouseDragged = false;
+
 				objectsManager->onMouseRelease();
 				onMouseRelease();
 				break;
@@ -190,6 +200,7 @@ namespace vie
 
 				if (Input::isSomeMouseButtonPressed())
 				{
+					wasMouseDragged = true;
 					onMouseDrag();
 					objectsManager->onMouseDrag();
 				}
@@ -296,6 +307,7 @@ namespace vie
 	void Engine::render(Graphics*) {}
 	void Engine::onKeyPress() {}
 	void Engine::onKeyRelease() {}
+	void Engine::onMouseClick() {}
 	void Engine::onMousePress() {}
 	void Engine::onMouseRelease() {}
 	void Engine::onMouseMove() {}

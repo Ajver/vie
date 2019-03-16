@@ -88,6 +88,7 @@ namespace vie
 
 		virtual void onKeyPress();
 		virtual void onKeyRelease();
+		virtual void onMouseClick();
 		virtual void onMousePress();
 		virtual void onMouseRelease();
 		virtual void onMouseMove();

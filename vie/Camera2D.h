@@ -11,7 +11,7 @@ namespace vie
 		Camera2D();
 		~Camera2D();
 
-		void init();
+		void setOrthoMatrix();
 		void update();
 		void beginFrame();
 

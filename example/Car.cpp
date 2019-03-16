@@ -9,6 +9,8 @@
 
 #include <Box2D/Box2D.h>
 
+#include <iostream>
+
 Car::Car(vie::ObjectsManager* nom, b2World* b_world) :
 	MAX_SPEED(160.0f),
 	ACCELERATION(60.0f),
@@ -37,10 +39,17 @@ Car::Car(vie::ObjectsManager* nom, b2World* b_world) :
 	fixtureDef.friction = 0.3f;
 
 	b_fixture = b_body->CreateFixture(&fixtureDef);
+
+	nom->appendMouseListener(this);
 }
 
 Car::~Car()
 {
+}
+
+void Car::onMouseClick()
+{
+	std::cout << "Clicked car" << std::endl;
 }
 
 void Car::update(float et)

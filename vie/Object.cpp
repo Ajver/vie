@@ -153,6 +153,7 @@ namespace vie
 	void Object::onMouseLeave() {}
 	void Object::onMouseMove() {}
 	void Object::onMouseDrag() {}
+	void Object::onMouseClick() {}
 	void Object::onMousePress() {}
 	void Object::onMouseRelease() {}
 	void Object::onKeyPress() {}

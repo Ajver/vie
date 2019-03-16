@@ -34,7 +34,7 @@ namespace vie
 	{
 		if (needsMatrixUpdate)
 		{
-			init();
+			setOrthoMatrix();
 
 			// Camera translation
 			glm::vec3 translateVec(Window::getScreenWidth() * 0.5f, -Window::getScreenHeight() * 0.5f, 0.0f);
@@ -49,7 +49,7 @@ namespace vie
 		}
 	}
 
-	void Camera2D::init()
+	void Camera2D::setOrthoMatrix()
 	{
 		orthoMatrix = glm::ortho(0.0f, (float)Window::getScreenWidth(), 0.0f, (float)Window::getScreenHeight());
 	}

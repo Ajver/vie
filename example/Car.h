@@ -14,6 +14,8 @@ public:
 	Car(vie::ObjectsManager* nom, b2World* b_world);
 	~Car();
 
+	void onMouseClick() override;
+
 	void update(float et) override;
 	void render(vie::Graphics* g) override;
 

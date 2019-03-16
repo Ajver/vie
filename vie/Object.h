@@ -25,6 +25,7 @@ namespace vie
 		virtual void onMouseLeave();
 		virtual void onMouseMove();
 		virtual void onMouseDrag();
+		virtual void onMouseClick();
 		virtual void onMousePress();
 		virtual void onMouseRelease();
 
