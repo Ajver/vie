@@ -7,11 +7,6 @@
 #include "WindowFlags.h"
 #include "Graphics.h"
 
-#define VIE_DEFAULT_WINDOW_TITLE "vie Application"
-#define VIE_DEFAULT_WINDOW_WIDTH 728
-#define VIE_DEFAULT_WINDOW_HEIGHT 480
-#define VIE_DEFAULT_WINDOW_FLAGS WindowFlags::DEFAULT
-
 namespace vie
 {
 
@@ -65,12 +60,12 @@ namespace vie
 			const char* title,
 			unsigned int sw, 
 			unsigned int sh, 
-			WindowFlags windowFlags = VIE_DEFAULT_WINDOW_FLAGS
+			WindowFlags windowFlags = WindowFlags::DEFAULT
 		);
 
 		void runEngine(
 			const char* title,
-			WindowFlags windowFlags = VIE_DEFAULT_WINDOW_FLAGS
+			WindowFlags windowFlags = WindowFlags::DEFAULT
 		);
 
 		void runEngine();

@@ -13,6 +13,10 @@
 #include "Input.h"
 #include "Camera2D.h"
 
+#define VIE_DEFAULT_WINDOW_TITLE "vie Application"
+#define VIE_DEFAULT_WINDOW_WIDTH 728
+#define VIE_DEFAULT_WINDOW_HEIGHT 480
+
 namespace vie
 {
 	
@@ -44,7 +48,7 @@ namespace vie
 			VIE_DEFAULT_WINDOW_TITLE, 
 			VIE_DEFAULT_WINDOW_WIDTH, 
 			VIE_DEFAULT_WINDOW_HEIGHT, 
-			VIE_DEFAULT_WINDOW_FLAGS
+			WindowFlags::DEFAULT
 		);
 	}
 
