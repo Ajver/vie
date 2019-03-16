@@ -4,6 +4,8 @@
 #include <vie/Camera2D.h>
 #include <vie/Window.h>
 
+#include <iostream>
+
 Renderer::Renderer() :
 	camera(new vie::Camera2D()),
 	swordman({ 600.0f, 400.0f }),
@@ -104,6 +106,8 @@ void Renderer::render(vie::Graphics* g)
 
 	g->setColor(vie::COLOR::YELLOW);
 	g->fillRect({ timer.getDecreasingProgressINV() * (vie::Window::getScreenWidth() - 64), 500.0f }, { 64, 64 });
+
+	std::cout << "ET: " << timer.getElapsedTime() << std::endl;
 }
 
 vie::Camera2D* Renderer::getCamera() const

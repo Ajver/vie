@@ -22,6 +22,8 @@ namespace vie
 		void setDuration(ulong ndur);
 		void setProgress(float progress);
 
+		ulong getElapsedTime() const;
+
 		float getProgress() const;
 		float getProgressINV() const;
 		float getEaseProgress() const;

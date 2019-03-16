@@ -70,6 +70,11 @@ namespace vie
 		breakTime = SDL_GetTicks() + leftTime;
 	}
 
+	ulong Timer::getElapsedTime() const
+	{
+		return SDL_GetTicks() - (breakTime - duration);
+	}
+
 	float Timer::getProgress() const
 	{
 		return 1.0f - getProgressINV();
