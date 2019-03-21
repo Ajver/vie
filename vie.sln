@@ -22,12 +22,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vie_TTT", "vie_TTT\vie_TTT.
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_Linux|x64 = Debug_Linux|x64
+		Debug_Linux|x86 = Debug_Linux|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Debug_Linux|x64.ActiveCfg = Debug_Linux|x64
+		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Debug_Linux|x64.Build.0 = Debug_Linux|x64
+		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Debug_Linux|x86.ActiveCfg = Debug_Linux|Win32
+		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Debug_Linux|x86.Build.0 = Debug_Linux|Win32
 		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Debug|x64.ActiveCfg = Debug|x64
 		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Debug|x64.Build.0 = Debug|x64
 		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Debug|x86.ActiveCfg = Debug|Win32
@@ -36,6 +42,10 @@ Global
 		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Release|x64.Build.0 = Release|x64
 		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Release|x86.ActiveCfg = Release|Win32
 		{ADE7330C-B86B-42FD-92D9-CB3A904E34A9}.Release|x86.Build.0 = Release|Win32
+		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Debug_Linux|x64.ActiveCfg = Debug_Linux|x64
+		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Debug_Linux|x64.Build.0 = Debug_Linux|x64
+		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Debug_Linux|x86.ActiveCfg = Debug_Linux|Win32
+		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Debug_Linux|x86.Build.0 = Debug_Linux|Win32
 		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Debug|x64.ActiveCfg = Debug|x64
 		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Debug|x64.Build.0 = Debug|x64
 		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Debug|x86.ActiveCfg = Debug|Win32
@@ -44,6 +54,10 @@ Global
 		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Release|x64.Build.0 = Release|x64
 		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Release|x86.ActiveCfg = Release|Win32
 		{8E9F3B7D-33CC-445B-8D38-DD3CB7807515}.Release|x86.Build.0 = Release|Win32
+		{485CE470-B45B-455C-AF47-47328EDCA822}.Debug_Linux|x64.ActiveCfg = Debug_Linux|x64
+		{485CE470-B45B-455C-AF47-47328EDCA822}.Debug_Linux|x64.Build.0 = Debug_Linux|x64
+		{485CE470-B45B-455C-AF47-47328EDCA822}.Debug_Linux|x86.ActiveCfg = Debug_Linux|Win32
+		{485CE470-B45B-455C-AF47-47328EDCA822}.Debug_Linux|x86.Build.0 = Debug_Linux|Win32
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Debug|x64.ActiveCfg = Debug|x64
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Debug|x64.Build.0 = Debug|x64
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Debug|x86.ActiveCfg = Debug|Win32
@@ -52,6 +66,10 @@ Global
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Release|x64.Build.0 = Release|x64
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Release|x86.ActiveCfg = Release|Win32
 		{485CE470-B45B-455C-AF47-47328EDCA822}.Release|x86.Build.0 = Release|Win32
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug_Linux|x64.ActiveCfg = Debug_Linux|x64
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug_Linux|x64.Build.0 = Debug_Linux|x64
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug_Linux|x86.ActiveCfg = Debug_Linux|Win32
+		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug_Linux|x86.Build.0 = Debug_Linux|Win32
 		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug|x64.ActiveCfg = Debug|x64
 		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug|x64.Build.0 = Debug|x64
 		{D7BA3446-92E4-44BA-8440-B16DFB463C89}.Debug|x86.ActiveCfg = Debug|Win32
