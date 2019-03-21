@@ -4,6 +4,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include <string>
+
 #include "Color.h"
 
 namespace vie
@@ -23,7 +25,7 @@ namespace vie
 
 		Color getPixelColor(GLuint x, GLuint y) const;
 		void setPixelColor(GLuint x, GLuint y, Color color);
-		
+
 		// Refresh OpenGL buffer (do it after calling setPixelColor)
 		void refreshGLBuffer() const;
 

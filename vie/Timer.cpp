@@ -2,6 +2,8 @@
 
 #include <SDL/SDL.h>
 
+#include <cmath>
+
 namespace vie
 {
 
@@ -111,7 +113,7 @@ namespace vie
 		float progress = getProgress();
 		if (progress < 0.5f)
 			return getEaseProgress();
-		else 
+		else
 			return progress;
 	}
 
